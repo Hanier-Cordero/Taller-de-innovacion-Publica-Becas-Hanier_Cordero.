@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vocacional · PC</title>
+</head>
+<body>
+  <div class="version-banner">Versión escritorio</div>
+  <div class="fonabe-vocational-test-wrapper">
+  <!-- Contenedor principal del test de orientación vocacional -->
+  <div class="avada-custom-test-container">
+  <!-- Barra lateral de navegación rápida -->
+  <div class="test-sidebar-wrapper" aria-label="Navegación rápida del test">
+    <button class="test-sidebar-toggle" type="button" aria-label="Abrir navegación rápida">☰</button>
+    <aside class="test-sidebar-nav">
+      <h4>Navegación</h4>
+      <a href="#datos-personales">Datos</a>
+      <a href="#preguntas-parte-1">Preguntas 1-6</a>
+      <a href="#preguntas-parte-2">Preguntas 7-12</a>
+      <a href="#preguntas-parte-3">Preguntas 13-18</a>
+      <a href="#preguntas-parte-4">Preguntas 19-24</a>
+      <a href="#retroalimentacion">Feedback</a>
+      <a href="#preguntas-frecuentes">FAQ</a>
+    </aside>
+  </div>
+  
+  <!-- Panel izquierdo: recomendaciones que se muestran al finalizar el test -->
+  <div class="test-col-left">
+    <div id="panel-sugerencias" class="sugerencias-box">
+        <div class="sugerencias-header">
+          <i class="fusion-li-icon fa fa-graduation-cap" style="color:#0056b3; margin-right:10px;"></i>
+          <h3>Intereses según respuestas actuales</h3>
+        </div>
+        <div class="sugerencias-fixed-summary">
+          <div class="panel-texto-fijo">
+            <p><strong>Apoyo de beca:</strong> Puedes recibir un porcentaje de beca del <strong>25%</strong>, <strong>50%</strong>, <strong>75%</strong> o <strong>100%</strong>.</p>
+          </div>
+        </div>
+
+        <div id="sugerencias-contenido" class="sugerencias-body">
+          <p class="placeholder-text">Aquí se mostrará la orientación y las áreas recomendadas en tiempo real.</p>
+        </div>
+        <div class="sugerencias-footer">
+          <p class="sugerencias-scholarship">
+          <small><strong>Nota:</strong> Este instrumento es una guía inicial rápida basada en el test CHASIDE y el modelo de John Holland (RIASEC).</small>
+        </div>
+      </div>
+  </div>
+
+  <!-- Panel derecho: formulario con preguntas, datos personales y retroalimentación -->
+  <div class="test-col-right">
+    <form id="vocational-test">
+      
+      <!-- Sección de datos personales -->
+      <div id="datos-personales" class="personal-info-card">
+        <h4>Datos del participante</h4>
+        <div class="personal-info-grid">
+          <div class="field-group">
+            <label for="nombre-apellido">Nombre y apellido</label>
+            <input type="text" id="nombre-apellido" name="nombre-apellido" placeholder="Ej. Ana Pérez">
+          </div>
+          <div class="field-group">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" placeholder="Ej. correo@ejemplo.com">
+          </div>
+          <div class="field-group">
+            <label for="departamento">Departamento</label>
+            <select id="departamento" name="departamento">
+              <option value="">Cargando departamentos...</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="municipio">Municipio</label>
+            <select id="municipio" name="municipio" disabled>
+              <option value="">Seleccione primero un departamento</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <span id="supabase-status" class="status-message">Cargando datos desde Supabase o modo de respaldo...</span>
+        </div>
+      </div>
+
+      <!-- Instrucciones generales del test -->
+      <div class="test-instrucciones">
+        <h4>Test de Orientación Vocacional</h4>
+        <p>Lee cada pregunta con atención y marca una respuesta con sinceridad.</p>
+      </div>
+
+      <!-- Bloque de preguntas 1 a 6 -->
+      <div id="preguntas-parte-1" class="anchor-target"></div>
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">1. ¿Te gusta ayudar a personas cuando tienen un problema?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p1" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p1" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p1" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">2. ¿Te interesa aprender cómo funcionan las máquinas o aparatos?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p2" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p2" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p2" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">3. ¿Disfrutas dibujar, decorar o crear cosas nuevas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p3" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p3" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p3" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">4. ¿Te gusta organizar actividades o grupos de personas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p4" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p4" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p4" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">5. ¿Te gustaría cuidar personas enfermas o ayudar en temas de salud?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p5" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p5" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p5" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">6. ¿Te gusta trabajar al aire libre o en contacto con la naturaleza?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p6" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p6" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p6" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <!-- Bloque de preguntas 7 a 12 -->
+      <div id="preguntas-parte-2" class="anchor-target"></div>
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">7. ¿Te sientes cómodo hablando con otras personas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p7" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p7" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p7" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">8. ¿Te gusta resolver problemas o encontrar soluciones?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p8" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p8" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p8" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">9. ¿Te gustaría enseñar algo a otras personas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p9" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p9" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p9" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">10. ¿Te gustan los trabajos donde se necesita orden y organización?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p10" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p10" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p10" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">11. ¿Te interesa construir, reparar o armar cosas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p11" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p11" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p11" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">12. ¿Te gustan las actividades artísticas como música, pintura, baile o teatro?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p12" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p12" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p12" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <!-- Bloque de preguntas 13 a 18 -->
+      <div id="preguntas-parte-3" class="anchor-target"></div>
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">13. ¿Te gustaría participar en actividades para ayudar a tu comunidad?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p13" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p13" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p13" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">14. ¿Te interesa aprender sobre plantas, animales o el medio ambiente?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p14" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p14" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p14" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">15. ¿Te gustaría dirigir un negocio o vender productos?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p15" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p15" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p15" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">16. ¿Te gustan las actividades donde hay acción, movimiento o retos?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p16" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p16" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p16" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">17. ¿Te gusta trabajar en equipo?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p17" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p17" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p17" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">18. ¿Te interesa usar computadoras, herramientas o tecnología?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p18" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p18" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p18" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <!-- Bloque de preguntas 19 a 24 -->
+      <div id="preguntas-parte-4" class="anchor-target"></div>
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">19. ¿Te gustaría trabajar ayudando a niños, jóvenes o familias?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p19" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p19" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p19" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">20. ¿Te gusta tener tus tareas bien planificadas y ordenadas?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p20" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p20" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p20" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">21. ¿Te gustaría aprender un oficio práctico? (Ejemplo: mecánica, electricidad, carpintería, cocina, soldadura)</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p21" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p21" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p21" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">22. ¿Te gusta imaginar ideas nuevas o crear proyectos?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p22" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p22" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p22" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">23. ¿Se te facilita áreas académicas relacionadas a la biología, anatomía?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p23" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p23" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p23" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <div class="test-pregunta-card">
+        <p class="pregunta-titulo">24. ¿Te interesa aprender cosas nuevas sobre ciencia o descubrimientos?</p>
+        <div class="opciones-group">
+          <label class="opcion-label"><input type="radio" name="p24" value="Me gusta"> <span class="radio-txt">Me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p24" value="No me gusta"> <span class="radio-txt">No me gusta</span></label>
+          <label class="opcion-label"><input type="radio" name="p24" value="Más o menos"> <span class="radio-txt">Más o menos</span></label>
+        </div>
+      </div>
+
+      <!-- Sección de retroalimentación y envío -->
+      <div id="retroalimentacion" class="anchor-target"></div>
+      <div class="test-pregunta-card feedback-card">
+        <p class="pregunta-titulo">Retroalimentación</p>
+        <p class="feedback-text">Tu opinión nos ayuda a mejorar este test. Califica tu experiencia y deja un comentario breve.</p>
+
+        <div class="star-rating" id="star-rating-group" role="radiogroup" aria-label="Calificación del test">
+          <button type="button" class="star-btn" data-value="1" aria-label="1 estrella" onclick="seleccionarEstrella(1)">★</button>
+          <button type="button" class="star-btn" data-value="2" aria-label="2 estrellas" onclick="seleccionarEstrella(2)">★</button>
+          <button type="button" class="star-btn" data-value="3" aria-label="3 estrellas" onclick="seleccionarEstrella(3)">★</button>
+          <button type="button" class="star-btn" data-value="4" aria-label="4 estrellas" onclick="seleccionarEstrella(4)">★</button>
+          <button type="button" class="star-btn" data-value="5" aria-label="5 estrellas" onclick="seleccionarEstrella(5)">★</button>
+        </div>
+        <input type="hidden" id="star-rating" name="star-rating" value="">
+
+        <label class="feedback-label" for="feedback-comment">Comentario (opcional)</label>
+        <textarea id="feedback-comment" name="feedback-comment" rows="3" placeholder="Cuéntanos cómo fue tu experiencia..."></textarea>
+
+        <button id="btn-ver-centros" type="button" class="feedback-submit-btn" onclick="enviarRetroalimentacionYVerRecomendaciones()">
+          Ver información centros de estudio
+        </button>
+        <div id="pendientes-info" class="pendientes-info" hidden></div>
+      </div>
+
+      </form>
+
+      <section id="recomendaciones-inline" class="recommendations-section" hidden>
+        <div class="recommendations-header">
+          <h3>Centros recomendados y carreras</h3>
+          <p>Esta vista se activa al terminar el test y mostrar la valoración final.</p>
+        </div>
+        <div id="recomendaciones-inline-contenido"></div>
+      </section>
+  </div>
+  </div>
+</div>
+
+<!-- Sección de preguntas frecuentes -->
+<div id="preguntas-frecuentes" class="faq-section">
+  <h3>Preguntas frecuentes</h3>
+
+  <div class="faq-item">
+    <h4>¿Ofrecen becas para el ciclo básico de educación media?</h4>
+    <p>No, pero el programa Becas por Nuestro Futuro te ofrece la oportunidad de estudiar un curso de formación práctica para aprender un oficio.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>¿Ofrecen becas de nivel diversificado de educación medio?</h4>
+    <p>El programa Becas por Nuestro Futuro te ofrece la oportunidad de estudiar carreras técnicas, por ejemplo: refrigeración, electricidad, mecánica, procesamiento de alimentos, entre otras.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>¿Qué carreras ofrecen como SEGEPLAN?</h4>
+    <p>Tú eliges la carrera y centro de estudio; SEGEPLAN te lo puede financiar a través del programa Becas por Nuestro Futuro.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>¿Puedo estudiar inglés?</h4>
+    <p>Si está dentro de tu pensum universitario, sí. Para obtener una beca solo para estudiar inglés, debes acudir al MINEDUC.</p>
+  </div>
+</div>
+
+<!-- Estilos del test y de los componentes visuales -->
+<style>
+:root {
+  --brand-blue: #0f2f70;
+  --brand-blue-soft: #7398f0;
+  --brand-sky: #e8f2ff;
+  --brand-yellow: #ffcf3f;
+  --brand-cream: #fff8e0;
+  --page-bg: #f6f4ef;
+  --panel-border: #cbd8f1;
+  --text-primary: #10254d;
+  --text-muted: #4c5c7a;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #fbfbfb 0%, #f1f6ff 100%);
+  color: var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+.fonabe-vocational-test-wrapper {
+  display: block;
+  padding: 24px 18px 36px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.avada-custom-test-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 20px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.test-sidebar-wrapper {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.test-sidebar-toggle {
+  position: absolute;
+  left: -44px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 8px 0 0 8px;
+  background: #0056b3;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  box-shadow: -2px 2px 8px rgba(0,0,0,0.15);
+}
+
+.test-sidebar-nav {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  background: #f8fbff;
+  border: 1px solid #bee3f8;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  padding: 0;
+  box-shadow: -2px 2px 10px rgba(0,0,0,0.08);
+  transition: all 0.25s ease;
+}
+
+.test-sidebar-wrapper:hover .test-sidebar-nav,
+.test-sidebar-wrapper:focus-within .test-sidebar-nav {
+  width: 220px;
+  opacity: 1;
+  padding: 18px;
+}
+
+.test-sidebar-nav h4 {
+  margin: 0 0 12px 0;
+  color: var(--brand-blue);
+  font-size: 1rem;
+}
+
+.test-sidebar-nav a {
+  display: block;
+  color: var(--brand-blue);
+  text-decoration: none;
+  padding: 10px 0;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+}
+
+.test-sidebar-nav a:last-child {
+  border-bottom: none;
+}
+
+.test-sidebar-nav a:hover {
+  color: #00408f;
+}
+
+.test-col-left {
+  flex: 0 0 340px;
+  max-width: 340px;
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+}
+
+.test-col-right {
+  flex: 1 1 640px;
+  min-width: 0;
+}
+
+/* Panel de sugerencias izquierdo */
+.sugerencias-box {
+  background: linear-gradient(180deg, #ffffff 0%, #e8f4ff 100%);
+  border: 1px solid var(--panel-border);
+  border-top: 5px solid var(--brand-blue);
+  border-radius: 14px;
+  padding: 24px;
+  position: relative;
+  height: 100%;
+  max-height: none;
+  overflow: auto;
+  box-shadow: 0 14px 36px rgba(16, 37, 77, 0.12);
+}
+
+.sugerencias-header h3 {
+  color: var(--brand-blue);
+}
+
+.sugerencias-fixed-summary {
+  background: rgba(255, 223, 97, 0.14);
+  border-left: 4px solid var(--brand-yellow);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.sugerencias-footer {
+  margin-top: 24px;
+  padding: 18px 18px 14px;
+  border-top: 1px dashed #d7e4fb;
+  background: #fff7e0;
+  color: #3f3a1a;
+  line-height: 1.55;
+}
+
+.sugerencias-footer strong {
+  color: var(--brand-blue);
+}
+
+.carrera-tag {
+  display: inline-block;
+  background-color: #fff7d6;
+  color: #6d5200;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 3px 4px 3px 0;
+  border: 1px solid #ffe69a;
+}
+
+.feedback-submit-btn {
+  margin-top: 14px;
+  background: var(--brand-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feedback-submit-btn:hover {
+  background: #0b2860;
+}
+
+.pendientes-info {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #fff8e0;
+  border: 1px solid #ffdf8d;
+  border-radius: 10px;
+  color: #5f4511;
+  font-size: 0.95rem;
+}
+
+.opcion-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: #24365f;
+  padding: 9px 12px;
+  border-radius: 10px;
+  transition: background 0.18s ease, border-color 0.18s ease;
+  border: 1px solid transparent;
+}
+
+.opcion-label:hover {
+  background: #eef5ff;
+  border-color: #c8d8f4;
+}
+
+.test-pregunta-card {
+  background: #ffffff;
+  border: 1px solid #d8e3f6;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 22px rgba(31, 63, 121, 0.06);
+}
+
+.pregunta-titulo {
+  margin-bottom: 14px;
+  font-size: 1rem;
+  color: #10254d;
+}
+
+.sugerencias-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sugerencias-header h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #1a3a6d;
+  font-weight: 800;
+}
+
+.sugerencias-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed #c3d7f2;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.panel-summary {
+  background: #ffffff;
+  border: 1px solid #dbeefa;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.panel-texto-fijo p {
+  margin: 8px 0;
+  color: #1f3a72;
+  line-height: 1.5;
+}
+
+.panel-texto-fijo p strong {
+  color: #0f2f5a;
+}
+
+.prioridad-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  margin: 4px 4px 4px 0;
+}
+
+.prioridad-pill.alta { background: #2f855a; }
+.prioridad-pill.media { background: #d69e2e; }
+.prioridad-pill.baja { background: #c53030; }
+
+.faltantes-alert {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 16px;
+}
+
+.faltantes-alert h4 {
+  margin: 0 0 10px 0;
+  color: #9b2c2c;
+}
+
+.faltantes-alert ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #742a2a;
+}
+
+.pregunta-missing {
+  border-color: #f6ad55 !important;
+  background: #fffbeb;
+}
+
+.pregunta-missing .pregunta-titulo::before {
+  content: attr(data-question-id) " ";
+  display: inline-block;
+  background: #f6ad55;
+  color: #1a202c;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.missing-star {
+  border: 1px solid #f56565;
+  background: #fff5f5;
+  box-shadow: inset 0 0 0 1px rgba(229,62,62,0.15);
+  border-radius: 10px;
+}
+
+.sugerencias-body {
+  color: #4a5568;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+#panel-sugerencias.ready-state {
+  border-top-color: #1a3a6d;
+  background: linear-gradient(180deg, #edf2ff 0%, #e2e8ff 100%);
+}
+
+.placeholder-text {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* Bloques de áreas sugeridas */
+.area-sugerida-block {
+  background-color: #f7fafc;
+  border-left: 3px solid #3182ce;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 0 6px 6px 0;
+}
+
+.area-titulo {
+  font-weight: 700;
+  color: #2b6cb0;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.intereses-list {
+  font-size: 0.88rem;
+  margin: 5px 0;
+  color: #4a5568;
+}
+
+.carreras-container {
+  margin-top: 8px;
+}
+
+.carrera-tag {
+  display: inline-block;
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 3px 2px;
+  border: 1px solid #bee3f8;
+}
+
+.nota-test-footer {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #edf2f7;
+  color: #718096;
+  line-height: 1.4;
+}
+
+/* Tarjetas de preguntas a la derecha */
+.personal-info-card {
+  background: #ffffff;
+  border: 1px solid #d8e4f8;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 16px 40px rgba(15, 35, 85, 0.06);
+}
+
+.personal-info-card h4 {
+  margin: 0 0 12px 0;
+  color: var(--brand-blue);
+}
+
+.field-group input,
+.field-group select {
+  box-shadow: inset 0 1px 2px rgba(15, 35, 85, 0.08);
+}
+
+.personal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group label {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 6px;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: inherit;
+  background-color: #ffffff;
+}
+
+.form-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.secondary-btn {
+  background: #2b6cb0;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: #225a94;
+}
+
+.status-message {
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.anchor-target {
+  scroll-margin-top: 90px;
+}
+
+.test-instrucciones {
+  background: linear-gradient(180deg, rgba(239, 249, 255, 0.94) 0%, rgba(226, 240, 255, 0.95) 100%);
+  border: 1px solid #c9d8f5;
+  padding: 18px 20px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+}
+.test-instrucciones h4 {
+  margin: 0 0 8px 0;
+  color: var(--brand-blue);
+}
+.test-instrucciones p {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+}
+
+.test-pregunta-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.pregunta-titulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.feedback-card {
+  border: 1px solid #bee3f8;
+  background: #f8fbff;
+}
+
+.feedback-text {
+  margin: 0 0 12px 0;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  color: #cbd5e0;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.star-btn:hover,
+.star-btn.active {
+  color: #f6ad55;
+  transform: scale(1.08);
+}
+
+.feedback-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 90px;
+  font-family: inherit;
+}
+
+.feedback-submit-btn {
+  margin-top: 12px;
+  background: #0056b3;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feedback-submit-btn:hover {
+  background: #00408f;
+}
+
+.pendientes-info {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #fff8e1;
+  border: 1px solid #f6e05e;
+  border-radius: 8px;
+  color: #5f370e;
+  font-size: 0.95rem;
+}
+
+.opciones-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opcion-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  color: #4a5568;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+.opcion-label:hover { background: #f7fafc; }
+.opcion-label input { margin-right: 10px; transform: scale(1.1); }
+
+/* Sección de preguntas frecuentes */
+.faq-section {
+  margin-top: 30px;
+  background: #f8fbff;
+  border: 1px solid #bee3f8;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.faq-section h3 {
+  margin: 0 0 18px 0;
+  color: #1e3a8a;
+  font-size: 1.35rem;
+}
+
+.faq-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.faq-item h4 {
+  margin: 0 0 6px 0;
+  color: #2b6cb0;
+  font-size: 1rem;
+}
+
+.faq-item p {
+  margin: 0;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+/* Acordeones para móviles */
+.accordion-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #e8f2ff;
+  border: 1px solid #d3e2f7;
+  border-radius: 12px;
+  font-weight: 700;
+  color: var(--brand-blue);
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordion-summary .accordion-icon {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0b5fb4;
+}
+
+/* Ajuste Responsivo */
+@media (max-width: 768px) {
+  .fonabe-vocational-test-wrapper {
+    padding: 16px 12px 28px;
+  }
+
+  .avada-custom-test-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .test-sidebar-wrapper {
+    position: fixed;
+    right: 0;
+    top: 12px;
+    transform: none;
+    z-index: 1200;
+    margin-bottom: 0;
+  }
+
+  .test-sidebar-toggle {
+    display: block;
+    left: auto;
+    right: 0;
+    transform: none;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .test-sidebar-nav {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    border-radius: 12px 0 0 12px;
+    border-right: none;
+    border: 1px solid #d3e2f7;
+    background: #e8f2ff;
+  }
+
+  .test-sidebar-wrapper:hover .test-sidebar-nav,
+  .test-sidebar-wrapper:focus-within .test-sidebar-nav {
+    width: 180px;
+    opacity: 1;
+    padding: 14px;
+  }
+
+  .test-sidebar-nav h4 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .test-sidebar-nav a {
+    padding: 8px 0;
+    font-size: 0.92rem;
+  }
+
+  .test-col-left {
+    max-width: 100%;
+    width: 100%;
+    flex-basis: auto;
+    position: relative;
+    top: auto;
+    height: auto;
+    order: 2;
+    align-self: stretch;
+    margin-top: 8px;
+  }
+
+  .test-col-right {
+    width: 100%;
+    min-width: 0;
+    order: 1;
+  }
+
+  .sugerencias-box {
+    position: relative;
+    top: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 18px;
+    margin-bottom: 0;
+    z-index: 1;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(16, 37, 77, 0.08);
+  }
+
+  .personal-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .test-pregunta-card,
+  .personal-info-card,
+  .feedback-card,
+  .faq-section,
+  .recommendations-section {
+    padding: 16px;
+  }
+
+  .pregunta-titulo {
+    font-size: 0.98rem;
+  }
+
+  .opcion-label {
+    padding: 10px 12px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .opcion-label input {
+    margin-right: 0;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .feedback-submit-btn {
+    width: 100%;
+  }
+
+  .faq-section {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fonabe-vocational-test-wrapper {
+    padding: 12px 10px 24px;
+  }
+
+  .sugerencias-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .pregunta-titulo {
+    font-size: 0.95rem;
+  }
+
+  .field-group input,
+  .field-group select,
+  textarea,
+  .feedback-submit-btn {
+    font-size: 0.95rem;
+  }
+
+  .test-sidebar-nav a {
+    font-size: 0.95rem;
+    padding: 8px 0;
+  }
+}
+
+.recommendations-section {
+  margin-top: 20px;
+  background: #ffffff;
+  border: 1px solid #bee3f8;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.recommendations-header h3 {
+  margin: 0 0 6px 0;
+  color: #1e3a8a;
+}
+
+.recommendations-header p {
+  margin: 0 0 12px 0;
+  color: #4a5568;
+}
+
+.recommendation-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.recommendation-card,
+.priority-card {
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.recommendation-card h4,
+.priority-card h4 {
+  margin: 0 0 8px 0;
+  color: #2b6cb0;
+}
+
+.priority-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 12px;
+}
+
+.priority-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #4a5568;
+}
+
+.priority-card li {
+  margin-bottom: 8px;
+}
+
+.status-pill {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #ebf8ff;
+  color: #2b6cb0;
+  font-size: 0.9rem;
+}
+
+.download-btn {
+  margin-top: 12px;
+  background: #2b6cb0;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background: #225a94;
+}
+
+.helper-text {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+</style>
+
+<!-- Lógica del test: calificación, validación y recomendaciones -->
+<script>
+// Configuración base para WordPress/Supabase.
+// TODO WORDPRESS/SUPABASE: cuando quieras datos reales, reemplaza los arrays de respaldo
+// por llamadas a Supabase usando fetch() y pasar la URL/anon key desde WordPress.
+const wpSupabaseConfig = {
+  enabled: false,
+  url: '',
+  anonKey: '',
+  tables: {
+    departamentos: 'departamentos',
+    municipios: 'municipios',
+    centros: 'centros'
+  }
+};
+
+function obtenerDatosDesdeSupabase() {
+  // TODO WORDPRESS/SUPABASE:
+  // 1) En el theme, pasar estas variables con wp_localize_script o un bloque de PHP.
+  // 2) Reemplazar este retorno por fetch(`${wpSupabaseConfig.url}/rest/v1/tabla`, {...}).
+  // 3) Mapear la respuesta a los mismos formatos usados por los arrays fallback.
+  return {
+    departamentos: fallbackDepartamentos,
+    municipios: fallbackMunicipios,
+    centros: fallbackCentros
+  };
+}
+
+const fallbackDepartamentos = [
+  { id: 1, nombre: 'Guatemala' },
+  { id: 2, nombre: 'El Progreso' },
+  { id: 3, nombre: 'Sacatepéquez' },
+  { id: 4, nombre: 'Chimaltenango' },
+  { id: 5, nombre: 'Escuintla' },
+  { id: 6, nombre: 'Santa Rosa' },
+  { id: 7, nombre: 'Sololá' },
+  { id: 8, nombre: 'Totonicapán' },
+  { id: 9, nombre: 'Quetzaltenango' },
+  { id: 10, nombre: 'Suchitepéquez' },
+  { id: 11, nombre: 'Retalhuleu' },
+  { id: 12, nombre: 'San Marcos' },
+  { id: 13, nombre: 'Huehuetenango' },
+  { id: 14, nombre: 'Quiché' },
+  { id: 15, nombre: 'Baja Verapaz' },
+  { id: 16, nombre: 'Alta Verapaz' },
+  { id: 17, nombre: 'Petén' },
+  { id: 18, nombre: 'Izabal' },
+  { id: 19, nombre: 'Zacapa' },
+  { id: 20, nombre: 'Chiquimula' },
+  { id: 21, nombre: 'Jalapa' },
+  { id: 22, nombre: 'Jutiapa' }
+];
+
+const fallbackMunicipios = [
+  { id: 1, departamento_id: 1, nombre: 'Guatemala' },
+  { id: 2, departamento_id: 1, nombre: 'Mixco' },
+  { id: 3, departamento_id: 1, nombre: 'Villa Nueva' },
+  { id: 4, departamento_id: 2, nombre: 'Guastatoya' },
+  { id: 5, departamento_id: 3, nombre: 'Antigua Guatemala' },
+  { id: 6, departamento_id: 4, nombre: 'Chimaltenango' },
+  { id: 7, departamento_id: 5, nombre: 'Escuintla' },
+  { id: 8, departamento_id: 6, nombre: 'Cuilapa' },
+  { id: 9, departamento_id: 7, nombre: 'Sololá' },
+  { id: 10, departamento_id: 8, nombre: 'Totonicapán' },
+  { id: 11, departamento_id: 9, nombre: 'Quetzaltenango' },
+  { id: 12, departamento_id: 10, nombre: 'Mazatenango' },
+  { id: 13, departamento_id: 11, nombre: 'Retalhuleu' },
+  { id: 14, departamento_id: 12, nombre: 'San Marcos' },
+  { id: 15, departamento_id: 13, nombre: 'Huehuetenango' },
+  { id: 16, departamento_id: 14, nombre: 'Santa Cruz del Quiché' },
+  { id: 17, departamento_id: 15, nombre: 'Salamá' },
+  { id: 18, departamento_id: 16, nombre: 'Cobán' },
+  { id: 19, departamento_id: 17, nombre: 'Flores' },
+  { id: 20, departamento_id: 18, nombre: 'Puerto Barrios' },
+  { id: 21, departamento_id: 19, nombre: 'Zacapa' },
+  { id: 22, departamento_id: 20, nombre: 'Chiquimula' },
+  { id: 23, departamento_id: 21, nombre: 'Jalapa' },
+  { id: 24, departamento_id: 22, nombre: 'Jutiapa' }
+];
+
+const fallbackCentros = [
+  { id: 1, departamento_id: 1, municipio_id: 1, nombre: 'Universidad Galileo', tipo: 'Universidad', sector: 'Privado', direccion: 'Guatemala', sitio_web: 'https://www.galileo.edu', telefono: '2333-0000' },
+  { id: 2, departamento_id: 1, municipio_id: 2, nombre: 'Centro de Estudios Tecnológicos Mixco', tipo: 'Técnico', sector: 'Público', direccion: 'Mixco', sitio_web: 'https://www.example.com', telefono: '2222-1111' },
+  { id: 3, departamento_id: 5, municipio_id: 7, nombre: 'Instituto Técnico Escuintla', tipo: 'Técnico', sector: 'Público', direccion: 'Escuintla', sitio_web: 'https://www.example.com', telefono: '2222-3333' },
+  { id: 4, departamento_id: 9, municipio_id: 11, nombre: 'Universidad Rafael Landívar', tipo: 'Universidad', sector: 'Privado', direccion: 'Quetzaltenango', sitio_web: 'https://www.url.edu.gt', telefono: '7766-1234' }
+];
+
+const carrerasPorArea = {
+  'Organización y Negocios': ['Administración', 'Contaduría', 'Economía', 'Negocios Internacionales'],
+  'Comunicación y Ayuda Social': ['Trabajo Social', 'Psicología', 'Comunicación Social', 'Educación'],
+  'Arte y Creatividad': ['Diseño Gráfico', 'Arquitectura', 'Artes Visuales', 'Publicidad'],
+  'Salud y Servicio': ['Medicina', 'Enfermería', 'Fisioterapia', 'Nutrición'],
+  'Tecnología y Oficios': ['Ingeniería en Sistemas', 'Electrónica', 'Mecánica Industrial', 'Construcción'],
+  'Liderazgo y Seguridad': ['Gestión de Recursos Humanos', 'Seguridad Industrial', 'Logística', 'Derecho'],
+  'Ciencia y Naturaleza': ['Biología', 'Agronomía', 'Química', 'Ciencias Ambientales']
+};
+
+// Mapeo de prioridades y listados tal como los proporcionaste (texto sin enlaces)
+const userPriorityAreas = {
+  'Muy Alta': [
+    {
+      area: 'Informática, Ciencias de Datos e Innovación y Tecnología',
+      carreras: ['Ciencias de la Computación', 'Ciencia de Datos', 'Desarrollo de Software', 'Inteligencia Artificial', 'Ingeniería en Ciberseguridad', 'Ingeniería Electrónica', 'Ingeniería en Sistemas', 'Telecomunicaciones']
+    },
+    {
+      area: 'Ingeniería / Manufactura',
+      carreras: ['Robótica', 'Automatización Industrial', 'Ingeniería Industrial', 'Ingeniería Química', 'Mecatrónica', 'Materiales Avanzados', 'Nanotecnología', 'Biotecnología', 'Energías Renovables']
+    },
+    {
+      area: 'Arquitectura',
+      carreras: ['Ingeniería Civil', 'Ingeniería Eléctrica', 'Ingeniería Mecánica', 'Ingeniería Sanitaria', 'Diseño Industrial', 'Logística y cadena de suministros', 'Arquitectura y Urbanismo', 'Planificación Territorial', 'Diseño Urbano Sostenible']
+    },
+    {
+      area: 'Ciencias Agronómicas, Agropecuarias y Medioambiente',
+      carreras: ['Agronomía', 'Ingeniería Agronómica', 'Agricultura sostenible', 'Agricultura de Precisión', 'Zootecnia', 'Medicina Veterinaria']
+    },
+    {
+      area: 'Ingeniería Ambiental y Recursos',
+      carreras: ['Ingeniería Ambiental', 'Ciencias Ambientales', 'Biotecnología Ambiental', 'Conservación del Medioambiente', 'Cambio Climático y Sostenibilidad', 'Energía y Ambiente']
+    },
+    {
+      area: 'Ciencias Forestales y Agroforestales',
+      carreras: ['Ciencias Forestales', 'Ingeniería Forestal', 'Silvicultura', 'Gestión de Recursos Hídricos', 'Tecnología Agroforestal']
+    }
+  ],
+  'Alta': [
+    {
+      area: 'Administración y Finanzas',
+      carreras: ['Economía', 'Microeconomía', 'Economía Digital', 'Economía Circular', 'Gestión Pública', 'Administración y Finanzas Públicas', 'Comercio Exterior', 'Microfinanzas', 'Emprendimiento', 'Turismo Comunitario', 'Administración de Empresas Turísticas', 'Hotelería y Gastronomía']
+    },
+    {
+      area: 'Economía y Políticas Públicas',
+      carreras: ['Economía', 'Gestión Pública', 'Políticas Públicas']
+    },
+    {
+      area: 'Ciencias de la Vida y la Salud',
+      carreras: ['Salud Pública', 'Medicina', 'Enfermería', 'Nutrición', 'Odontología', 'Psicología Clínica', 'Fisioterapia', 'Epidemiología', 'Ingeniería Biomédica', 'Bioquímica', 'Microbiología']
+    },
+    {
+      area: 'Psicología / Trabajo Social',
+      carreras: ['Trabajo Social', 'Gestión de Políticas Sociales', 'Psicología Comunitaria', 'Psicología Clínica', 'Psicoterapia', 'Neuropsicología', 'Psicología Forense', 'Psicología Organizacional']
+    },
+    {
+      area: 'Derecho Público / Ciencias Forenses',
+      carreras: ['Derecho Constitucional', 'Derechos Humanos', 'Derecho Ambiental', 'Criminología', 'Ciencias Forenses', 'Mediación y Gestión de Conflictos', 'Políticas Sociales y Gestión Pública']
+    },
+    {
+      area: 'Ciencias Sociales',
+      carreras: ['Antropología', 'Sociología', 'Ciencia Política', 'Relaciones Internacionales', 'Filosofía', 'Historia']
+    }
+  ],
+  'Baja': [
+    {
+      area: 'Artes y Cultura',
+      carreras: ['Arte', 'Bellas Artes', 'Música', 'Danza', 'Cine', 'Diseño Gráfico', 'Animación', 'Gestión Cultural', 'Comunicación Digital', 'Producción Audiovisual']
+    },
+    {
+      area: 'Ciencias de la Educación',
+      carreras: ['Pedagogía', 'Psicopedagogía', 'Educación Inicial y Primaria', 'Educación Intercultural Bilingüe', 'Educación Inclusiva', 'Innovación Educativa', 'Tecnología Educativa', 'E-Learning', 'Administración Educativa', 'Investigación en Educación']
+    }
+  ],
+  'No priorizada': [
+    {
+      area: 'Comunicación y Periodismo',
+      carreras: ['Periodismo', 'Comunicación Social', 'Publicidad', 'Marketing', 'Comunicación Digital y Redes Sociales']
+    },
+    {
+      area: 'Derecho Privado / Auditoría',
+      carreras: ['Derecho Privado', 'Derecho Comercial', 'Derecho Empresarial', 'Derecho Internacional Privado', 'Auditoría', 'Contaduría Pública', 'Derecho Mercantil']
+    }
+  ]
+};
+
+// Asignación estática de prioridad por carrera (fácil consulta)
+const carreraPrioridad = {};
+Object.entries(userPriorityAreas).forEach(([nivel, areas]) => {
+  areas.forEach((a) => {
+    a.carreras.forEach((c) => { carreraPrioridad[c] = nivel; });
+  });
+});
+
+// Mapeo aproximado desde las áreas internas del test hacia las áreas del listado del usuario.
+const areaInternaToUserAreas = {
+  'Tecnología y Oficios': ['Informática, Ciencias de Datos e Innovación y Tecnología', 'Ingeniería / Manufactura'],
+  'Organización y Negocios': ['Administración y Finanzas', 'Economía y Políticas Públicas'],
+  'Comunicación y Ayuda Social': ['Comunicación y Periodismo'],
+  'Arte y Creatividad': ['Artes y Cultura'],
+  'Salud y Servicio': ['Ciencias de la Vida y la Salud', 'Psicología / Trabajo Social'],
+  'Liderazgo y Seguridad': ['Administración y Finanzas', 'Derecho Público / Ciencias Forenses'],
+  'Ciencia y Naturaleza': ['Ciencias Agronómicas, Agropecuarias y Medioambiente', 'Ingeniería Ambiental y Recursos', 'Ciencias Forestales y Agroforestales']
+};
+
+function getDepartamentoNombre(id) {
+  const dep = fallbackDepartamentos.find((item) => Number(item.id) === Number(id));
+  return dep ? dep.nombre : 'Departamento';
+}
+
+function getMunicipioNombre(departamentoId, municipioId) {
+  const mun = fallbackMunicipios.find((item) => Number(item.departamento_id) === Number(departamentoId) && Number(item.id) === Number(municipioId));
+  return mun ? mun.nombre : 'Municipio';
+}
+
+function seleccionarEstrella(valor) {
+  const input = document.getElementById('star-rating');
+  const botones = document.querySelectorAll('.star-btn');
+  if (input) {
+    input.value = valor;
+  }
+  botones.forEach((boton) => {
+    boton.classList.toggle('active', Number(boton.dataset.value) <= valor);
+  });
+  actualizarEstadoBotonRecomendaciones();
+}
+
+function estaTestCompleto() {
+  const form = document.getElementById('vocational-test');
+  if (!form) return false;
+
+  const datos = new FormData(form);
+  const preguntas = ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15','p16','p17','p18','p19','p20','p21','p22','p23','p24'];
+  const estrellas = Number(document.getElementById('star-rating').value || 0);
+  const preguntasFaltantes = preguntas.filter((pregunta) => !datos.get(pregunta));
+
+  return estrellas > 0 && preguntasFaltantes.length === 0;
+}
+
+function actualizarEstadoBotonRecomendaciones() {
+  const boton = document.getElementById('btn-ver-centros');
+  if (boton) {
+    boton.disabled = false;
+  }
+}
+
+function obtenerPreguntasFaltantes() {
+  const form = document.getElementById('vocational-test');
+  const datos = new FormData(form);
+  const preguntas = ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15','p16','p17','p18','p19','p20','p21','p22','p23','p24'];
+  const preguntaText = {
+    p1: '¿Te gusta ayudar a personas cuando tienen un problema?',
+    p2: '¿Te interesa aprender cómo funcionan las máquinas o aparatos?',
+    p3: '¿Disfrutas dibujar, decorar o crear cosas nuevas?',
+    p4: '¿Te gusta organizar actividades o grupos de personas?',
+    p5: '¿Te gustaría cuidar personas enfermas o ayudar en temas de salud?',
+    p6: '¿Te gusta trabajar al aire libre o en contacto con la naturaleza?',
+    p7: '¿Te sientes cómodo hablando con otras personas?',
+    p8: '¿Te gusta resolver problemas o encontrar soluciones?',
+    p9: '¿Te gustaría enseñar algo a otras personas?',
+    p10: '¿Te gustan los trabajos donde se necesita orden y organización?',
+    p11: '¿Te interesa construir, reparar o armar cosas?',
+    p12: '¿Te gustan las actividades artísticas como música, pintura, baile o teatro?',
+    p13: '¿Te gustaría participar en actividades para ayudar a tu comunidad?',
+    p14: '¿Te interesa aprender sobre plantas, animales o el medio ambiente?',
+    p15: '¿Te gustaría dirigir un negocio o vender productos?',
+    p16: '¿Te gustan las actividades donde hay acción, movimiento o retos?',
+    p17: '¿Te gusta trabajar en equipo?',
+    p18: '¿Te interesa usar computadoras, herramientas o tecnología?',
+    p19: '¿Te gustaría trabajar ayudando a niños, jóvenes o familias?',
+    p20: '¿Te gusta tener tus tareas bien planificadas y ordenadas?',
+    p21: '¿Te gustaría aprender un oficio práctico?',
+    p22: '¿Te gusta imaginar ideas nuevas o crear proyectos?',
+    p23: '¿Se te facilita áreas académicas relacionadas a la biología, anatomía?',
+    p24: '¿Te interesa aprender cosas nuevas sobre ciencia o descubrimientos?'
+  };
+
+  return preguntas.reduce((faltantes, id, index) => {
+    if (!datos.get(id)) {
+      faltantes.push({ id, texto: preguntaText[id], etiqueta: `Pregunta ${index + 1}` });
+    }
+    return faltantes;
+  }, []);
+}
+
+function resaltarPreguntasFaltantes() {
+  const faltantes = obtenerPreguntasFaltantes();
+  document.querySelectorAll('.test-pregunta-card').forEach((card) => {
+    card.classList.remove('pregunta-missing');
+  });
+  const starGroup = document.getElementById('star-rating-group');
+  if (starGroup) {
+    starGroup.classList.remove('missing-star');
+  }
+
+  // Marca visualmente las preguntas sin responder para que el usuario las identifique.
+  faltantes.forEach(({ id, etiqueta }) => {
+    const input = document.querySelector(`[name="${id}"]`);
+    if (input) {
+      const card = input.closest('.test-pregunta-card');
+      if (card) {
+        card.classList.add('pregunta-missing');
+        card.setAttribute('data-question-id', etiqueta);
+      }
+    }
+  });
+
+  const starValue = Number(document.getElementById('star-rating').value || 0);
+  if (starValue === 0 && starGroup) {
+    starGroup.classList.add('missing-star');
+  }
+}
+
+function mostrarAlertaPreguntasFaltantes() {
+  const faltantes = obtenerPreguntasFaltantes();
+  const pendientesInfo = document.getElementById('pendientes-info');
+  const numeros = faltantes.map((pregunta) => pregunta.etiqueta.replace('Pregunta ', '')).join(', ');
+
+  if (!pendientesInfo) return;
+  if (!numeros) {
+    pendientesInfo.hidden = true;
+    pendientesInfo.textContent = '';
+    return;
+  }
+
+  pendientesInfo.hidden = false;
+  pendientesInfo.innerHTML = `<span><strong>Preguntas pendientes:</strong> ${numeros}</span>`;
+  resaltarPreguntasFaltantes();
+}
+
+function obtenerPuntajesDelFormulario() {
+  const form = document.getElementById('vocational-test');
+  const datos = new FormData(form);
+  const puntajes = { organizacion: 0, comunicacion: 0, arte: 0, salud: 0, tecnologia: 0, liderazgo: 0, ciencia: 0 };
+
+  if (datos.get('p4') === 'Me gusta') puntajes.organizacion++;
+  if (datos.get('p10') === 'Me gusta') puntajes.organizacion++;
+  if (datos.get('p15') === 'Me gusta') puntajes.organizacion++;
+  if (datos.get('p20') === 'Me gusta') puntajes.organizacion++;
+
+  if (datos.get('p1') === 'Me gusta') puntajes.comunicacion++;
+  if (datos.get('p7') === 'Me gusta') puntajes.comunicacion++;
+  if (datos.get('p9') === 'Me gusta') puntajes.comunicacion++;
+  if (datos.get('p19') === 'Me gusta') puntajes.comunicacion++;
+
+  if (datos.get('p3') === 'Me gusta') puntajes.arte++;
+  if (datos.get('p12') === 'Me gusta') puntajes.arte++;
+  if (datos.get('p22') === 'Me gusta') puntajes.arte++;
+
+  if (datos.get('p5') === 'Me gusta') puntajes.salud++;
+  if (datos.get('p13') === 'Me gusta') puntajes.salud++;
+  if (datos.get('p23') === 'Me gusta') puntajes.salud++;
+
+  if (datos.get('p2') === 'Me gusta') puntajes.tecnologia++;
+  if (datos.get('p11') === 'Me gusta') puntajes.tecnologia++;
+  if (datos.get('p18') === 'Me gusta') puntajes.tecnologia++;
+  if (datos.get('p21') === 'Me gusta') puntajes.tecnologia++;
+
+  if (datos.get('p16') === 'Me gusta') puntajes.liderazgo++;
+  if (datos.get('p17') === 'Me gusta') puntajes.liderazgo++;
+
+  if (datos.get('p6') === 'Me gusta') puntajes.ciencia++;
+  if (datos.get('p14') === 'Me gusta') puntajes.ciencia++;
+  if (datos.get('p24') === 'Me gusta') puntajes.ciencia++;
+
+  return puntajes;
+}
+
+function evaluarTestChaside() {
+  const form = document.getElementById('vocational-test');
+  const cuerpoPanel = document.getElementById('sugerencias-contenido');
+  if (!form || !cuerpoPanel) return;
+
+  // Actualiza el panel lateral en tiempo real según las respuestas del test.
+  const preguntasFaltantes = obtenerPreguntasFaltantes();
+  const estrellas = Number(document.getElementById('star-rating').value || 0);
+  const respuestasCompletas = preguntasFaltantes.length === 0;
+  const puntajes = obtenerPuntajesDelFormulario();
+
+  const areaScores = {
+    'Organización y Negocios': puntajes.organizacion,
+    'Comunicación y Ayuda Social': puntajes.comunicacion,
+    'Arte y Creatividad': puntajes.arte,
+    'Salud y Servicio': puntajes.salud,
+    'Tecnología y Oficios': puntajes.tecnologia,
+    'Liderazgo y Seguridad': puntajes.liderazgo,
+    'Ciencia y Naturaleza': puntajes.ciencia
+  };
+
+  const areaDetails = {
+    'Organización y Negocios': 'Coordinar, administrar y llevar ideas a la práctica.',
+    'Comunicación y Ayuda Social': 'Relacionarse con personas, enseñar y acompañar.',
+    'Arte y Creatividad': 'Crear, diseñar y expresar ideas con originalidad.',
+    'Salud y Servicio': 'Ayudar a otras personas y cuidar su bienestar.',
+    'Tecnología y Oficios': 'Aprender herramientas, reparar, construir y resolver con tecnología.',
+    'Liderazgo y Seguridad': 'Dirigir, trabajar en equipo y responder a retos.',
+    'Ciencia y Naturaleza': 'Descubrir, investigar y comprender el entorno.'
+  };
+
+  const pendientesInfo = document.getElementById('pendientes-info');
+  if (pendientesInfo) {
+    pendientesInfo.hidden = true;
+    pendientesInfo.textContent = '';
+  }
+
+  const areas = Object.entries(areaScores)
+    .filter(([, score]) => score >= 1)
+    .map(([area, score]) => ({ area, score, detalle: areaDetails[area] }));
+
+  if (!areas.length) {
+    areas.push({ area: 'Exploración general', score: 0, detalle: 'Aún no hay una orientación clara, pero hay interés por aprender y probar.' });
+  }
+
+  const estadoTexto = respuestasCompletas && estrellas > 0
+    ? 'Tu orientación ya está lista para revisar.'
+    : 'Tu orientación se actualiza mientras respondes las preguntas.';
+
+  let htmlSugerencias = `<p class="placeholder-text">${estadoTexto}</p>`;
+
+  areas.forEach((area) => {
+    const color = area.area.includes('Tecnología') ? '#4c51bf' : area.area.includes('Salud') ? '#e53e3e' : area.area.includes('Arte') ? '#b7791f' : area.area.includes('Comunicación') ? '#319795' : area.area.includes('Liderazgo') ? '#805ad5' : area.area.includes('Organización') ? '#2b6cb0' : '#38a169';
+    const carreras = carrerasPorArea[area.area] || [];
+    const tags = carreras.map((carrera) => `<span class="carrera-tag">${carrera}</span>`).join('');
+    htmlSugerencias += `
+      <div class="area-sugerida-block" style="border-left-color: ${color};">
+        <div class="area-titulo">${area.area}</div>
+        <div class="intereses-list"><strong>Orientación:</strong> ${area.detalle}</div>
+        <div class="carreras-container">${tags}</div>
+      </div>`;
+  });
+
+  cuerpoPanel.innerHTML = htmlSugerencias;
+  document.getElementById('panel-sugerencias').classList.toggle('ready-state', respuestasCompletas && estrellas > 0);
+  actualizarEstadoBotonRecomendaciones();
+}
+
+function poblarDepartamentos() {
+  const selectDepartamento = document.getElementById('departamento');
+  if (!selectDepartamento) return;
+
+  selectDepartamento.innerHTML = '<option value="">Seleccione un departamento</option>';
+  fallbackDepartamentos.forEach((departamento) => {
+    const option = document.createElement('option');
+    option.value = departamento.id;
+    option.textContent = departamento.nombre;
+    selectDepartamento.appendChild(option);
+  });
+}
+
+function poblarMunicipios(departamentoId, municipioSeleccionado) {
+  const selectMunicipio = document.getElementById('municipio');
+  if (!selectMunicipio) return;
+
+  selectMunicipio.disabled = !departamentoId;
+  selectMunicipio.innerHTML = '<option value="">Seleccione un municipio</option>';
+  if (!departamentoId) return;
+
+  fallbackMunicipios.filter((municipio) => Number(municipio.departamento_id) === Number(departamentoId)).forEach((municipio) => {
+    const option = document.createElement('option');
+    option.value = municipio.id;
+    option.textContent = municipio.nombre;
+    selectMunicipio.appendChild(option);
+  });
+
+  if (municipioSeleccionado) {
+    selectMunicipio.value = String(municipioSeleccionado);
+  }
+}
+
+function mostrarRecomendacionesInline() {
+  const contenedor = document.getElementById('recomendaciones-inline-contenido');
+  const seccion = document.getElementById('recomendaciones-inline');
+  if (!contenedor || !seccion) return;
+
+  const departamentoId = document.getElementById('departamento').value;
+  const municipioId = document.getElementById('municipio').value;
+  const nombre = document.getElementById('nombre-apellido').value || 'Participante';
+  const correo = document.getElementById('correo').value || 'Sin correo';
+  const puntajes = obtenerPuntajesDelFormulario();
+  const centros = fallbackCentros.filter((centro) => {
+    const coincideDepartamento = !departamentoId || Number(centro.departamento_id) === Number(departamentoId);
+    const coincideMunicipio = !municipioId || Number(centro.municipio_id) === Number(municipioId);
+    return coincideDepartamento && coincideMunicipio;
+  });
+
+  const areas = [
+    { area: 'Organización y Negocios', score: puntajes.organizacion },
+    { area: 'Comunicación y Ayuda Social', score: puntajes.comunicacion },
+    { area: 'Arte y Creatividad', score: puntajes.arte },
+    { area: 'Salud y Servicio', score: puntajes.salud },
+    { area: 'Tecnología y Oficios', score: puntajes.tecnologia },
+    { area: 'Liderazgo y Seguridad', score: puntajes.liderazgo },
+    { area: 'Ciencia y Naturaleza', score: puntajes.ciencia }
+  ];
+
+  const maxScore = Math.max(...areas.map((item) => item.score));
+  const positiveScores = Array.from(new Set(areas.filter((item) => item.score > 0).map((item) => item.score))).sort((a, b) => b - a);
+  const secondScore = positiveScores[1] ?? 0;
+
+  const gruposPrioridad = {
+    'Muy Alta': areas.filter((item) => item.score === maxScore && item.score > 0).map(i => i.area),
+    'Alta': areas.filter((item) => item.score === secondScore && item.score > 0).map(i => i.area),
+    'Baja': areas.filter((item) => item.score < secondScore && item.score > 0).map(i => i.area),
+    'No priorizada': areas.filter((item) => item.score === 0).map(i => i.area)
+  };
+
+  // Construye un set de nombres de áreas de usuario mapeadas desde una lista de áreas internas
+  function buildUserAreaNameSetFromInternal(internalList) {
+    const s = new Set();
+    internalList.forEach((internal) => {
+      const mapped = areaInternaToUserAreas[internal] || [];
+      mapped.forEach((name) => s.add(name));
+    });
+    return s;
+  }
+
+  function buildAreasHtml(areasList) {
+    if (!areasList.length) return '<li>Sin coincidencias para este nivel.</li>';
+    return areasList.map(a => `<li><strong>${a.area}:</strong> ${a.carreras.join(', ')}</li>`).join('');
+  }
+
+  // Obtiene las áreas de usuario del nivel dado que sean relevantes para las áreas internas del grupo
+  function getUserAreasForGroup(levelName, internalGroup) {
+    const candidateAreas = userPriorityAreas[levelName] || [];
+    const nameSet = buildUserAreaNameSetFromInternal(internalGroup);
+    const matched = candidateAreas.filter(u => nameSet.has(u.area));
+    if (matched.length) return matched;
+    // Fallback: si no hay matches con el listado del usuario, generar desde carrerasPorArea usando los nombres internos
+    const fallback = [];
+    internalGroup.forEach((internal) => {
+      if (carrerasPorArea[internal] && carrerasPorArea[internal].length) {
+        fallback.push({ area: internal, carreras: carrerasPorArea[internal] });
+      }
+    });
+    return fallback;
+  }
+
+  const altaUserAreas = getUserAreasForGroup('Muy Alta', gruposPrioridad['Muy Alta']);
+  const mediaUserAreas = getUserAreasForGroup('Alta', gruposPrioridad['Alta']);
+  // Para baja, combinamos Bajas y No priorizadas pero respetando que en la lista final
+  const bajaUserAreas = getUserAreasForGroup('Baja', gruposPrioridad['Baja']);
+  const noPriorUserAreas = getUserAreasForGroup('No priorizada', gruposPrioridad['No priorizada']);
+
+  seccion.hidden = false;
+  contenedor.innerHTML = `
+    <div class="status-pill">${nombre} · ${correo}</div>
+    <p><strong>Ubicación:</strong> ${getDepartamentoNombre(departamentoId)} · ${getMunicipioNombre(departamentoId, municipioId)}</p>
+    <button class="download-btn" type="button" onclick="window.print()">Descargar en PDF</button>
+    <p class="helper-text">Tu información de recomendaciones también será enviada a tu correo para que la conserves y puedas revisarla luego.</p>
+    <div class="recommendation-grid">
+      <div class="recommendation-card">
+        <h4>Centros recomendados</h4>
+        ${centros.length ? centros.map((centro) => `<p><strong>${centro.nombre}</strong><br>${centro.tipo} · ${centro.sector}<br>${centro.direccion}<br>${centro.telefono}<br><a href="${centro.sitio_web}" target="_blank" rel="noreferrer">${centro.sitio_web}</a></p>`).join('') : '<p>No hay centros disponibles para esa ubicación.</p>'}
+      </div>
+    </div>
+    <div class="priority-grid">
+      <div class="priority-card">
+        <h4>Carreras Alta Prioridad</h4>
+        <ul>${buildAreasHtml(altaUserAreas)}</ul>
+      </div>
+      <div class="priority-card">
+        <h4>Carreras Media Prioridad</h4>
+        <ul>${buildAreasHtml(mediaUserAreas)}</ul>
+      </div>
+      <div class="priority-card">
+        <h4>Carreras Baja Prioridad</h4>
+        <ul>${buildAreasHtml(bajaUserAreas.concat(noPriorUserAreas))}</ul>
+      </div>
+    </div>
+  `;
+}
+
+function enviarRetroalimentacionYVerRecomendaciones() {
+  evaluarTestChaside();
+  if (estaTestCompleto()) {
+    mostrarRecomendacionesInline();
+    document.getElementById('recomendaciones-inline').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    mostrarAlertaPreguntasFaltantes();
+  }
+}
+
+function inicializarFormulario() {
+  poblarDepartamentos();
+  const selectDepartamento = document.getElementById('departamento');
+  const selectMunicipio = document.getElementById('municipio');
+  if (selectDepartamento) {
+    selectDepartamento.addEventListener('change', () => {
+      poblarMunicipios(selectDepartamento.value);
+    });
+  }
+
+  const form = document.getElementById('vocational-test');
+  if (form) {
+    form.addEventListener('change', () => {
+      evaluarTestChaside();
+      actualizarEstadoBotonRecomendaciones();
+    });
+    form.addEventListener('input', () => {
+      evaluarTestChaside();
+      actualizarEstadoBotonRecomendaciones();
+    });
+  }
+
+  const starGroup = document.getElementById('star-rating-group');
+  if (starGroup) {
+    starGroup.addEventListener('click', () => {
+      evaluarTestChaside();
+      actualizarEstadoBotonRecomendaciones();
+    });
+  }
+
+  evaluarTestChaside();
+  actualizarEstadoBotonRecomendaciones();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicializarFormulario);
+} else {
+  inicializarFormulario();
+}
+window.seleccionarEstrella = seleccionarEstrella;
+window.enviarRetroalimentacionYVerRecomendaciones = enviarRetroalimentacionYVerRecomendaciones;
+</script>
