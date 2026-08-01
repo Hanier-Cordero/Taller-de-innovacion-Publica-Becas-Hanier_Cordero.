@@ -31,15 +31,19 @@
         <div class="sugerencias-header">
           <div class="sugerencias-title-group">
             <button type="button" class="sugerencias-toggle" aria-expanded="false" aria-controls="sugerencias-panel-body">
-              <span class="toggle-icon">+</span>
-              <span class="toggle-label">Intereses Actuales</span>
+              <span class="toggle-icon">☰</span>
+              <span class="toggle-label">Recomendaciones actuales</span>
             </button>
+            <h3 class="sugerencias-titulo">Intereses según respuestas actuales</h3>
           </div>
         </div>
         <div id="sugerencias-panel-body" class="sugerencias-panel-body">
           <div class="sugerencias-fixed-summary">
             <div class="panel-texto-fijo">
               <p><strong>Apoyo de beca:</strong> Puedes recibir un porcentaje de beca del <strong>25%</strong>, <strong>50%</strong>, <strong>75%</strong> o <strong>100%</strong>.</p>
+              <p>Tu orientación se actualiza mientras respondes las preguntas.</p>
+              <p><strong>Exploración general</strong></p>
+              <p><strong>Orientación:</strong> Aún no hay una orientación clara, pero hay interés por aprender y probar.</p>
             </div>
           </div>
 
@@ -736,69 +740,106 @@ body {
   display: none;
 }
 
-.mobile-version .sugerencias-panel-body.is-open {
+.mobile-version .sugerencias-box.is-open .sugerencias-panel-body {
   display: block;
-}
-
-.mobile-version .test-col-left {
-  display: block;
-  flex: 0 0 0;
-  max-width: none;
-  width: 0;
-  position: static;
-  top: auto;
-  height: auto;
-}
-
-.mobile-version .test-col-right {
-  padding-top: 72px;
 }
 
 .mobile-version .sugerencias-box {
   position: fixed;
   top: 78px;
-  left: 10px;
-  width: min(88vw, 300px);
-  max-height: calc(100vh - 96px);
-  overflow: auto;
+  left: 8px;
   z-index: 1200;
-  padding: 14px;
-  box-shadow: 0 12px 30px rgba(15, 47, 112, 0.16);
-  transform: translateX(calc(-100% + 44px));
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border-radius: 0 12px 12px 0;
+  width: auto;
+  max-width: min(88vw, 300px);
+  max-height: calc(100vh - 96px);
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  transform: none;
+  transition: none;
+  pointer-events: none;
+}
+
+.mobile-version .sugerencias-box:not(.is-open) {
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  width: auto !important;
+  max-width: none !important;
+  pointer-events: none !important;
+}
+
+.mobile-version .sugerencias-box:not(.is-open) .sugerencias-panel-body {
+  display: none !important;
 }
 
 .mobile-version .sugerencias-box.is-open {
-  transform: translateX(0);
+  padding: 14px;
+  border-radius: 14px;
   box-shadow: 0 16px 38px rgba(15, 47, 112, 0.2);
+  background: linear-gradient(180deg, #ffffff 0%, #eef6ff 100%);
+  width: min(88vw, 300px);
+  pointer-events: auto;
 }
 
 .mobile-version .sugerencias-header {
+  margin-bottom: 0;
+}
+
+.mobile-version .sugerencias-box.is-open .sugerencias-header {
   margin-bottom: 10px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
 .mobile-version .sugerencias-title-group {
-  width: 100%;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.mobile-version .sugerencias-titulo {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #0f2f70;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: normal;
+  display: none;
+}
+
+.mobile-version .sugerencias-box.is-open .sugerencias-titulo {
+  display: block;
+}
+
+.mobile-version .panel-texto-fijo p {
+  margin: 0 0 8px 0;
+  color: #2d3748;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .mobile-version .sugerencias-toggle {
-  width: 100%;
-  justify-content: flex-start;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 10px 12px;
+  border: none;
   border-radius: 999px;
   background: linear-gradient(135deg, #0f2f70 0%, #2357b2 100%);
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 6px 14px rgba(15, 47, 112, 0.18);
+  color: #fff;
   font-weight: 700;
   font-size: 0.95rem;
+  line-height: 1.2;
+  box-shadow: 0 6px 14px rgba(15, 47, 112, 0.18);
+  position: relative;
+  z-index: 1300;
+  white-space: nowrap;
+  max-width: 100%;
+  pointer-events: auto;
 }
 
 .mobile-version .sugerencias-toggle:hover {
@@ -806,18 +847,12 @@ body {
 }
 
 .mobile-version .toggle-icon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1;
-  font-weight: 800;
 }
 
 .mobile-version .toggle-label {
-  font-size: 0.95rem;
-}
-
-.mobile-version .sugerencias-body,
-.mobile-version .sugerencias-footer {
-  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .sugerencias-body {
@@ -1588,6 +1623,7 @@ function getMunicipioNombre(departamentoId, municipioId) {
 }
 
 function seleccionarEstrella(valor) {
+  cerrarPanelRecomendaciones();
   const input = document.getElementById('star-rating');
   const botones = document.querySelectorAll('.star-btn');
   if (input) {
@@ -1618,6 +1654,22 @@ function actualizarEstadoBotonRecomendaciones() {
   }
 }
 
+function cerrarPanelRecomendaciones() {
+  const panel = document.getElementById('panel-sugerencias');
+  const cuerpo = document.getElementById('sugerencias-panel-body');
+  const boton = document.querySelector('.sugerencias-toggle');
+
+  if (!panel || !cuerpo || !boton) {
+    return;
+  }
+
+  panel.classList.remove('is-open');
+  cuerpo.classList.remove('is-open');
+  panel.classList.remove('ready-state');
+  boton.setAttribute('aria-expanded', 'false');
+  boton.innerHTML = '<span class="toggle-icon">☰</span><span class="toggle-label">Recomendaciones actuales</span>';
+}
+
 function inicializarAcordeonRecomendaciones() {
   const panel = document.getElementById('panel-sugerencias');
   const cuerpo = document.getElementById('sugerencias-panel-body');
@@ -1631,24 +1683,33 @@ function inicializarAcordeonRecomendaciones() {
     panel.classList.toggle('is-open', abierto);
     cuerpo.classList.toggle('is-open', abierto);
     boton.setAttribute('aria-expanded', String(abierto));
-    boton.innerHTML = abierto
-      ? '<span class="toggle-icon">−</span><span class="toggle-label">Intereses Actuales</span>'
-      : '<span class="toggle-icon">+</span><span class="toggle-label">Intereses Actuales</span>';
+    boton.innerHTML = '<span class="toggle-icon">☰</span><span class="toggle-label">Recomendaciones actuales</span>';
+    if (!abierto) {
+      panel.classList.remove('ready-state');
+    }
   };
 
-  boton.addEventListener('click', () => {
+  boton.addEventListener('click', (event) => {
+    event.stopPropagation();
     const abierto = panel.classList.contains('is-open');
     actualizarEstado(!abierto);
   });
 
-  const header = document.querySelector('.sugerencias-header');
-  if (header) {
-    header.addEventListener('click', (event) => {
-      if (event.target.closest('.sugerencias-toggle')) return;
-      const abierto = panel.classList.contains('is-open');
-      actualizarEstado(!abierto);
-    });
-  }
+  document.addEventListener('click', (event) => {
+    const clicDentroDelPanel = panel.contains(event.target);
+    const clicEnElBoton = boton.contains(event.target);
+    if (!clicDentroDelPanel && !clicEnElBoton && panel.classList.contains('is-open')) {
+      actualizarEstado(false);
+    }
+  });
+
+  document.addEventListener('touchend', (event) => {
+    const clicDentroDelPanel = panel.contains(event.target);
+    const clicEnElBoton = boton.contains(event.target);
+    if (!clicDentroDelPanel && !clicEnElBoton && panel.classList.contains('is-open')) {
+      actualizarEstado(false);
+    }
+  });
 
   actualizarEstado(false);
 }
@@ -1692,8 +1753,7 @@ function obtenerPreguntasFaltantes() {
   }, []);
 }
 
-function resaltarPreguntasFaltantes() {
-  const faltantes = obtenerPreguntasFaltantes();
+function limpiarAlertasYResaltados() {
   document.querySelectorAll('.test-pregunta-card').forEach((card) => {
     card.classList.remove('pregunta-missing');
   });
@@ -1701,6 +1761,24 @@ function resaltarPreguntasFaltantes() {
   if (starGroup) {
     starGroup.classList.remove('missing-star');
   }
+
+  const pendientesInfo = document.getElementById('pendientes-info');
+  if (pendientesInfo) {
+    pendientesInfo.hidden = true;
+    pendientesInfo.textContent = '';
+  }
+}
+
+function resaltarPreguntasFaltantes() {
+  document.querySelectorAll('.test-pregunta-card').forEach((card) => {
+    card.classList.remove('pregunta-missing');
+  });
+  const starGroup = document.getElementById('star-rating-group');
+  if (starGroup) {
+    starGroup.classList.remove('missing-star');
+  }
+
+  const faltantes = obtenerPreguntasFaltantes();
 
   // Marca visualmente las preguntas sin responder para que el usuario las identifique.
   faltantes.forEach(({ id, etiqueta }) => {
@@ -1724,16 +1802,23 @@ function mostrarAlertaPreguntasFaltantes() {
   const faltantes = obtenerPreguntasFaltantes();
   const pendientesInfo = document.getElementById('pendientes-info');
   const numeros = faltantes.map((pregunta) => pregunta.etiqueta.replace('Pregunta ', '')).join(', ');
+  const estrellas = Number(document.getElementById('star-rating').value || 0);
+  const faltaEstrellas = estrellas === 0;
 
   if (!pendientesInfo) return;
-  if (!numeros) {
-    pendientesInfo.hidden = true;
-    pendientesInfo.textContent = '';
+  if (!numeros && !faltaEstrellas) {
+    limpiarAlertasYResaltados();
     return;
   }
 
   pendientesInfo.hidden = false;
-  pendientesInfo.innerHTML = `<span><strong>Preguntas pendientes:</strong> ${numeros}</span>`;
+  if (numeros && faltaEstrellas) {
+    pendientesInfo.innerHTML = `<span><strong>Preguntas pendientes:</strong> ${numeros}</span><br><span><strong>Falta tu valoración con estrellas.</strong></span>`;
+  } else if (numeros) {
+    pendientesInfo.innerHTML = `<span><strong>Preguntas pendientes:</strong> ${numeros}</span>`;
+  } else {
+    pendientesInfo.innerHTML = '<span><strong>Falta tu valoración con estrellas.</strong></span>';
+  }
   resaltarPreguntasFaltantes();
 }
 
@@ -1780,7 +1865,6 @@ function evaluarTestChaside() {
   const cuerpoPanel = document.getElementById('sugerencias-contenido');
   if (!form || !cuerpoPanel) return;
 
-  // Actualiza el panel lateral en tiempo real según las respuestas del test.
   const preguntasFaltantes = obtenerPreguntasFaltantes();
   const estrellas = Number(document.getElementById('star-rating').value || 0);
   const respuestasCompletas = preguntasFaltantes.length === 0;
@@ -1805,12 +1889,6 @@ function evaluarTestChaside() {
     'Liderazgo y Seguridad': 'Dirigir, trabajar en equipo y responder a retos.',
     'Ciencia y Naturaleza': 'Descubrir, investigar y comprender el entorno.'
   };
-
-  const pendientesInfo = document.getElementById('pendientes-info');
-  if (pendientesInfo) {
-    pendientesInfo.hidden = true;
-    pendientesInfo.textContent = '';
-  }
 
   const areas = Object.entries(areaScores)
     .filter(([, score]) => score >= 1)
@@ -1839,7 +1917,11 @@ function evaluarTestChaside() {
   });
 
   cuerpoPanel.innerHTML = htmlSugerencias;
-  document.getElementById('panel-sugerencias').classList.toggle('ready-state', respuestasCompletas && estrellas > 0);
+  const panelSugerencias = document.getElementById('panel-sugerencias');
+  if (panelSugerencias) {
+    const debeMostrarEstadoListo = respuestasCompletas && estrellas > 0 && panelSugerencias.classList.contains('is-open');
+    panelSugerencias.classList.toggle('ready-state', debeMostrarEstadoListo);
+  }
   actualizarEstadoBotonRecomendaciones();
 }
 
@@ -1980,6 +2062,7 @@ function mostrarRecomendacionesInline() {
 }
 
 function enviarRetroalimentacionYVerRecomendaciones() {
+  cerrarPanelRecomendaciones();
   evaluarTestChaside();
   if (estaTestCompleto()) {
     mostrarRecomendacionesInline();
@@ -2002,18 +2085,31 @@ function inicializarFormulario() {
   const form = document.getElementById('vocational-test');
   if (form) {
     form.addEventListener('change', () => {
+      cerrarPanelRecomendaciones();
+      limpiarAlertasYResaltados();
       evaluarTestChaside();
       actualizarEstadoBotonRecomendaciones();
     });
     form.addEventListener('input', () => {
+      cerrarPanelRecomendaciones();
+      limpiarAlertasYResaltados();
       evaluarTestChaside();
       actualizarEstadoBotonRecomendaciones();
+    });
+  }
+
+  const botonResultados = document.getElementById('btn-ver-centros');
+  if (botonResultados) {
+    botonResultados.addEventListener('click', (event) => {
+      event.stopPropagation();
+      cerrarPanelRecomendaciones();
     });
   }
 
   const starGroup = document.getElementById('star-rating-group');
   if (starGroup) {
     starGroup.addEventListener('click', () => {
+      limpiarAlertasYResaltados();
       evaluarTestChaside();
       actualizarEstadoBotonRecomendaciones();
     });
