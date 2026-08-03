@@ -7,43 +7,49 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#0F8FEF;
-    --navy-2:#0B6DD0;
-    --navy-soft:#E4F4FF;
-    --lime:#FFD31A;
-    --lime-dark:#C79B00;
-    --lime-soft:#FFF6C9;
-    --orange:#FF5E93;
-    --orange-dark:#D94B79;
-    --orange-soft:#FFE2ED;
-    --bg:#F6FAFF;
-    --card:#FFFFFF;
-    --text:#16213A;
-    --muted:#52607F;
-    --border:#DCE7F4;
-    --danger:#E25C57;
+    :root{
+    --navy:#0f2f70; /* Azul oscuro profundo del sidebar */
+    --navy-2:#0b2459;
+    --navy-soft:#eef4ff;
+    --accent-blue:#2f80ed;
+    --accent-blue-soft:#eef4ff;
+    --accent-green:#27ae60;
+    --accent-green-soft:#e6f7ef;
+    --accent-red:#eb5757;
+    --accent-red-soft:#fbeaea;
+    --accent-yellow:#f2994a;
+    --accent-yellow-soft:#fff7e6;
+    --accent-purple:#9b51e0;
+    --accent-purple-soft:#f5eeff;
+    --accent-cyan:#2d9cdb;
+    --accent-cyan-soft:#eaf8ff;
+    --bg:#f4f7fe; /* Fondo gris/azul claro de la imagen */
+    --card:#ffffff;
+    --text:#1a202c;
+    --muted:#718096;
+    --border:#e2e8f0;
+    --danger:#e53e3e;
     --radius:16px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{background:linear-gradient(180deg,#F9FCFF 0%, #F5F9FF 100%);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
   h1,h2,h3,.brand,.stat-value{font-family:'Sora',sans-serif;}
   button,input,select,textarea{font-family:inherit;}
   button{cursor:pointer;}
 
   .app{display:flex;min-height:100vh;}
-  .sidebar{width:250px;background:linear-gradient(180deg,var(--navy) 0%, var(--navy-2) 100%);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;box-shadow:8px 0 24px rgba(15,45,90,.08);}
+    .sidebar{width:250px;background:var(--navy);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;box-shadow:4px 0 20px rgba(0,0,0,.05);}
   .brand{display:flex;align-items:center;gap:10px;padding:24px 20px 18px 20px;font-weight:800;font-size:17px;}
-  .brand-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--lime),#FFF);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#0F4D92;}
-  .brand small{display:block;font-size:11px;font-weight:500;color:#E3EFFD;opacity:.95;}
-  .centro-chip{margin:2px 16px 16px 16px;padding:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.10);border-radius:12px;color:#F7FBFF;font-size:12.5px;line-height:1.35;}
+  .brand-badge{width:36px;height:36px;border-radius:10px;background:#ffcf3f;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy);}
+  .brand small{display:block;font-size:11px;font-weight:500;color:#cbd5e0;opacity:.95;}
+  .centro-chip{margin:2px 16px 16px 16px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:12px;color:#cbd5e0;font-size:12.5px;line-height:1.35;}
   .centro-chip b{display:block;font-size:13.5px;margin-bottom:2px;color:#fff;}
   nav{padding:6px 12px;flex:1;}
-  .nav-label{margin:14px 10px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:#E6F1FF;opacity:.92;font-weight:700;}
-  .nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;margin:3px 0;border-radius:12px;font-size:14px;font-weight:600;color:#F7FBFF;border:1px solid transparent;transition:background .15s ease,color .15s ease,transform .15s ease;}
-  .nav-item:hover{background:rgba(255,255,255,.14);transform:translateX(1px);}
-  .nav-item.active{background:rgba(255,255,255,.20);border-color:rgba(255,255,255,.18);box-shadow:0 10px 20px rgba(0,0,0,.08);}
+  .nav-label{margin:14px 10px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:#718096;font-weight:700;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;margin:3px 0;border-radius:12px;font-size:14px;font-weight:600;color:#cbd5e0;border:1px solid transparent;transition:all .15s ease;}
+  .nav-item:hover{background:rgba(255,255,255,.08);color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.10);}
   .nav-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
   .dot-general{background:#C8D7F6;}
   .dot-lime{background:var(--lime);}
@@ -108,12 +114,12 @@
   .btn{border:none;border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:700;}
   .btn-ghost{background:#fff;border:1.5px solid var(--border);color:var(--text);}
   .btn-ghost:hover{background:var(--navy-soft);}
-  .btn-primary{background:var(--navy);color:#fff;}
+    .btn-primary{background:var(--navy);color:#fff;}
   .btn-primary:hover{background:var(--navy-2);}
-  .btn-primary.lime{background:var(--lime-dark);color:#fff;}
-  .btn-primary.lime:hover{background:#ae8400;}
-  .btn-primary.orange{background:var(--orange-dark);color:#fff;}
-  .btn-primary.orange:hover{background:#ba3b68;}
+  .btn-primary.lime{background:var(--accent-green);color:#fff;}
+  .btn-primary.lime:hover{background:#1e8449;}
+  .btn-primary.orange{background:var(--accent-red);color:#fff;}
+  .btn-primary.orange:hover{background:#c0392b;}
   .btn-inline{border:1.5px dashed var(--border);background:#fff;color:var(--navy-2);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;}
   .btn-inline:hover{background:var(--navy-soft);}
 
@@ -166,14 +172,14 @@
   tbody td{padding:13px 22px;border-bottom:1px solid var(--border);vertical-align:top;}
   tbody tr:last-child td{border-bottom:none;}
   tbody tr:hover{background:#FAFCFF;}
-  .id-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:var(--navy-soft);color:var(--navy-2);padding:3px 8px;border-radius:6px;letter-spacing:.5px;}
-  .id-badge.lime{background:var(--lime-soft);color:var(--lime-dark);}
-  .id-badge.orange{background:var(--orange-soft);color:var(--orange-dark);}
+    .id-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:var(--navy-soft);color:var(--navy);padding:3px 8px;border-radius:6px;letter-spacing:.5px;}
+  .id-badge.lime{background:var(--accent-green-soft);color:var(--accent-green);}
+  .id-badge.orange{background:var(--accent-red-soft);color:var(--accent-red);}
   .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;}
-  .tag-25{background:#FCEAEA;color:#BF4A43;}
-  .tag-50{background:var(--orange-soft);color:var(--orange-dark);}
-  .tag-75{background:#EAF3FE;color:#326FC7;}
-  .tag-100{background:var(--lime-soft);color:var(--lime-dark);}
+  .tag-25{background:var(--accent-red-soft);color:var(--accent-red);}
+  .tag-50{background:var(--accent-yellow-soft);color:var(--accent-yellow);}
+  .tag-75{background:var(--accent-blue-soft);color:var(--accent-blue);}
+  .tag-100{background:var(--accent-green-soft);color:var(--accent-green);}
   .cell-muted{color:var(--muted);font-size:12.5px;}
   .cell-wrap{max-width:360px;white-space:normal;line-height:1.45;}
   .empty-row td{text-align:center;color:var(--muted);padding:26px;font-size:13px;}
@@ -215,23 +221,23 @@
     </div>
 
     <section class="view active" id="view-dashboard">
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--navy-soft);">🎓</div></div><div class="stat-label">Carreras activas</div><div class="stat-value" id="statCarreras">4</div><div class="stat-sub">Con pensúm registrado</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--lime-soft);">🏅</div></div><div class="stat-label">Becarios activos</div><div class="stat-value" id="statBecarios">8</div><div class="stat-sub">Con beca vigente este ciclo</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--orange-soft);">📝</div></div><div class="stat-label">Preseleccionados</div><div class="stat-value" id="statPreseleccionados">5</div><div class="stat-sub">En proceso de admisión</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--lime-soft);">📚</div></div><div class="stat-label">Pensúm registrados</div><div class="stat-value" id="statPensum">4</div><div class="stat-sub">Ciclos de estudio cargados</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--orange-soft);">📅</div></div><div class="stat-label">Calendarios registrados</div><div class="stat-value" id="statCalendario">2</div><div class="stat-sub">Ciclos académicos cargados</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--navy-soft);">📈</div></div><div class="stat-label">Cobertura promedio de beca</div><div class="stat-value">63%</div><div class="stat-sub">Sobre el total de becarios activos</div></div>
+            <div class="stat-grid">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-blue-soft);color:var(--accent-blue);">🎓</div></div><div class="stat-label">Carreras activas</div><div class="stat-value" id="statCarreras">4</div><div class="stat-sub">Con pensúm registrado</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-green-soft);color:var(--accent-green);">🏅</div></div><div class="stat-label">Becarios activos</div><div class="stat-value" id="statBecarios">8</div><div class="stat-sub">Con beca vigente este ciclo</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-red-soft);color:var(--accent-red);">📝</div></div><div class="stat-label">Preseleccionados</div><div class="stat-value" id="statPreseleccionados">5</div><div class="stat-sub">En proceso de admisión</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-yellow-soft);color:var(--accent-yellow);">📚</div></div><div class="stat-label">Pensúm registrados</div><div class="stat-value" id="statPensum">4</div><div class="stat-sub">Ciclos de estudio cargados</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-purple-soft);color:var(--accent-purple);">📅</div></div><div class="stat-label">Calendarios registrados</div><div class="stat-value" id="statCalendario">2</div><div class="stat-sub">Ciclos académicos cargados</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-cyan-soft);color:var(--accent-cyan);">📈</div></div><div class="stat-label">Cobertura promedio de beca</div><div class="stat-value">63%</div><div class="stat-sub">Sobre el total de becarios activos</div></div>
       </div>
 
       <div class="grid-2">
         <div class="panel">
           <h3>Becarios por porcentaje de cobertura</h3>
           <p class="panel-sub">Distribución de los 8 becarios activos según el porcentaje de beca asignado</p>
-          <div class="tier-row"><div class="tier-label">100%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--lime);"></div></div><div class="tier-count">2</div></div>
-          <div class="tier-row"><div class="tier-label">75%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:#4C8FE8;"></div></div><div class="tier-count">2</div></div>
-          <div class="tier-row"><div class="tier-label">50%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--orange);"></div></div><div class="tier-count">2</div></div>
-          <div class="tier-row"><div class="tier-label">25%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--danger);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">100%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-green);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">75%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-blue);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">50%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-yellow);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">25%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-red);"></div></div><div class="tier-count">2</div></div>
         </div>
         <div class="panel">
           <h3>Últimos preseleccionados</h3>
