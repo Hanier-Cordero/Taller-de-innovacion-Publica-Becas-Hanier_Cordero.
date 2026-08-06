@@ -6,7 +6,7 @@
 <title>Mi Progreso — Fondo Nacional de Becas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
      MI PROGRESO — Fondo Nacional de Becas
@@ -15,18 +15,20 @@
      ============================================================ */
 
   :root{
-    --cream:      #FAF6EE;
-    --cream-deep: #F1EADA;
-    --ink:        #1D2B45;
-    --ink-soft:   #5B6478;
-    --olive:      #AFC209;
-    --olive-dark: #7C8B06;
-    --clay:       #DAC0A1;
-    --clay-deep:  #C49A72;
-    --coffee:     #6E4B34;
-    --coffee-deep:#4E3324;
-    --cta:        #2C8AA8;
-    --cta-deep:   #206E86;
+    --cream:      #FFFFFF;
+    --cream-deep: #F4F8FC;
+    --ink:        #12325C;
+    --ink-soft:   #52657D;
+    --olive:      #FFE142;
+    --olive-dark: #F6A620;
+    --clay:       #FFE88A;
+    --clay-deep:  #F6A620;
+    --coffee:     #12325C;
+    --coffee-deep:#12325C;
+    --cta:        #23B7E0;
+    --cta-deep:   #0C6CB0;
+    --purple:     #8B3FA0;
+    --success:    #25D366;
     --white:      #FFFFFF;
     --line:       rgba(29,43,69,0.10);
     --radius-lg:  28px;
@@ -37,7 +39,7 @@
 
   html,body{
     margin:0; padding:0;
-    background:var(--cream);
+    background:#FFFFFF;
     color:var(--ink);
     font-family:'Inter', -apple-system, sans-serif;
     -webkit-font-smoothing:antialiased;
@@ -47,8 +49,7 @@
     max-width:1080px;
     margin:0 auto;
     padding:40px 20px 64px;
-    background-image: radial-gradient(var(--line) 1px, transparent 1px);
-    background-size: 16px 16px;
+    background:#FFFFFF;
   }
 
   /* ---------- eyebrow / header ---------- */
@@ -57,7 +58,7 @@
     align-items:center;
     justify-content:center;
     gap:10px;
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Inter', sans-serif;
     font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
@@ -72,8 +73,8 @@
 
   .mp-title{
     text-align:center;
-    font-family:'Fraunces', serif;
-    font-weight:500;
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
     font-size:clamp(20px,3vw,28px);
     color:var(--ink);
     margin:0 0 4px;
@@ -91,8 +92,8 @@
     margin-bottom:6px;
   }
   .mp-percent{
-    font-family:'Fraunces', serif;
-    font-weight:600;
+    font-family:'Poppins', sans-serif;
+    font-weight:800;
     font-size:clamp(56px,9vw,88px);
     line-height:1;
     color:var(--ink);
@@ -104,8 +105,8 @@
     top:-0.5em;
   }
   .mp-phase-current-name{
-    font-family:'Fraunces', serif;
-    font-weight:600;
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
     font-size:clamp(18px,2.4vw,24px);
     color:var(--coffee-deep);
     margin-top:6px;
@@ -131,7 +132,7 @@
     position:absolute; inset:0 auto 0 0;
     height:100%;
     width:var(--fill, 45%);
-    background:linear-gradient(90deg, var(--olive-dark), var(--olive));
+    background:linear-gradient(90deg, var(--cta-deep), var(--cta));
     border-radius:999px 0 0 999px;
     transition:width .6s ease;
   }
@@ -176,13 +177,13 @@
     line-height:1.25;
   }
   .mp-bead-tag{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Inter', sans-serif;
     font-size:9.5px;
     letter-spacing:.08em;
     text-transform:uppercase;
     color:var(--clay-deep);
   }
-  .mp-bead.current .mp-bead-tag{ color:var(--olive-dark); font-weight:600; }
+  .mp-bead.current .mp-bead-tag{ color:var(--coffee); font-weight:700; }
 
   .mp-bead.prev{ opacity:.85; }
   .mp-bead.prev .mp-bead-circle{ width:64px; height:64px; background:var(--olive-dark); color:var(--white); }
@@ -191,13 +192,30 @@
 
   .mp-bead.current .mp-bead-circle{
     width:128px; height:128px;
-    background:var(--clay);
-    color:var(--coffee-deep);
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark));
+    color:var(--coffee);
+    border:3px solid #FFFFFF;
     box-shadow:
-      0 0 0 4px var(--cream),
-      0 0 0 7px var(--olive),
-      0 10px 24px -8px rgba(110,75,52,0.45);
+      0 0 0 4px #FFFFFF,
+      0 0 0 7px var(--olive-dark),
+      0 12px 28px -10px rgba(18,50,92,0.35);
   }
+  .mp-bead.current.is-doc-phase .mp-bead-circle{
+    background:var(--semaforo-color);
+    color:var(--semaforo-ink);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 8px var(--semaforo-color), 0 12px 28px -10px rgba(18,50,92,.4);
+  }
+  .mp-bead.current.is-doc-complete .mp-bead-circle{
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 8px var(--success), 0 0 0 12px rgba(37,211,102,.20), 0 14px 30px -10px rgba(18,50,92,.42);
+  }
+  .mp-current-percent{
+    font-family:'Poppins', sans-serif;
+    font-size:34px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.04em;
+  }
+  .mp-current-percent small{ font-size:.48em; letter-spacing:0; }
   .mp-bead.current .mp-bead-label{
     font-weight:600;
     color:var(--ink);
@@ -220,7 +238,7 @@
     text-align:center;
   }
   .mp-panel-headline{
-    font-family:'Fraunces', serif;
+    font-family:'Poppins', sans-serif;
     font-weight:600;
     font-size:19px;
     color:var(--ink);
@@ -239,7 +257,7 @@
     background:linear-gradient(180deg, var(--cta), var(--cta-deep));
     color:var(--white);
     text-decoration:none;
-    font-family:'Fraunces', serif;
+    font-family:'Poppins', sans-serif;
     font-weight:600;
     font-size:15px;
     padding:14px 26px;
@@ -254,17 +272,18 @@
      FULL ROADMAP — 11 fases, disposición serpenteante
      ============================================================ */
   .mp-roadmap{
-    margin:64px auto 0;
+    margin:0 auto 64px;
     max-width:1000px;
   }
   .mp-roadmap-title{
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
     font-size:12px;
     letter-spacing:.12em;
     text-transform:uppercase;
     color:var(--coffee);
     text-align:center;
-    margin-bottom:28px;
+    margin:0 0 22px;
   }
 
   .mp-row{
@@ -330,10 +349,25 @@
   .mp-node.done .mp-node-label{ color:var(--ink); }
 
   .mp-node.current .mp-node-circle{
-    background:var(--clay);
-    border-color:var(--olive);
-    box-shadow:0 0 0 4px var(--cream), 0 0 0 6px var(--olive);
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark));
+    border-color:#FFFFFF;
+    color:var(--coffee);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--olive-dark);
     transform:scale(1.12);
+  }
+  .mp-node.current.is-doc-node .mp-node-circle{
+    background:var(--semaforo-color);
+    color:var(--semaforo-ink);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--semaforo-color);
+  }
+  .mp-node.current.is-doc-complete .mp-node-circle{
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--success), 0 0 0 9px rgba(37,211,102,.20);
+  }
+  .mp-node-percent{
+    font-family:'Poppins', sans-serif;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:-.03em;
   }
   .mp-node.current .mp-node-label{
     font-weight:700;
@@ -380,7 +414,7 @@
     padding:16px 0;
     background:var(--coffee);
     color:var(--white);
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Inter', sans-serif;
     font-size:11px;
     letter-spacing:.14em;
     text-transform:uppercase;
@@ -412,7 +446,7 @@
     overflow-y:auto;
   }
   .mp-sidebar-title{
-    font-family:'Fraunces', serif;
+    font-family:'Poppins', sans-serif;
     font-weight:600;
     font-size:15px;
     color:var(--ink);
@@ -491,7 +525,7 @@
   }
   .mp-acc-item.is-current .mp-acc-btn{ color:var(--ink); font-weight:700; }
   .mp-acc-item.is-current .mp-acc-btn .mp-acc-num{
-    background:var(--olive); border-color:var(--olive-dark); color:var(--white);
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark)); border-color:var(--olive-dark); color:var(--coffee);
   }
   .mp-acc-btn:hover{ color:var(--ink); }
 
@@ -514,7 +548,7 @@
   }
   .mp-semaforo-pct{
     margin-left:auto;
-    font-family:'IBM Plex Mono', monospace;
+    font-family:'Inter', sans-serif;
     font-size:11px; font-weight:600; color:var(--ink);
   }
   .mp-semaforo input[type="range"]{
@@ -549,6 +583,17 @@
 <div class="mp-root">
 
   <div class="mp-eyebrow">Fondo Nacional de Becas</div>
+  <div class="mp-roadmap-title">Tu ruta completa</div>
+
+  <!-- ===================== RUTA COMPLETA (11 fases) ===================== -->
+  <div class="mp-roadmap">
+    <div style="position:relative;" id="mpRoadmapWrap">
+      <div class="mp-row" id="mpRow1"></div>
+      <div class="mp-row reverse" id="mpRow2"></div>
+      <svg id="mpRowLink" style="position:absolute; overflow:visible; pointer-events:none; color:var(--clay-deep);"></svg>
+    </div>
+  </div>
+
   <h1 class="mp-title">Mi Progreso</h1>
   <p class="mp-sub">Así avanza tu expediente, paso a paso.</p>
 
@@ -578,17 +623,6 @@
       Ver mi expediente completo
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
-  </div>
-
-  <!-- ===================== RUTA COMPLETA (11 fases) ===================== -->
-  <div class="mp-roadmap">
-    <div class="mp-roadmap-title">Tu ruta completa</div>
-
-    <div style="position:relative;" id="mpRoadmapWrap">
-      <div class="mp-row" id="mpRow1"></div>
-      <div class="mp-row reverse" id="mpRow2"></div>
-      <svg id="mpRowLink" style="position:absolute; overflow:visible; pointer-events:none; color:var(--clay-deep);"></svg>
-    </div>
   </div>
 
 </div>
@@ -667,8 +701,12 @@
   /* ---------- Semáforo (fase 1: Carga de documentos) ---------- */
   function semaforoColor(pct){
     if(pct < 34) return "#D6553F";   // rojo
-    if(pct < 67) return "#E0A73D";   // amarillo
-    return "#4C9F52";                 // verde
+    if(pct < 80) return "#E0A73D";   // amarillo
+    if(pct < 100) return "#4C9F52";  // verde desde 80%
+    return "#25D366";                 // fase completada
+  }
+  function semaforoInk(pct){
+    return pct < 34 ? "#FFFFFF" : "#12325C";
   }
 
   /* ============================================================
@@ -678,7 +716,9 @@
     var current = byId(CONFIG.currentPhaseId);
     var prev = byId(CONFIG.currentPhaseId - 1);
     var next = byId(CONFIG.currentPhaseId + 1);
-    var percent = current.range[0];
+    // El progreso general corresponde al porcentaje alcanzado al completar
+    // la fase actual. Así, la fase 11 culmina correctamente en 100%.
+    var percent = current.range[1];
 
     /* ---- Hero + track ---- */
     document.getElementById('mpPercentText').innerHTML = percent + '<sup>%</sup>';
@@ -696,7 +736,12 @@
         '<div class="mp-bead-label">'+prev.name+'</div></div>' +
         '<div class="mp-connector"></div>';
     }
-    beadsHtml += '<div class="mp-bead current"><div class="mp-bead-circle">'+stampIcon+'</div>' +
+    var isDocPhase = current.id === 1;
+    var currentCircleContent = isDocPhase
+      ? '<span class="mp-current-percent" id="mpCurrentDocPercent">'+CONFIG.docSemaforoPercent+'<small>%</small></span>'
+      : stampIcon;
+    var currentSemaforoStyle = isDocPhase ? ' style="--semaforo-color:'+semaforoColor(CONFIG.docSemaforoPercent)+';--semaforo-ink:'+semaforoInk(CONFIG.docSemaforoPercent)+'"' : '';
+    beadsHtml += '<div class="mp-bead current'+(isDocPhase?' is-doc-phase':'')+(isDocPhase && CONFIG.docSemaforoPercent === 100?' is-doc-complete':'')+'"'+currentSemaforoStyle+'><div class="mp-bead-circle">'+currentCircleContent+'</div>' +
       '<div class="mp-bead-tag">Estás aquí</div>' +
       '<div class="mp-bead-label">'+current.name+'</div></div>';
     if(next){
@@ -717,9 +762,13 @@
       return ids.map(function(id){
         var p = byId(id);
         var status = nodeStatus(id);
-        var circleContent = status === 'done' ? checkIcon : p.id;
-        var semaforoDot = (id === 1) ? '<span class="mp-node-semaforo-dot" style="background:'+semaforoColor(CONFIG.docSemaforoPercent)+'"></span>' : '';
-        return '<div class="mp-node '+status+'">' +
+        var isCurrentDoc = id === 1 && status === 'current';
+        var circleContent = isCurrentDoc
+          ? '<span class="mp-node-percent" id="mpRoadmapDocPercent">'+CONFIG.docSemaforoPercent+'%</span>'
+          : (status === 'done' ? checkIcon : p.id);
+        var semaforoDot = (id === 1 && !isCurrentDoc) ? '<span class="mp-node-semaforo-dot" style="background:'+semaforoColor(CONFIG.docSemaforoPercent)+'"></span>' : '';
+        var nodeStyle = isCurrentDoc ? ' style="--semaforo-color:'+semaforoColor(CONFIG.docSemaforoPercent)+';--semaforo-ink:'+semaforoInk(CONFIG.docSemaforoPercent)+'"' : '';
+        return '<div class="mp-node '+status+(isCurrentDoc?' is-doc-node':'')+(isCurrentDoc && CONFIG.docSemaforoPercent === 100?' is-doc-complete':'')+'"'+nodeStyle+'>' +
           '<div class="mp-node-circle">'+circleContent+semaforoDot+'</div>' +
           '<div class="mp-node-label">'+p.short.replace('\n','<br>')+'</div>' +
           arrowSvg +
@@ -798,7 +847,7 @@
           itemHtml += '<div class="mp-semaforo">' +
             '<div class="mp-semaforo-row">' +
               '<span class="mp-semaforo-dot" id="mpSemDot" style="background:'+col+'"></span>' +
-              '<span class="mp-semaforo-label">Semáforo de carga</span>' +
+              '<span class="mp-semaforo-label" id="mpSemLabel">'+(CONFIG.docSemaforoPercent === 100?'Fase completada':'Semáforo de carga')+'</span>' +
               '<span class="mp-semaforo-pct" id="mpSemPct">'+CONFIG.docSemaforoPercent+'%</span>' +
             '</div>' +
             '<input type="range" min="0" max="100" step="1" value="'+CONFIG.docSemaforoPercent+'" id="mpSemRange">' +
@@ -846,8 +895,23 @@
         var col = semaforoColor(CONFIG.docSemaforoPercent);
         document.getElementById('mpSemDot').style.background = col;
         document.getElementById('mpSemPct').textContent = CONFIG.docSemaforoPercent + '%';
+        document.getElementById('mpSemLabel').textContent = CONFIG.docSemaforoPercent === 100 ? 'Fase completada' : 'Semáforo de carga';
         var nodeDot = document.querySelector('.mp-node-semaforo-dot');
         if(nodeDot){ nodeDot.style.background = col; }
+        var currentDocBead = document.querySelector('.mp-bead.current.is-doc-phase');
+        if(currentDocBead){
+          currentDocBead.style.setProperty('--semaforo-color', col);
+          currentDocBead.style.setProperty('--semaforo-ink', semaforoInk(CONFIG.docSemaforoPercent));
+          currentDocBead.classList.toggle('is-doc-complete', CONFIG.docSemaforoPercent === 100);
+          document.getElementById('mpCurrentDocPercent').innerHTML = CONFIG.docSemaforoPercent + '<small>%</small>';
+        }
+        var currentDocNode = document.querySelector('.mp-node.current.is-doc-node');
+        if(currentDocNode){
+          currentDocNode.style.setProperty('--semaforo-color', col);
+          currentDocNode.style.setProperty('--semaforo-ink', semaforoInk(CONFIG.docSemaforoPercent));
+          currentDocNode.classList.toggle('is-doc-complete', CONFIG.docSemaforoPercent === 100);
+          document.getElementById('mpRoadmapDocPercent').textContent = CONFIG.docSemaforoPercent + '%';
+        }
       });
       // evita que arrastrar el slider cierre el panel al "salir" del acordeón
       range.addEventListener('click', function(e){ e.stopPropagation(); });
