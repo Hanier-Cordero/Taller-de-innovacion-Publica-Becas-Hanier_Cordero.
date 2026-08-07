@@ -381,14 +381,114 @@
   }
 
   .mp-node-semaforo-dot{
-    position:absolute;
-    top:-3px; right:-3px;
-    width:14px; height:14px;
-    border-radius:50%;
-    background:#4C9F52;
-    border:2px solid var(--cream);
-    box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  position:absolute;
+  top:-3px; right:-3px;
+  width:14px; height:14px;
+  border-radius:50%;
+  background:#4C9F52;
+  border:2px solid var(--cream);
+  box-shadow:0 1px 3px rgba(0,0,0,0.25);
   }
+
+  /* ============================================================
+   PERSONAJES INTERACTIVOS Y BURBUJAS
+   ============================================================ */
+  .mp-chars-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 850px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+  min-height: 110px;
+  }
+  .mp-char-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  flex: 1;
+  }
+  .mp-char-box.visible {
+  opacity: 1;
+  visibility: visible;
+  }
+  .mp-char-box.right {
+  flex-direction: row-reverse;
+  text-align: right;
+  }
+  .mp-char-img {
+  width: 75px;
+  height: auto;
+  flex-shrink: 0;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
+  }
+  .mp-bubble {
+  position: relative;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 240px;
+  transition: opacity 0.4s ease;
+  line-height: 1.4;
+  }
+  /* Burbuja Postulante (Izquierda) */
+  .mp-char-box.left .mp-bubble {
+  background: #f0f4f8;
+  border: 2px solid #0056b3;
+  color: #12325C;
+  }
+  .mp-char-box.left .mp-bubble::after {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 7px 10px 7px 0;
+  border-style: solid;
+  border-color: transparent #0056b3 transparent transparent;
+  }
+  /* Burbuja Becas (Derecha) */
+  .mp-char-box.right .mp-bubble {
+  background-color: #0056b3;
+  color: #ffffff;
+  }
+  .mp-char-box.right .mp-bubble::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 11px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0056b3;
+  }
+
+  @media (max-width: 620px) {
+  .mp-chars-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 20px;
+  }
+  .mp-char-box { justify-content: center; width: 100%; }
+  .mp-char-box.right { flex-direction: row; text-align: left; }
+  .mp-char-box.right .mp-bubble { text-align: left; }
+  .mp-char-box.right .mp-bubble::after {
+    right: auto;
+    left: -10px;
+    border-width: 7px 10px 7px 0;
+    border-color: transparent #0056b3 transparent transparent;
+  }
+  .mp-bubble { max-width: 280px; }
+  }
+
 
   /* ============================================================
      SIDEBAR ACORDEÓN — cambio manual de fase (solo demo/pruebas)
@@ -612,10 +712,23 @@
 
     <div class="mp-beads" id="mpBeads">
       <!-- generado por JS: anterior / actual / siguiente -->
+  </div>
+  </div>
+
+  <!-- ===================== PERSONAJES INTERACTIVOS ===================== -->
+  <div class="mp-chars-container" id="mpCharsContainer">
+    <div id="char-left" class="mp-char-box left">
+      <img id="img-left" src="" class="mp-char-img" alt="Postulante">
+      <div class="mp-bubble" id="bubble-left"></div>
+    </div>
+    <div id="char-right" class="mp-char-box right">
+      <img id="img-right" src="" class="mp-char-img" alt="Becas">
+      <div class="mp-bubble" id="bubble-right"></div>
     </div>
   </div>
 
   <!-- ===================== PANEL DE TRANQUILIDAD ===================== -->
+
   <div class="mp-panel">
     <p class="mp-panel-headline" id="mpPanelHeadline">Se está determinando el monto de tu beca según tu expediente.</p>
     <p class="mp-panel-note">Un profesional del área se estará comunicando contigo si existiera algún inconveniente en tu papelería. Recordá visitar el portal para conocer a mayor detalle tu proceso.</p>
@@ -650,11 +763,49 @@
      (por ejemplo, inyectados desde WordPress/PHP con datos del
      usuario autenticado, o vía una llamada a un endpoint propio)
      ============================================================ */
-  var CONFIG = {
+    var CONFIG = {
     portalUrl: "https://tu-portal-de-becas.gob.gt/",   // enlace del botón CTA
-    currentPhaseId: 6,                                   // 1..11, ver PHASES abajo
-    docSemaforoPercent: 100                              // 0..100, solo fase 1 (Carga de documentos)
+    currentPhaseId: 1,                                   // 1..11, ver PHASES abajo
+    docSemaforoPercent: 66,                              // 0..100, solo fase 1
+    gender: 'm'                                          // 'm' o 'f' para los avatares
   };
+
+    var CHAR_DATA = {
+    postulant: {
+      visibleIn: [1, 2],
+      images: {
+        m: "https://eltip.gt/wp-content/uploads/2026/08/m-postulante-1.png",
+        f: "https://eltip.gt/wp-content/uploads/2026/08/f-postulante.png"
+      },
+      phases: {
+        1: ["¿Ya cargaste tus documentos?", "¿Ya has completado tu expediente?", "¡Recuerda revisar que todo esté legible!"],
+        2: ["Estamos confirmando mi papelería.", "¿Recibiste algún mensaje de revisión?", "Espero que mis documentos estén correctos."]
+      },
+      defaultMessages: ["¿Cómo va mi proceso?", "¿Tienes alguna duda sobre mi papelería?"]
+    },
+    staff: {
+      visibleIn: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      images: {
+        m: "https://eltip.gt/wp-content/uploads/2026/08/m-becas-1.png",
+        f: "https://eltip.gt/wp-content/uploads/2026/08/f-becas-1.png"
+      },
+      phases: {
+        2: ["Un profesional revisará tu papelería pronto.", "Estamos validando tus documentos."],
+        3: ["¡Tus documentos han sido validados!", "Todo está en orden con tu papelería."],
+        4: ["Estamos analizando tu situación socioeconómica.", "Evaluando el entorno para tu beca."],
+        5: ["Revisamos tu historial académico.", "Confirmando tus méritos escolares."],
+        6: ["Calculando el monto de apoyo financiero.", "Fase de determinación de cuotas."],
+        7: ["El área jurídica está revisando el expediente.", "Validación legal de tu proceso."],
+        8: ["Tu caso está ante el Comité de Becas.", "Esperando la resolución del comité."],
+        9: ["¡Tu contrato está siendo generado!", "Preparando la documentación final."],
+        10: ["Tu contrato está listo para firma.", "Enviado a SEGEPLAN para registro."],
+        11: ["¡Beca activa! Dale seguimiento a tus notas.", "Recuerda mantener tu promedio."]
+      },
+      defaultMessages: ["Estamos trabajando en tu expediente.", "Pronto recibirás una actualización."]
+    }
+  };
+
+
 
   var PHASES = [
     { id:1,  name:"Carga de documentos",                    short:"Carga de\ndocumentos",         range:[0,9],   group:"doc",
@@ -675,7 +826,7 @@
       note:"Tu caso está en agenda para que el Comité de Becas lo apruebe." },
     { id:9,  name:"Generación de Contrato para Beca",        short:"Generación de\nContrato",      range:[73,82], group:"contract",
       note:"Estamos preparando el contrato que formaliza tu beca." },
-    { id:10, name:"Recepción de contrato en SEGEPLAN",       short:"Contrato en\nSEGEPLAN",        range:[82,91], group:"contract",
+    { id:10, name:"Firma de contrato",       short:"Firma de\ncontrato",          range:[82,91], group:"contract",
       note:"Tu contrato fue enviado a SEGEPLAN para su registro oficial." },
     { id:11, name:"Seguimiento Académico",                   short:"Seguimiento\nAcadémico",       range:[91,100], group:"contract",
       note:"¡Tu beca está activa! Ahora damos seguimiento a tu desempeño académico." }
@@ -780,10 +931,153 @@
       renderRow(row1Ids);
     document.getElementById('mpRow2').innerHTML = renderRow(row2Ids);
 
-    drawRowLink();
+        drawRowLink();
     scrollToCurrentOnMobile(current);
     renderAccordion(current);
+    updateCharacters(current.id);
   }
+
+  /* ============================================================
+     LOGICA DE PERSONAJES E INTERACCIÓN
+     ============================================================ */
+  var messageIntervals = { left: null, right: null };
+  var imageCache = {};
+
+  function preloadImage(src) {
+    if (!imageCache[src]) {
+      imageCache[src] = new Promise(function(resolve, reject) {
+        var loader = new Image();
+        loader.onload = function() {
+          if (typeof loader.decode === 'function') {
+            loader.decode().catch(function(){}).then(function(){ resolve(src); });
+          } else {
+            resolve(src);
+          }
+        };
+        loader.onerror = function(){ reject(new Error('No se pudo cargar: ' + src)); };
+        loader.src = src;
+      });
+    }
+    return imageCache[src];
+  }
+
+  function preloadCharacterImages() {
+    Object.keys(CHAR_DATA).forEach(function(type) {
+      Object.keys(CHAR_DATA[type].images).forEach(function(gender) {
+        preloadImage(CHAR_DATA[type].images[gender]).catch(function(error) {
+          console.warn(error.message);
+        });
+      });
+    });
+  }
+
+    function updateCharacters(phaseId) {
+    setupChar('left', 'postulant', phaseId, 'f'); // Postulante inicia femenino
+    setupChar('right', 'staff', phaseId, 'm');    // Staff inicia masculino
+    startRotation();
+  }
+
+    function setupChar(side, type, phaseId, initialGender) {
+    var data = CHAR_DATA[type];
+    var box = document.getElementById('char-' + side);
+    var img = document.getElementById('img-' + side);
+    var bubble = document.getElementById('bubble-' + side);
+
+    if (data.visibleIn.indexOf(phaseId) !== -1) {
+      var gender = img.getAttribute('data-gender') || initialGender || CONFIG.gender;
+      img.setAttribute('data-gender', gender);
+      img.setAttribute('data-type', type);
+      img.setAttribute('data-phase-id', phaseId); // Guardar fase actual en el elemento
+
+      // Cargar primer mensaje de la fase actual
+      var messages = data.phases[phaseId] || data.defaultMessages;
+      bubble.textContent = messages[0];
+
+      updateImageSource(img, data.images[gender]).then(function() {
+        // Evita mostrar una carga anterior si el usuario ya cambió de fase.
+        if (img.getAttribute('data-phase-id') === String(phaseId)) {
+          box.classList.add('visible');
+        }
+      }).catch(function(error) {
+        console.warn(error.message);
+        if (img.getAttribute('data-phase-id') === String(phaseId)) {
+          box.classList.add('visible');
+        }
+      });
+    } else {
+      box.classList.remove('visible');
+    }
+  }
+
+
+  function updateImageSource(img, src) {
+    return preloadImage(src).then(function() {
+      img.src = src;
+      if (typeof img.decode === 'function') {
+        return img.decode().catch(function(){});
+      }
+    });
+  }
+
+  function startRotation() {
+    if (messageIntervals.left) clearInterval(messageIntervals.left);
+    if (messageIntervals.right) clearInterval(messageIntervals.right);
+
+    messageIntervals.left = setInterval(function() {
+      rotateCharacter('left');
+    }, 7000);
+
+    messageIntervals.right = setInterval(function() {
+      rotateCharacter('right');
+    }, 8500);
+  }
+
+    function rotateCharacter(side) {
+    var bubble = document.getElementById('bubble-' + side);
+    var img = document.getElementById('img-' + side);
+    var box = bubble.closest('.mp-char-box');
+
+    if (!bubble || !box.classList.contains('visible')) return;
+
+    var type = img.getAttribute('data-type');
+    var phaseId = img.getAttribute('data-phase-id');
+    var data = CHAR_DATA[type];
+    var messages = data.phases[phaseId] || data.defaultMessages;
+
+    // Calcular siguiente mensaje
+    var currentMsg = bubble.textContent;
+    var idx = messages.indexOf(currentMsg);
+    var nextIdx = (idx + 1) % messages.length;
+
+
+        // Alternar género
+    var currentGender = img.getAttribute('data-gender');
+    var nextGender = (currentGender === 'm') ? 'f' : 'm';
+
+    // Animación de salida (Suave)
+    bubble.style.opacity = 0;
+    img.style.opacity = 0;
+
+    setTimeout(function() {
+      bubble.textContent = messages[nextIdx];
+      updateImageSource(img, data.images[nextGender]).then(function() {
+        img.setAttribute('data-gender', nextGender);
+
+        // La entrada comienza únicamente cuando el PNG nuevo está listo.
+        requestAnimationFrame(function() {
+          bubble.style.opacity = 1;
+          img.style.opacity = 1;
+        });
+      }).catch(function(error) {
+        console.warn(error.message);
+        bubble.style.opacity = 1;
+        img.style.opacity = 1;
+      });
+    }, 450);
+  }
+
+
+
 
   /* ---------- Conector curvo entre fila 1 y fila 2 ---------- */
   function drawRowLink(){
@@ -946,6 +1240,7 @@
   });
 
   /* ---------- Init ---------- */
+  preloadCharacterImages();
   render();
   window.addEventListener('load', drawRowLink);
   window.addEventListener('resize', drawRowLink);
