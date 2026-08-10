@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inicio de sesión — Becas por Nuestro Futuro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="login-page">
+<header class="site-header">
+  <img src="assets/gobierno-logo.png" class="gov-logo" alt="Gobierno de Guatemala">
+  <img src="assets/becas-logo.png" class="becas-logo" alt="Becas SEGEPLAN">
+</header>
+<main class="login-wrap">
+  <a class="back-btn" href="index.html">‹ &nbsp; REGRESAR</a>
+  <section class="login-card">
+    <h1>INICIO DE SESIÓN</h1>
+    <form class="login-form" id="loginForm" novalidate>
+      <input id="loginUser" type="text" inputmode="numeric" maxlength="13" autocomplete="username" value="2743006130108" aria-label="CUI o DPI">
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Contraseña" aria-label="Contraseña">
+      <div class="login-error" id="loginError">El CUI/DPI o la contraseña no coinciden con los datos de esta simulación.</div>
+      <button class="login-submit" type="submit">Iniciar Sesión</button>
+    </form>
+  </section>
+  <div class="recover"><strong>¿Has olvidado tu contraseña?</strong> Inicia el proceso para recuperar tu contraseña en el enlace siguiente:
+    <button type="button">↻ &nbsp; RECUPERAR CONTRASEÑA</button>
+  </div>
+</main>
+<script src="js/login.js"></script>
+</body>
+</html>

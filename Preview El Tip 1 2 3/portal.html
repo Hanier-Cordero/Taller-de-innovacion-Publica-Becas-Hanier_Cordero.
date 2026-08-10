@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inicio — Postulante</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <img src="assets/gobierno-logo.png" class="gov-logo" alt="Gobierno de Guatemala">
+  <img src="assets/becas-logo.png" class="becas-logo" alt="Becas SEGEPLAN">
+</header>
+<main class="portal-main">
+  <h1 class="portal-title">INICIO</h1>
+  <div class="portal-actions"><button class="back-btn" id="logoutBtn" type="button">‹ &nbsp; SALIR</button></div>
+  <section class="welcome">
+    <strong>Bienvenido Hanier Iván Cordero Morales</strong>
+    <p>En esta sección encuentras información de tu proceso de postulación a Becas por Nuestro Futuro.</p>
+  </section>
+
+  <section class="convocatoria" aria-label="Segunda convocatoria 2026">
+    <img src="assets/convocatoria-banner.png" alt="Segunda Convocatoria 2026, listado de carreras priorizadas">
+  </section>
+
+  <section class="countdown" aria-label="Cuenta regresiva de cierre de convocatoria">
+    <h3>Cierre de convocatoria: 30 de septiembre de 2026 a las 23:59 horas.</h3>
+    <div class="count-grid">
+      <div class="count-box"><div class="count-num" id="days">--</div><div class="count-label">Días</div></div>
+      <div class="count-box"><div class="count-num" id="hours">--</div><div class="count-label">Horas</div></div>
+      <div class="count-box"><div class="count-num" id="minutes">--</div><div class="count-label">Minutos</div></div>
+      <div class="count-box"><div class="count-num" id="seconds">--</div><div class="count-label">Segundos</div></div>
+    </div>
+  </section>
+
+  <section class="progress-section">
+    <h2>Mi progreso</h2>
+    <iframe id="progressFrame" class="progress-frame" src="avance.html" title="Avance del proceso de beca"></iframe>
+  </section>
+
+  <section class="postulation">
+    <h2>Mi postulación actual</h2>
+    <article class="post-card">
+      <img src="assets/postulante.png" alt="Postulante de pregrado">
+      <div>
+        <h3>PREGRADO (Licenciatura y Técnico universitario)</h3>
+        <p>Primera convocatoria 2026</p>
+        <p>Postulación No. 72091</p>
+        <p>Estado: <span class="status-chip">No enviada</span></p>
+      </div>
+    </article>
+  </section>
+</main>
+<script src="js/portal.js"></script>
+</body>
+</html>

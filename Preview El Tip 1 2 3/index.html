@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Becas por Nuestro Futuro — Preview</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <img src="assets/gobierno-logo.png" class="gov-logo" alt="Gobierno de Guatemala">
+  <img src="assets/becas-logo.png" class="becas-logo" alt="Becas SEGEPLAN">
+</header>
+<nav class="side-nav" aria-label="Navegación principal">
+  <a class="active" href="#inicio"><span class="nav-icon">⌂</span>Inicio</a>
+  <a href="#tipos"><span class="nav-icon">♙</span>Tipos de<br>becas</a>
+  <a href="#requisitos"><span class="nav-icon">▤</span>Requisitos</a>
+  <a href="#aplicar"><span class="nav-icon">♨</span>Aplicar</a>
+  <a href="#alianzas"><span class="nav-icon">▦</span>Alianzas</a>
+  <a href="#faq"><span class="nav-icon">▣</span>Preguntas<br>Frecuentes</a>
+  <a href="#publica"><span class="nav-icon">⌕</span>Información<br>pública</a>
+</nav>
+<main class="page-shell" id="inicio">
+  <section class="hero" aria-label="Información destacada">
+    <img src="assets/home-banner.png" alt="Becas por Nuestro Futuro: Sumamos 902 becarios en todo el país">
+    <div class="hero-dots" aria-hidden="true"><i></i><i></i><i class="active"></i><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <section class="orientation-card" aria-label="Orientación antes de aplicar">
+    <div class="orientation-question">¿Ya sabes qué quieres estudiar y dónde?</div>
+    <div class="choice-row">
+      <button type="button" class="choice-btn yes" id="choiceYes" aria-controls="orientationAccess" aria-expanded="false">Sí, ya lo tengo claro</button>
+      <button type="button" class="choice-btn no" id="choiceNo" aria-controls="orientationNext" aria-expanded="false">No, necesito orientación</button>
+    </div>
+    <div class="orientation-access" id="orientationAccess">
+      <p>¡Excelente! Ya puedes continuar con tu postulación. Regístrate si es tu primera vez o inicia sesión para retomar tu proceso.</p>
+      <a class="auth-btn" href="#aplicar">Registrarse</a>
+      <a class="auth-btn" href="login.html">Iniciar sesión</a>
+    </div>
+    <div class="orientation-next" id="orientationNext">
+      <p>Descubre tus intereses y conoce carreras que podrían ajustarse a tu perfil.</p>
+      <a class="primary-link" href="testvocacional-pc.html">Realizar test de orientación vocacional →</a>
+    </div>
+  </section>
+
+  <section class="auth-strip" id="acceso" aria-label="Acceso para postulantes">
+    <a class="auth-btn" href="#aplicar">Registrarse</a>
+    <a class="auth-btn" href="login.html">Iniciar sesión</a>
+  </section>
+
+  <section class="about">
+    <h2 class="section-title">¿QUÉ SON LAS BECAS POR NUESTRO FUTURO?</h2>
+    <p>Este programa nace del Fondo Nacional de Becas creado el 11 de marzo de 2025 como una de las prioridades nacionales del gobierno del Presidente Bernardo Arévalo que busca apoyar a estudiantes guatemaltecos para que puedan <strong>iniciar, continuar o finalizar sus estudios de educación superior o formación técnica</strong>, dentro o fuera del país.</p>
+  </section>
+
+  <section class="types" id="tipos">
+    <h2 class="section-title">TIPOS DE BECA</h2>
+
+    <article class="type-row pregrado">
+      <div class="type-visual"><img src="assets/pregrado.png" alt="Estudiante de pregrado"></div>
+      <div class="type-copy">
+        <h3>Becas de pregrado</h3>
+        <div class="subtitle">(licenciatura y técnico universitario)</div>
+        <p>Está dirigida a guatemaltecos/as que han concluido la educación media (nivel diversificado) y desean continuar sus estudios de licenciatura o técnicos universitarios en universidades acreditadas del país. Las becas también pueden cubrir cursos propedéuticos que se necesiten antes de iniciar la carrera universitaria.</p>
+        <button class="requirements-btn" data-requirement="pregrado">Ver requisitos</button>
+      </div>
+    </article>
+
+    <article class="type-row posgrado">
+      <div class="type-visual"><img src="assets/posgrado.png" alt="Estudiante de posgrado"></div>
+      <div class="type-copy">
+        <h3>Posgrados</h3>
+        <div class="subtitle">(maestrías y doctorados)</div>
+        <p>Está dirigida a guatemaltecas/os profesionales que han concluido sus estudios universitarios de pregrado y que buscan especializarse con un posgrado en una universidad nacional o internacional.</p>
+        <button class="requirements-btn" data-requirement="posgrado">Ver requisitos</button>
+      </div>
+    </article>
+
+    <article class="type-row tecnico">
+      <div class="type-visual"><img src="assets/tecnico.png" alt="Estudiante de curso técnico"></div>
+      <div class="type-copy">
+        <h3>Cursos técnicos no universitarios</h3>
+        <p>Está dirigida a guatemaltecos/as que buscan capacitarse en oficios técnicos de corta duración para insertarse rápidamente en el mercado laboral o que buscan mejorar sus condiciones laborales actuales.</p>
+        <button class="requirements-btn" data-requirement="tecnico">Ver requisitos</button>
+      </div>
+    </article>
+  </section>
+
+  <section id="requisitos" class="info-section"><h2>Requisitos</h2><p>Consulta los requisitos específicos desde el botón <strong>Ver requisitos</strong> disponible en cada tipo de beca.</p></section>
+  <section id="aplicar" class="info-section"><h2>Aplicar</h2><p>Esta maqueta conserva el acceso de registro e inicio de sesión para simular el recorrido del postulante.</p><a class="primary-link" href="#acceso">Ir a Registrarse / Iniciar sesión</a></section>
+  <section id="alianzas" class="info-section"><h2>Alianzas</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
+  <section id="faq" class="info-section"><h2>Preguntas frecuentes</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
+  <section id="publica" class="info-section"><h2>Información pública</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
+</main>
+
+<div class="modal-backdrop" id="requirementsModal" role="dialog" aria-modal="true" aria-labelledby="requirementsTitle">
+  <div class="modal">
+    <div class="modal-header"><h2 id="requirementsTitle">Requisitos</h2><button class="modal-close" type="button" aria-label="Cerrar">×</button></div>
+    <div class="modal-body" id="requirementsBody"></div>
+  </div>
+</div>
+<script src="js/home.js"></script>
+</body>
+</html>

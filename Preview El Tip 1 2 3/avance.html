@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Progreso — Fondo Nacional de Becas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     MI PROGRESO — Fondo Nacional de Becas
+     Componente autocontenido para inserción en WordPress
+     (bloque HTML personalizado / shortcode / iframe)
+     ============================================================ */
+
+  :root{
+    --cream:      #FFFFFF;
+    --cream-deep: #F4F8FC;
+    --ink:        #12325C;
+    --ink-soft:   #52657D;
+    --olive:      #FFE142;
+    --olive-dark: #F6A620;
+    --clay:       #FFE88A;
+    --clay-deep:  #F6A620;
+    --coffee:     #12325C;
+    --coffee-deep:#12325C;
+    --cta:        #23B7E0;
+    --cta-deep:   #0C6CB0;
+    --purple:     #8B3FA0;
+    --success:    #25D366;
+    --white:      #FFFFFF;
+    --line:       rgba(29,43,69,0.10);
+    --radius-lg:  28px;
+    --radius-md:  18px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background:#FFFFFF;
+    color:var(--ink);
+    font-family:'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mp-root{
+    max-width:1080px;
+    margin:0 auto;
+    padding:40px 20px 64px;
+    background:#FFFFFF;
+  }
+
+  /* ---------- eyebrow / header ---------- */
+  .mp-eyebrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--coffee);
+    margin-bottom:18px;
+  }
+  .mp-eyebrow::before,.mp-eyebrow::after{
+    content:"";
+    width:28px; height:1px;
+    background:var(--clay-deep);
+  }
+
+  .mp-title{
+    text-align:center;
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:clamp(20px,3vw,28px);
+    color:var(--ink);
+    margin:0 0 4px;
+  }
+  .mp-sub{
+    text-align:center;
+    font-size:15px;
+    color:var(--ink-soft);
+    margin:0 0 30px;
+  }
+
+  /* ---------- hero percent ---------- */
+  .mp-hero{
+    text-align:center;
+    margin-bottom:6px;
+  }
+  .mp-percent{
+    font-family:'Poppins', sans-serif;
+    font-weight:800;
+    font-size:clamp(56px,9vw,88px);
+    line-height:1;
+    color:var(--ink);
+    letter-spacing:-0.02em;
+  }
+  .mp-percent sup{
+    font-size:0.38em;
+    font-weight:500;
+    top:-0.5em;
+  }
+  .mp-phase-current-name{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:clamp(18px,2.4vw,24px);
+    color:var(--coffee-deep);
+    margin-top:6px;
+  }
+
+  /* ============================================================
+     THREAD PROGRESS — anterior / actual / siguiente
+     ============================================================ */
+  .mp-thread-wrap{
+    margin:34px auto 8px;
+    max-width:720px;
+  }
+
+  .mp-track{
+    position:relative;
+    height:14px;
+    border-radius:999px;
+    background:var(--cream-deep);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .mp-track-fill{
+    position:absolute; inset:0 auto 0 0;
+    height:100%;
+    width:var(--fill, 45%);
+    background:linear-gradient(90deg, var(--cta-deep), var(--cta));
+    border-radius:999px 0 0 999px;
+    transition:width .6s ease;
+  }
+  .mp-track-tick{
+    position:absolute;
+    top:-9px;
+    left:var(--fill, 45%);
+    transform:translateX(-50%);
+    width:3px; height:32px;
+    background:var(--ink);
+    border-radius:2px;
+  }
+
+  .mp-beads{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:6px;
+    margin-top:26px;
+  }
+  .mp-bead{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-align:center;
+  }
+  .mp-bead-circle{
+    border-radius:50%;
+    background:var(--clay);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--coffee-deep);
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .mp-bead-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    max-width:110px;
+    line-height:1.25;
+  }
+  .mp-bead-tag{
+    font-family:'Inter', sans-serif;
+    font-size:9.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--clay-deep);
+  }
+  .mp-bead.current .mp-bead-tag{ color:var(--coffee); font-weight:700; }
+
+  .mp-bead.prev{ opacity:.85; }
+  .mp-bead.prev .mp-bead-circle{ width:64px; height:64px; background:var(--olive-dark); color:var(--white); }
+  .mp-bead.next .mp-bead-circle{ width:64px; height:64px; background:var(--cream-deep); color:var(--clay-deep); border:1.5px dashed var(--clay-deep); }
+  .mp-bead.next{ opacity:.85; }
+
+  .mp-bead.current .mp-bead-circle{
+    width:128px; height:128px;
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark));
+    color:var(--coffee);
+    border:3px solid #FFFFFF;
+    box-shadow:
+      0 0 0 4px #FFFFFF,
+      0 0 0 7px var(--olive-dark),
+      0 12px 28px -10px rgba(18,50,92,0.35);
+  }
+  .mp-bead.current.is-doc-phase .mp-bead-circle{
+    background:var(--semaforo-color);
+    color:var(--semaforo-ink);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 8px var(--semaforo-color), 0 12px 28px -10px rgba(18,50,92,.4);
+  }
+  .mp-bead.current.is-doc-complete .mp-bead-circle{
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 8px var(--success), 0 0 0 12px rgba(37,211,102,.20), 0 14px 30px -10px rgba(18,50,92,.42);
+  }
+  .mp-current-percent{
+    font-family:'Poppins', sans-serif;
+    font-size:34px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.04em;
+  }
+  .mp-current-percent small{ font-size:.48em; letter-spacing:0; }
+  .mp-bead.current .mp-bead-label{
+    font-weight:600;
+    color:var(--ink);
+    font-size:13.5px;
+    max-width:150px;
+  }
+
+  .mp-connector{
+    width:34px; height:1px;
+    background:repeating-linear-gradient(90deg, var(--clay-deep) 0 6px, transparent 6px 11px);
+    margin-bottom:32px;
+  }
+
+  /* ============================================================
+     REASSURANCE PANEL
+     ============================================================ */
+  .mp-panel{
+    margin:38px auto 0;
+    max-width:640px;
+    text-align:center;
+  }
+  .mp-panel-headline{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    color:var(--ink);
+    margin:0 0 10px;
+  }
+  .mp-panel-note{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    line-height:1.55;
+    margin:0 0 26px;
+  }
+  .mp-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(180deg, var(--cta), var(--cta-deep));
+    color:var(--white);
+    text-decoration:none;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    padding:14px 26px;
+    border-radius:999px;
+    box-shadow:0 10px 24px -10px rgba(32,110,134,0.6);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .mp-cta:hover{ transform:translateY(-2px); box-shadow:0 14px 28px -10px rgba(32,110,134,0.7); }
+  .mp-cta svg{ width:16px; height:16px; }
+
+  /* ============================================================
+     FULL ROADMAP — 11 fases, disposición serpenteante
+     ============================================================ */
+  .mp-roadmap{
+    margin:0 auto 64px;
+    max-width:1000px;
+  }
+  .mp-roadmap-section{
+    margin-top:56px;
+    padding-top:38px;
+    border-top:1px solid var(--line);
+  }
+  .mp-roadmap-title{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--coffee);
+    text-align:center;
+    margin:0 0 22px;
+  }
+
+  .mp-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    gap:4px;
+    position:relative;
+  }
+  .mp-row.reverse{ flex-direction:row-reverse; margin-top:6px; }
+
+  .mp-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    width:110px;
+    text-align:center;
+    position:relative;
+  }
+  .mp-node-circle{
+    width:58px; height:58px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--clay);
+    color:var(--coffee-deep);
+    font-weight:700;
+    font-size:13px;
+    flex-shrink:0;
+    border:2px solid transparent;
+    position:relative;
+  }
+  .mp-node-label{
+    font-size:11.5px;
+    line-height:1.25;
+    color:var(--ink-soft);
+  }
+  .mp-node-arrow{
+    position:absolute;
+    top:29px;
+    right:-14px;
+    width:26px; height:12px;
+    color:var(--clay-deep);
+  }
+  .mp-row.reverse .mp-node-arrow{
+    right:auto; left:-14px;
+    transform:scaleX(-1);
+  }
+  .mp-node:last-child .mp-node-arrow{ display:none; }
+
+  .mp-node.avatar .mp-node-circle{
+    background:var(--coffee);
+    color:var(--white);
+  }
+  .mp-node.avatar .mp-node-label{ font-weight:600; color:var(--coffee-deep); }
+
+  .mp-node.done .mp-node-circle{
+    background:var(--olive-dark);
+    color:var(--white);
+  }
+  .mp-node.done .mp-node-label{ color:var(--ink); }
+
+  .mp-node.current .mp-node-circle{
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark));
+    border-color:#FFFFFF;
+    color:var(--coffee);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--olive-dark);
+    transform:scale(1.12);
+  }
+  .mp-node.current.is-doc-node .mp-node-circle{
+    background:var(--semaforo-color);
+    color:var(--semaforo-ink);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--semaforo-color);
+  }
+  .mp-node.current.is-doc-complete .mp-node-circle{
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 6px var(--success), 0 0 0 9px rgba(37,211,102,.20);
+  }
+  .mp-node-percent{
+    font-family:'Poppins', sans-serif;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:-.03em;
+  }
+  .mp-node.current .mp-node-label{
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .mp-node.upcoming .mp-node-circle{
+    background:var(--cream-deep);
+    color:var(--ink-soft);
+    border:1.5px dashed var(--clay-deep);
+  }
+
+  .mp-node-semaforo-dot{
+  position:absolute;
+  top:-3px; right:-3px;
+  width:14px; height:14px;
+  border-radius:50%;
+  background:#4C9F52;
+  border:2px solid var(--cream);
+  box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+
+  /* ============================================================
+   PERSONAJES INTERACTIVOS Y BURBUJAS
+   ============================================================ */
+  .mp-chars-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 850px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+  min-height: 110px;
+  }
+  .mp-char-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  flex: 1;
+  }
+  .mp-char-box.visible {
+  opacity: 1;
+  visibility: visible;
+  }
+  .mp-char-box.right {
+  flex-direction: row-reverse;
+  text-align: right;
+  }
+  .mp-char-img {
+  width: 75px;
+  height: auto;
+  flex-shrink: 0;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
+  }
+  .mp-bubble {
+  position: relative;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 240px;
+  transition: opacity 0.4s ease;
+  line-height: 1.4;
+  }
+  /* Burbuja Postulante (Izquierda) */
+  .mp-char-box.left .mp-bubble {
+  background: #f0f4f8;
+  border: 2px solid #0056b3;
+  color: #12325C;
+  }
+  .mp-char-box.left .mp-bubble::after {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 7px 10px 7px 0;
+  border-style: solid;
+  border-color: transparent #0056b3 transparent transparent;
+  }
+  /* Burbuja Becas (Derecha) */
+  .mp-char-box.right .mp-bubble {
+  background-color: #0056b3;
+  color: #ffffff;
+  }
+  .mp-char-box.right .mp-bubble::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 11px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0056b3;
+  }
+
+  @media (max-width: 620px) {
+  .mp-chars-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 20px;
+  }
+  .mp-char-box { justify-content: center; width: 100%; }
+  .mp-char-box.right { flex-direction: row; text-align: left; }
+  .mp-char-box.right .mp-bubble { text-align: left; }
+  .mp-char-box.right .mp-bubble::after {
+    right: auto;
+    left: -10px;
+    border-width: 7px 10px 7px 0;
+    border-color: transparent #0056b3 transparent transparent;
+  }
+  .mp-bubble { max-width: 280px; }
+  }
+
+
+  /* ============================================================
+     SIDEBAR ACORDEÓN — cambio manual de fase (solo demo/pruebas)
+     ============================================================ */
+  .mp-sidebar{
+    position:fixed;
+    top:50%;
+    right:0;
+    transform:translateY(-50%);
+    display:flex;
+    align-items:stretch;
+    z-index:200;
+    font-family:'Inter', sans-serif;
+  }
+  .mp-sidebar-tab{
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:34px;
+    padding:16px 0;
+    background:var(--coffee);
+    color:var(--white);
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    border-radius:10px 0 0 10px;
+    cursor:pointer;
+    box-shadow:-4px 0 14px -6px rgba(29,43,69,0.35);
+    flex-shrink:0;
+  }
+  .mp-sidebar-tab svg{ width:14px; height:14px; transform:rotate(90deg); }
+
+  .mp-sidebar-panel{
+    width:0;
+    max-height:82vh;
+    overflow:hidden;
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-right:none;
+    border-radius:14px 0 0 14px;
+    box-shadow:-10px 0 30px -12px rgba(29,43,69,0.35);
+    transition:width .25s ease;
+  }
+  .mp-sidebar.open .mp-sidebar-panel{
+    width:300px;
+  }
+  .mp-sidebar-panel-inner{
+    width:300px;
+    padding:18px 18px 20px;
+    max-height:82vh;
+    overflow-y:auto;
+  }
+  .mp-sidebar-title{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+    margin:0 0 3px;
+  }
+  .mp-sidebar-hint{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+    line-height:1.4;
+  }
+
+  .mp-acc-group + .mp-acc-group{ margin-top:8px; }
+  .mp-acc-header{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    background:var(--cream-deep);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--ink);
+    cursor:pointer;
+    text-align:left;
+  }
+  .mp-acc-header svg{
+    width:14px; height:14px;
+    color:var(--clay-deep);
+    transition:transform .2s ease;
+    flex-shrink:0;
+  }
+  .mp-acc-group.open .mp-acc-header svg{ transform:rotate(180deg); }
+
+  .mp-acc-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .mp-acc-group.open .mp-acc-body{ max-height:600px; }
+
+  .mp-acc-item{
+    padding:10px 6px 10px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  .mp-acc-item:last-child{ border-bottom:none; }
+
+  .mp-acc-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:none;
+    border:none;
+    padding:2px 0;
+    font-family:'Inter', sans-serif;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-align:left;
+    cursor:pointer;
+    line-height:1.3;
+  }
+  .mp-acc-btn .mp-acc-num{
+    flex-shrink:0;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--cream-deep);
+    border:1px solid var(--clay-deep);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700;
+    color:var(--coffee-deep);
+  }
+  .mp-acc-item.is-current .mp-acc-btn{ color:var(--ink); font-weight:700; }
+  .mp-acc-item.is-current .mp-acc-btn .mp-acc-num{
+    background:linear-gradient(145deg, var(--olive), var(--olive-dark)); border-color:var(--olive-dark); color:var(--coffee);
+  }
+  .mp-acc-btn:hover{ color:var(--ink); }
+
+  .mp-semaforo{
+    margin:8px 0 2px 29px;
+    padding:10px;
+    background:var(--cream-deep);
+    border-radius:8px;
+  }
+  .mp-semaforo-row{
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:6px;
+  }
+  .mp-semaforo-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#4C9F52; flex-shrink:0;
+  }
+  .mp-semaforo-label{
+    font-size:11px; color:var(--ink-soft);
+  }
+  .mp-semaforo-pct{
+    margin-left:auto;
+    font-family:'Inter', sans-serif;
+    font-size:11px; font-weight:600; color:var(--ink);
+  }
+  .mp-semaforo input[type="range"]{
+    width:100%;
+    accent-color:var(--olive-dark);
+  }
+
+  @media (max-width: 620px){
+    .mp-sidebar.open .mp-sidebar-panel{ width:82vw; max-width:300px; }
+    .mp-sidebar-panel-inner{ width:100%; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    .mp-row, .mp-row.reverse{
+      overflow-x:auto;
+      justify-content:flex-start;
+      padding-bottom:10px;
+      -webkit-overflow-scrolling:touch;
+    }
+    #mpRowLink{ display:none; }
+  }
+  @media (max-width: 620px){
+    .mp-bead.prev, .mp-bead.next{ display:none; }
+    .mp-connector{ display:none; }
+    .mp-bead.current .mp-bead-circle{ width:112px; height:112px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mp-root">
+
+  <h1 class="mp-title">Mi Progreso</h1>
+  <p class="mp-sub">Así avanza tu expediente, paso a paso.</p>
+
+  <!-- ===================== HERO % ===================== -->
+  <div class="mp-hero">
+    <div class="mp-percent" id="mpPercentText">45<sup>%</sup></div>
+    <div class="mp-phase-current-name" id="mpHeroPhaseName">Evaluación Financiera</div>
+  </div>
+
+  <!-- ===================== THREAD PROGRESS ===================== -->
+  <div class="mp-thread-wrap">
+    <div class="mp-track">
+      <div class="mp-track-fill" id="mpTrackFill"></div>
+      <div class="mp-track-tick" id="mpTrackTick"></div>
+    </div>
+
+    <div class="mp-beads" id="mpBeads">
+      <!-- generado por JS: anterior / actual / siguiente -->
+  </div>
+  </div>
+
+  <!-- ===================== PERSONAJES INTERACTIVOS ===================== -->
+  <div class="mp-chars-container" id="mpCharsContainer">
+    <div id="char-left" class="mp-char-box left">
+      <img id="img-left" src="" class="mp-char-img" alt="Postulante">
+      <div class="mp-bubble" id="bubble-left"></div>
+    </div>
+    <div id="char-right" class="mp-char-box right">
+      <img id="img-right" src="" class="mp-char-img" alt="Becas">
+      <div class="mp-bubble" id="bubble-right"></div>
+    </div>
+  </div>
+
+  <!-- ===================== PANEL DE TRANQUILIDAD ===================== -->
+
+  <div class="mp-panel">
+    <p class="mp-panel-headline" id="mpPanelHeadline">Se está determinando el monto de tu beca según tu expediente.</p>
+    <p class="mp-panel-note">Un profesional del área se estará comunicando contigo si existiera algún inconveniente en tu papelería. Recordá visitar el portal para conocer a mayor detalle tu proceso.</p>
+  </div>
+
+  <section class="mp-roadmap-section" aria-labelledby="mpRoadmapTitle">
+    <div class="mp-roadmap-title" id="mpRoadmapTitle">Tu ruta completa</div>
+
+    <!-- ===================== RUTA COMPLETA (11 fases) ===================== -->
+    <div class="mp-roadmap">
+      <div style="position:relative;" id="mpRoadmapWrap">
+        <div class="mp-row" id="mpRow1"></div>
+        <div class="mp-row reverse" id="mpRow2"></div>
+        <svg id="mpRowLink" style="position:absolute; overflow:visible; pointer-events:none; color:var(--clay-deep);"></svg>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== SIDEBAR ACORDEÓN (cambio manual de fase) ===================== -->
+<div class="mp-sidebar" id="mpSidebar">
+  <div class="mp-sidebar-tab" id="mpSidebarTab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    Fases
+  </div>
+  <div class="mp-sidebar-panel">
+    <div class="mp-sidebar-panel-inner">
+      <p class="mp-sidebar-title">Cambiar fase</p>
+      <p class="mp-sidebar-hint">Solo para pruebas: elegí una fase para ver cómo se actualiza la vista.</p>
+      <div id="mpAccordion"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  /* ============================================================
+     CONFIGURACIÓN — editar aquí para conectar con datos reales
+     (por ejemplo, inyectados desde WordPress/PHP con datos del
+     usuario autenticado, o vía una llamada a un endpoint propio)
+     ============================================================ */
+    var CONFIG = {
+    portalUrl: "#",   // enlace del botón CTA
+    currentPhaseId: 1,                                   // 1..11, ver PHASES abajo
+    docSemaforoPercent: 66,                              // 0..100, solo fase 1
+    gender: 'm'                                          // 'm' o 'f' para los avatares
+  };
+
+    var CHAR_DATA = {
+    postulant: {
+      visibleIn: [1, 2],
+      images: {
+        m: "https://eltip.gt/wp-content/uploads/2026/08/m-postulante-1.png",
+        f: "https://eltip.gt/wp-content/uploads/2026/08/f-postulante.png"
+      },
+      phases: {
+        1: ["¿Ya cargaste tus documentos?", "¿Ya has completado tu expediente?", "¡Recuerda revisar que todo esté legible!"],
+        2: ["Estamos confirmando mi papelería.", "¿Recibiste algún mensaje de revisión?", "Espero que mis documentos estén correctos."]
+      },
+      defaultMessages: ["¿Cómo va mi proceso?", "¿Tienes alguna duda sobre mi papelería?"]
+    },
+    staff: {
+      visibleIn: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      images: {
+        m: "https://eltip.gt/wp-content/uploads/2026/08/m-becas-1.png",
+        f: "https://eltip.gt/wp-content/uploads/2026/08/f-becas-1.png"
+      },
+      phases: {
+        2: ["Un profesional revisará tu papelería pronto.", "Estamos validando tus documentos."],
+        3: ["¡Tus documentos han sido validados!", "Todo está en orden con tu papelería."],
+        4: ["Estamos analizando tu situación socioeconómica.", "Evaluando el entorno para tu beca."],
+        5: ["Revisamos tu historial académico.", "Confirmando tus méritos escolares."],
+        6: ["Calculando el monto de apoyo financiero.", "Fase de determinación de cuotas."],
+        7: ["El área jurídica está revisando el expediente.", "Validación legal de tu proceso."],
+        8: ["Tu caso está ante el Comité de Becas.", "Esperando la resolución del comité."],
+        9: ["¡Tu contrato está siendo generado!", "Preparando la documentación final."],
+        10: ["Tu contrato está listo para firma.", "Enviado a SEGEPLAN para registro."],
+        11: ["¡Beca activa! Dale seguimiento a tus notas.", "Recuerda mantener tu promedio."]
+      },
+      defaultMessages: ["Estamos trabajando en tu expediente.", "Pronto recibirás una actualización."]
+    }
+  };
+
+
+
+  var PHASES = [
+    { id:1,  name:"Carga de documentos",                    short:"Carga de\ndocumentos",         range:[0,9],   group:"doc",
+      note:"Subiste tu papelería al portal. Estamos confirmando que todo esté completo." },
+    { id:2,  name:"Revisión de Documentación",               short:"Revisión de\nDocumentación",   range:[9,18],  group:"doc",
+      note:"Un profesional revisa que cada documento cumpla los requisitos del fondo." },
+    { id:3,  name:"Documentos Validados",                    short:"Documentos\nValidados",        range:[18,27], group:"doc",
+      note:"Tu papelería quedó validada. Podés continuar al siguiente paso sin pendientes." },
+    { id:4,  name:"Análisis Socioeconómico",                 short:"Análisis\nSocioeconómico",     range:[27,36], group:"eval",
+      note:"Estamos evaluando tu situación socioeconómica para definir el apoyo que te corresponde." },
+    { id:5,  name:"Análisis Académico",                      short:"Análisis\nAcadémico",          range:[36,45], group:"eval",
+      note:"Revisamos tu historial académico para confirmar que cumplís los requisitos de la beca." },
+    { id:6,  name:"Evaluación Financiera",                   short:"Evaluación\nFinanciera",       range:[45,55], group:"eval",
+      note:"Se está determinando el monto de tu beca según tu expediente." },
+    { id:7,  name:"Evaluación Jurídica",                     short:"Evaluación\nJurídica",         range:[55,64], group:"eval",
+      note:"El área legal revisa que tu expediente cumpla con la normativa del fondo." },
+    { id:8,  name:"En Proceso de aprobación de Comité",      short:"En proceso de\naprobación de Comité", range:[64,73], group:"contract",
+      note:"Tu caso está en agenda para que el Comité de Becas lo apruebe." },
+    { id:9,  name:"Generación de Contrato para Beca",        short:"Generación de\nContrato",      range:[73,82], group:"contract",
+      note:"Estamos preparando el contrato que formaliza tu beca." },
+    { id:10, name:"Firma de contrato",       short:"Firma de\ncontrato",          range:[82,91], group:"contract",
+      note:"Tu contrato fue enviado a SEGEPLAN para su registro oficial." },
+    { id:11, name:"Seguimiento Académico",                   short:"Seguimiento\nAcadémico",       range:[91,100], group:"contract",
+      note:"¡Tu beca está activa! Ahora damos seguimiento a tu desempeño académico." }
+  ];
+
+  var GROUPS = [
+    { id:"doc",      label:"Documentación" },
+    { id:"eval",      label:"Evaluación" },
+    { id:"contract",  label:"Aprobación y contrato" }
+  ];
+
+  function byId(id){ return PHASES.find(function(p){ return p.id === id; }); }
+
+  var checkIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  var stampIcon = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 5H8l1-5Z"/><path d="M6 21h12l-1-7H7l-1 7Z"/><path d="M9 8v3M15 8v3M12 8v3"/></svg>';
+  var dotIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-dasharray="2 3"/></svg>';
+  var arrowSvg = '<svg class="mp-node-arrow" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M1 6h20M16 1l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var row1Ids = [1,2,3,4,5,6];
+  var row2Ids = [7,8,9,10,11];
+
+  /* ---------- Semáforo (fase 1: Carga de documentos) ---------- */
+  function semaforoColor(pct){
+    if(pct < 34) return "#D6553F";   // rojo
+    if(pct < 80) return "#E0A73D";   // amarillo
+    if(pct < 100) return "#4C9F52";  // verde desde 80%
+    return "#25D366";                 // fase completada
+  }
+  function semaforoInk(pct){
+    return pct < 34 ? "#FFFFFF" : "#12325C";
+  }
+
+  /* ============================================================
+     RENDER — reconstruye toda la vista a partir de CONFIG
+     ============================================================ */
+  function render(){
+    var current = byId(CONFIG.currentPhaseId);
+    var prev = byId(CONFIG.currentPhaseId - 1);
+    var next = byId(CONFIG.currentPhaseId + 1);
+    // El progreso general corresponde al porcentaje alcanzado al completar
+    // la fase actual. Así, la fase 11 culmina correctamente en 100%.
+    var percent = current.range[1];
+
+    /* ---- Hero + track ---- */
+    document.getElementById('mpPercentText').innerHTML = percent + '<sup>%</sup>';
+    document.getElementById('mpHeroPhaseName').textContent = current.name;
+    document.getElementById('mpTrackFill').style.setProperty('--fill', percent + '%');
+    document.getElementById('mpTrackTick').style.setProperty('--fill', percent + '%');
+    document.getElementById('mpPanelHeadline').textContent = current.note;
+
+    /* ---- Beads: anterior / actual / siguiente ---- */
+    var beadsHtml = '';
+    if(prev){
+      beadsHtml += '<div class="mp-bead prev"><div class="mp-bead-circle">'+checkIcon+'</div>' +
+        '<div class="mp-bead-tag">Completado</div>' +
+        '<div class="mp-bead-label">'+prev.name+'</div></div>' +
+        '<div class="mp-connector"></div>';
+    }
+    var isDocPhase = current.id === 1;
+    var currentCircleContent = isDocPhase
+      ? '<span class="mp-current-percent" id="mpCurrentDocPercent">'+CONFIG.docSemaforoPercent+'<small>%</small></span>'
+      : stampIcon;
+    var currentSemaforoStyle = isDocPhase ? ' style="--semaforo-color:'+semaforoColor(CONFIG.docSemaforoPercent)+';--semaforo-ink:'+semaforoInk(CONFIG.docSemaforoPercent)+'"' : '';
+    beadsHtml += '<div class="mp-bead current'+(isDocPhase?' is-doc-phase':'')+(isDocPhase && CONFIG.docSemaforoPercent === 100?' is-doc-complete':'')+'"'+currentSemaforoStyle+'><div class="mp-bead-circle">'+currentCircleContent+'</div>' +
+      '<div class="mp-bead-tag">Estás aquí</div>' +
+      '<div class="mp-bead-label">'+current.name+'</div></div>';
+    if(next){
+      beadsHtml += '<div class="mp-connector"></div>' +
+        '<div class="mp-bead next"><div class="mp-bead-circle">'+dotIcon+'</div>' +
+        '<div class="mp-bead-tag">Siguiente</div>' +
+        '<div class="mp-bead-label">'+next.name+'</div></div>';
+    }
+    document.getElementById('mpBeads').innerHTML = beadsHtml;
+
+    /* ---- Roadmap completo ---- */
+    function nodeStatus(id){
+      if(id < current.id) return 'done';
+      if(id === current.id) return 'current';
+      return 'upcoming';
+    }
+    function renderRow(ids){
+      return ids.map(function(id){
+        var p = byId(id);
+        var status = nodeStatus(id);
+        var isCurrentDoc = id === 1 && status === 'current';
+        var circleContent = isCurrentDoc
+          ? '<span class="mp-node-percent" id="mpRoadmapDocPercent">'+CONFIG.docSemaforoPercent+'%</span>'
+          : (status === 'done' ? checkIcon : p.id);
+        var semaforoDot = (id === 1 && !isCurrentDoc) ? '<span class="mp-node-semaforo-dot" style="background:'+semaforoColor(CONFIG.docSemaforoPercent)+'"></span>' : '';
+        var nodeStyle = isCurrentDoc ? ' style="--semaforo-color:'+semaforoColor(CONFIG.docSemaforoPercent)+';--semaforo-ink:'+semaforoInk(CONFIG.docSemaforoPercent)+'"' : '';
+        return '<div class="mp-node '+status+(isCurrentDoc?' is-doc-node':'')+(isCurrentDoc && CONFIG.docSemaforoPercent === 100?' is-doc-complete':'')+'"'+nodeStyle+'>' +
+          '<div class="mp-node-circle">'+circleContent+semaforoDot+'</div>' +
+          '<div class="mp-node-label">'+p.short.replace('\n','<br>')+'</div>' +
+          arrowSvg +
+          '</div>';
+      }).join('');
+    }
+    document.getElementById('mpRow1').innerHTML =
+      '<div class="mp-node avatar"><div class="mp-node-circle">Yo</div><div class="mp-node-label">Mi<br>progreso</div>' + arrowSvg + '</div>' +
+      renderRow(row1Ids);
+    document.getElementById('mpRow2').innerHTML = renderRow(row2Ids);
+
+        drawRowLink();
+    scrollToCurrentOnMobile(current);
+    renderAccordion(current);
+    updateCharacters(current.id);
+  }
+
+  /* ============================================================
+     LOGICA DE PERSONAJES E INTERACCIÓN
+     ============================================================ */
+  var messageIntervals = { left: null, right: null };
+  var imageCache = {};
+
+  function preloadImage(src) {
+    if (!imageCache[src]) {
+      imageCache[src] = new Promise(function(resolve, reject) {
+        var loader = new Image();
+        loader.onload = function() {
+          if (typeof loader.decode === 'function') {
+            loader.decode().catch(function(){}).then(function(){ resolve(src); });
+          } else {
+            resolve(src);
+          }
+        };
+        loader.onerror = function(){ reject(new Error('No se pudo cargar: ' + src)); };
+        loader.src = src;
+      });
+    }
+    return imageCache[src];
+  }
+
+  function preloadCharacterImages() {
+    Object.keys(CHAR_DATA).forEach(function(type) {
+      Object.keys(CHAR_DATA[type].images).forEach(function(gender) {
+        preloadImage(CHAR_DATA[type].images[gender]).catch(function(error) {
+          console.warn(error.message);
+        });
+      });
+    });
+  }
+
+    function updateCharacters(phaseId) {
+    setupChar('left', 'postulant', phaseId, 'f'); // Postulante inicia femenino
+    setupChar('right', 'staff', phaseId, 'm');    // Staff inicia masculino
+    startRotation();
+  }
+
+    function setupChar(side, type, phaseId, initialGender) {
+    var data = CHAR_DATA[type];
+    var box = document.getElementById('char-' + side);
+    var img = document.getElementById('img-' + side);
+    var bubble = document.getElementById('bubble-' + side);
+
+    if (data.visibleIn.indexOf(phaseId) !== -1) {
+      var gender = img.getAttribute('data-gender') || initialGender || CONFIG.gender;
+      img.setAttribute('data-gender', gender);
+      img.setAttribute('data-type', type);
+      img.setAttribute('data-phase-id', phaseId); // Guardar fase actual en el elemento
+
+      // Cargar primer mensaje de la fase actual
+      var messages = data.phases[phaseId] || data.defaultMessages;
+      bubble.textContent = messages[0];
+
+      updateImageSource(img, data.images[gender]).then(function() {
+        // Evita mostrar una carga anterior si el usuario ya cambió de fase.
+        if (img.getAttribute('data-phase-id') === String(phaseId)) {
+          box.classList.add('visible');
+        }
+      }).catch(function(error) {
+        console.warn(error.message);
+        if (img.getAttribute('data-phase-id') === String(phaseId)) {
+          box.classList.add('visible');
+        }
+      });
+    } else {
+      box.classList.remove('visible');
+    }
+  }
+
+
+  function updateImageSource(img, src) {
+    return preloadImage(src).then(function() {
+      img.src = src;
+      if (typeof img.decode === 'function') {
+        return img.decode().catch(function(){});
+      }
+    });
+  }
+
+  function startRotation() {
+    if (messageIntervals.left) clearInterval(messageIntervals.left);
+    if (messageIntervals.right) clearInterval(messageIntervals.right);
+
+    messageIntervals.left = setInterval(function() {
+      rotateCharacter('left');
+    }, 7000);
+
+    messageIntervals.right = setInterval(function() {
+      rotateCharacter('right');
+    }, 8500);
+  }
+
+    function rotateCharacter(side) {
+    var bubble = document.getElementById('bubble-' + side);
+    var img = document.getElementById('img-' + side);
+    var box = bubble.closest('.mp-char-box');
+
+    if (!bubble || !box.classList.contains('visible')) return;
+
+    var type = img.getAttribute('data-type');
+    var phaseId = img.getAttribute('data-phase-id');
+    var data = CHAR_DATA[type];
+    var messages = data.phases[phaseId] || data.defaultMessages;
+
+    // Calcular siguiente mensaje
+    var currentMsg = bubble.textContent;
+    var idx = messages.indexOf(currentMsg);
+    var nextIdx = (idx + 1) % messages.length;
+
+
+        // Alternar género
+    var currentGender = img.getAttribute('data-gender');
+    var nextGender = (currentGender === 'm') ? 'f' : 'm';
+
+    // Animación de salida (Suave)
+    bubble.style.opacity = 0;
+    img.style.opacity = 0;
+
+    setTimeout(function() {
+      bubble.textContent = messages[nextIdx];
+      updateImageSource(img, data.images[nextGender]).then(function() {
+        img.setAttribute('data-gender', nextGender);
+
+        // La entrada comienza únicamente cuando el PNG nuevo está listo.
+        requestAnimationFrame(function() {
+          bubble.style.opacity = 1;
+          img.style.opacity = 1;
+        });
+      }).catch(function(error) {
+        console.warn(error.message);
+        bubble.style.opacity = 1;
+        img.style.opacity = 1;
+      });
+    }, 450);
+  }
+
+
+
+
+  /* ---------- Conector curvo entre fila 1 y fila 2 ---------- */
+  function drawRowLink(){
+    var wrap = document.getElementById('mpRoadmapWrap');
+    var svg = document.getElementById('mpRowLink');
+    if(window.innerWidth <= 900){ return; } // oculto en móvil (filas con scroll propio)
+
+    var row1Nodes = document.querySelectorAll('#mpRow1 .mp-node');
+    var row2Nodes = document.querySelectorAll('#mpRow2 .mp-node');
+    var lastRow1 = row1Nodes[row1Nodes.length - 1];
+    var firstRow2Visual = row2Nodes[0];
+
+    var wrapRect = wrap.getBoundingClientRect();
+    var r1 = lastRow1.querySelector('.mp-node-circle').getBoundingClientRect();
+    var r2 = firstRow2Visual.querySelector('.mp-node-circle').getBoundingClientRect();
+
+    var x1 = r1.left + r1.width/2 - wrapRect.left;
+    var y1 = r1.top + r1.height - wrapRect.top;
+    var x2 = r2.left + r2.width/2 - wrapRect.left;
+    var y2 = r2.top - wrapRect.top;
+
+    svg.setAttribute('width', wrapRect.width);
+    svg.setAttribute('height', wrapRect.height);
+    svg.style.left = '0px';
+    svg.style.top = '0px';
+
+    var midY = (y1 + y2) / 2;
+    var path = 'M '+x1+' '+y1+' C '+x1+' '+midY+', '+x2+' '+midY+', '+x2+' '+(y2-4);
+    svg.innerHTML =
+      '<path d="'+path+'" stroke="currentColor" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round" fill="none"/>' +
+      '<path d="M '+(x2-4)+' '+(y2-8)+' L '+x2+' '+(y2-2)+' L '+(x2+4)+' '+(y2-8)+'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+  }
+
+  /* ---------- Auto-scroll a la fase actual en móvil ---------- */
+  function scrollToCurrentOnMobile(current){
+    if(window.innerWidth > 900) return;
+    var row = current.id <= 6 ? document.getElementById('mpRow1') : document.getElementById('mpRow2');
+    var el = row.querySelector('.mp-node.current');
+    if(el){ el.scrollIntoView({ inline:'center', block:'nearest' }); }
+  }
+
+  /* ============================================================
+     SIDEBAR ACORDEÓN
+     ============================================================ */
+  var openGroupId = null; // se fija en el grupo de la fase actual al primer render
+
+  function renderAccordion(current){
+    if(openGroupId === null){ openGroupId = current.group; }
+
+    var html = GROUPS.map(function(g){
+      var isOpen = g.id === openGroupId;
+      var itemsHtml = PHASES.filter(function(p){ return p.group === g.id; }).map(function(p){
+        var isCurrent = p.id === CONFIG.currentPhaseId;
+        var itemHtml = '<div class="mp-acc-item'+(isCurrent?' is-current':'')+'">' +
+          '<button type="button" class="mp-acc-btn" data-phase-id="'+p.id+'">' +
+          '<span class="mp-acc-num">'+p.id+'</span>' + p.name +
+          '</button>';
+
+        if(p.id === 1){
+          var col = semaforoColor(CONFIG.docSemaforoPercent);
+          itemHtml += '<div class="mp-semaforo">' +
+            '<div class="mp-semaforo-row">' +
+              '<span class="mp-semaforo-dot" id="mpSemDot" style="background:'+col+'"></span>' +
+              '<span class="mp-semaforo-label" id="mpSemLabel">'+(CONFIG.docSemaforoPercent === 100?'Fase completada':'Semáforo de carga')+'</span>' +
+              '<span class="mp-semaforo-pct" id="mpSemPct">'+CONFIG.docSemaforoPercent+'%</span>' +
+            '</div>' +
+            '<input type="range" min="0" max="100" step="1" value="'+CONFIG.docSemaforoPercent+'" id="mpSemRange">' +
+          '</div>';
+        }
+        itemHtml += '</div>';
+        return itemHtml;
+      }).join('');
+
+      return '<div class="mp-acc-group'+(isOpen?' open':'')+'" data-group-id="'+g.id+'">' +
+        '<button type="button" class="mp-acc-header">' + g.label +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
+        '</button>' +
+        '<div class="mp-acc-body">' + itemsHtml + '</div>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('mpAccordion').innerHTML = html;
+
+    /* -- listeners: expandir/colapsar grupo -- */
+    document.querySelectorAll('.mp-acc-header').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var group = btn.closest('.mp-acc-group');
+        var wasOpen = group.classList.contains('open');
+        document.querySelectorAll('.mp-acc-group').forEach(function(g){ g.classList.remove('open'); });
+        if(!wasOpen){ group.classList.add('open'); openGroupId = group.getAttribute('data-group-id'); }
+        else { openGroupId = null; }
+      });
+    });
+
+    /* -- listeners: elegir fase -- */
+    document.querySelectorAll('.mp-acc-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        CONFIG.currentPhaseId = parseInt(btn.getAttribute('data-phase-id'), 10);
+        render();
+        closeSidebar();
+      });
+    });
+
+    /* -- listener: slider del semáforo -- */
+    var range = document.getElementById('mpSemRange');
+    if(range){
+      range.addEventListener('input', function(){
+        CONFIG.docSemaforoPercent = parseInt(range.value, 10);
+        var col = semaforoColor(CONFIG.docSemaforoPercent);
+        document.getElementById('mpSemDot').style.background = col;
+        document.getElementById('mpSemPct').textContent = CONFIG.docSemaforoPercent + '%';
+        document.getElementById('mpSemLabel').textContent = CONFIG.docSemaforoPercent === 100 ? 'Fase completada' : 'Semáforo de carga';
+        var nodeDot = document.querySelector('.mp-node-semaforo-dot');
+        if(nodeDot){ nodeDot.style.background = col; }
+        var currentDocBead = document.querySelector('.mp-bead.current.is-doc-phase');
+        if(currentDocBead){
+          currentDocBead.style.setProperty('--semaforo-color', col);
+          currentDocBead.style.setProperty('--semaforo-ink', semaforoInk(CONFIG.docSemaforoPercent));
+          currentDocBead.classList.toggle('is-doc-complete', CONFIG.docSemaforoPercent === 100);
+          document.getElementById('mpCurrentDocPercent').innerHTML = CONFIG.docSemaforoPercent + '<small>%</small>';
+        }
+        var currentDocNode = document.querySelector('.mp-node.current.is-doc-node');
+        if(currentDocNode){
+          currentDocNode.style.setProperty('--semaforo-color', col);
+          currentDocNode.style.setProperty('--semaforo-ink', semaforoInk(CONFIG.docSemaforoPercent));
+          currentDocNode.classList.toggle('is-doc-complete', CONFIG.docSemaforoPercent === 100);
+          document.getElementById('mpRoadmapDocPercent').textContent = CONFIG.docSemaforoPercent + '%';
+        }
+      });
+      // evita que arrastrar el slider cierre el panel al "salir" del acordeón
+      range.addEventListener('click', function(e){ e.stopPropagation(); });
+    }
+  }
+
+  /* ---------- Abrir / cerrar sidebar ---------- */
+  var sidebar = document.getElementById('mpSidebar');
+  var suppressHover = false;
+
+  function openSidebar(){ if(!suppressHover){ sidebar.classList.add('open'); } }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    // evita que el re-render bajo el cursor dispare un mouseenter fantasma
+    suppressHover = true;
+    setTimeout(function(){ suppressHover = false; }, 400);
+  }
+
+  sidebar.addEventListener('mouseenter', openSidebar);
+  sidebar.addEventListener('mouseleave', closeSidebar);
+
+  document.addEventListener('click', function(e){
+    if(sidebar.classList.contains('open') && !sidebar.contains(e.target)){
+      closeSidebar();
+    }
+  });
+
+  // soporte táctil: tocar la pestaña abre/cierra
+  document.getElementById('mpSidebarTab').addEventListener('click', function(e){
+    e.stopPropagation();
+    sidebar.classList.toggle('open');
+  });
+
+  /* ---------- Init ---------- */
+  preloadCharacterImages();
+  render();
+  window.addEventListener('load', drawRowLink);
+  window.addEventListener('resize', drawRowLink);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(drawRowLink); }
+
+})();
+</script>
+
+
+
+<script>
+(function(){
+  let lastReportedHeight = 0;
+
+  function reportHeight(){
+    const root = document.querySelector('.mp-root');
+    if (!root || window.parent === window) return;
+
+    const h = Math.ceil(root.getBoundingClientRect().height);
+    if (Math.abs(h - lastReportedHeight) < 2) return;
+
+    lastReportedHeight = h;
+    window.parent.postMessage({type:'avance-height',height:h}, '*');
+  }
+  window.addEventListener('load', reportHeight);
+  window.addEventListener('resize', reportHeight);
+  if('ResizeObserver' in window){
+    const root = document.querySelector('.mp-root');
+    if (root) new ResizeObserver(reportHeight).observe(root);
+  }
+  setTimeout(reportHeight,300); setTimeout(reportHeight,1000);
+})();
+</script>
+</body>
+</html>

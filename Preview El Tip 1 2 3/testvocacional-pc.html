@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test de Orientación Vocacional — Becas por Nuestro Futuro</title>
+<link rel="stylesheet" href="css/test.css">
+</head>
+<body>
+<header class="test-header">
+  <img src="assets/gobierno-logo.png" alt="Gobierno de Guatemala">
+  <a href="index.html">← Volver a Becas</a>
+  <img src="assets/becas-logo.png" alt="Becas SEGEPLAN">
+</header>
+<div class="test-sidebar-wrapper" aria-label="Navegación rápida del test">
+  <button class="test-sidebar-toggle" type="button" aria-label="Abrir navegación rápida">☰</button>
+  <aside class="test-sidebar-nav">
+    <h2>Navegación</h2>
+    <a href="#participantCard">Datos</a>
+    <a href="#question-1">Preguntas 1–6</a>
+    <a href="#question-7">Preguntas 7–12</a>
+    <a href="#question-13">Preguntas 13–18</a>
+    <a href="#question-19">Preguntas 19–24</a>
+    <a href="#feedbackCard">Retroalimentación</a>
+    <a href="#results">Recomendaciones</a>
+    <a href="#faq">Preguntas frecuentes</a>
+  </aside>
+</div>
+<main class="test-page">
+  <section class="test-intro">
+    <h1>Test de Orientación Vocacional</h1>
+    <p>Responde con sinceridad. Tus respuestas se usan para identificar áreas de afinidad y relacionarlas con el listado de áreas y carreras priorizadas de Becas por Nuestro Futuro.</p>
+  </section>
+
+  <div class="test-grid">
+    <aside class="live-panel" aria-label="Intereses según tus respuestas">
+      <h2>Intereses según tus respuestas</h2>
+      <p class="hint">Se actualiza en tiempo real.</p>
+      <div id="liveInterests"><p class="live-placeholder">Aquí se mostrará la orientación y las áreas recomendadas en tiempo real.</p></div>
+      <div class="live-note"><strong>Apoyo de beca:</strong> el porcentaje otorgado puede ser del 25%, 50%, 75% o 100%, según la evaluación del programa.</div>
+    </aside>
+
+    <section class="form-panel">
+      <form id="vocationalForm" novalidate>
+        <section class="card" id="participantCard">
+          <h2>Datos del participante</h2>
+          <div class="personal-grid">
+            <div class="field"><label for="fullName">Nombre y apellido</label><input id="fullName" type="text" autocomplete="name" placeholder="Ej. Ana Pérez" required></div>
+            <div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com" required></div>
+            <div class="field"><label for="department">Departamento</label><select id="department" required><option value="">Seleccione un departamento</option></select></div>
+            <div class="field"><label for="municipality">Municipio</label><select id="municipality" disabled required><option value="">Seleccione primero un departamento</option></select></div>
+            <div class="field full custom-municipio" id="customMunicipalityWrap"><label for="customMunicipality">Escribe tu municipio</label><input id="customMunicipality" type="text" placeholder="Ej. San Juan..."><span class="field-note">Si la base no contiene centros en este municipio, se mostrarán opciones registradas en el departamento.</span></div>
+          </div>
+        </section>
+
+        <section class="card"><h2>Orientación Vocacional</h2><p style="color:#53627a;margin:0">Lee cada pregunta con atención y marca una respuesta con sinceridad.</p></section>
+        <div id="questions"></div>
+
+        <section class="card feedback" id="feedbackCard">
+          <h3>Retroalimentación</h3>
+          <p style="color:#53627a">Califica tu experiencia con el test y, si deseas, deja un comentario.</p>
+          <div class="stars" id="stars" role="radiogroup" aria-label="Calificación del test">
+            <button class="star" type="button" data-value="1" aria-label="1 estrella">★</button><button class="star" type="button" data-value="2" aria-label="2 estrellas">★</button><button class="star" type="button" data-value="3" aria-label="3 estrellas">★</button><button class="star" type="button" data-value="4" aria-label="4 estrellas">★</button><button class="star" type="button" data-value="5" aria-label="5 estrellas">★</button>
+          </div>
+          <textarea id="feedbackComment" placeholder="Comentario (opcional)"></textarea>
+          <div class="alert" id="formAlert"></div>
+          <div class="action-row"><button type="button" class="primary-btn" id="showResults">Ver recomendaciones y centros de estudio</button></div>
+        </section>
+      </form>
+    </section>
+  </div>
+
+  <section class="results" id="results">
+    <div class="results-head"><h2>Recomendaciones de orientación</h2><p>Las carreras se seleccionan según la afinidad de tus respuestas y la priorización institucional del listado de referencia.</p><p class="results-note"><strong>Nota:</strong> Este instrumento es una guía inicial rápida basada en el test CHASIDE y el modelo de John Holland (RIASEC).</p></div>
+    <div class="result-summary" id="resultSummary"></div>
+    <div class="priority-grid">
+      <article class="priority-card high"><div class="priority-title">Carreras Alta Prioridad</div><div class="priority-body" id="highPriority"></div></article>
+      <article class="priority-card medium"><div class="priority-title">Carreras Media Prioridad</div><div class="priority-body" id="mediumPriority"></div></article>
+      <article class="priority-card low"><div class="priority-title">Carreras Baja Prioridad</div><div class="priority-body" id="lowPriority"></div></article>
+    </div>
+    <section class="centers-card">
+      <h3 class="centers-title">Centros de estudio cercanos a tu ubicación</h3>
+      <div class="fallback-msg" id="fallbackMessage"></div>
+      <div class="centers-grid" id="centersGrid"></div>
+      <button type="button" class="more-centers" id="toggleCenters" hidden>Ver todos los centros</button>
+    </section>
+    <div class="pdf-row" style="flex-direction:column;align-items:center;gap:8px"><button type="button" class="primary-btn pdf-btn" id="pdfButton">Generar / imprimir PDF de resultados</button><small style="color:#66758b">En el cuadro de impresión puedes seleccionar “Guardar como PDF” o enviar el reporte a una impresora.</small></div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details open><summary>¿Qué nivel de educación cubre la beca?</summary><p>El programa contempla opciones de formación técnica, pregrado y posgrado según la convocatoria y los requisitos aplicables.</p></details>
+    <details><summary>¿La beca cubre carreras técnicas?</summary><p>Sí. La página principal muestra los requisitos específicos de cursos técnicos no universitarios y de técnico universitario dentro de pregrado.</p></details>
+    <details><summary>¿SEGEPLAN elige mi carrera?</summary><p>El test presenta una orientación basada en tus respuestas y en las áreas priorizadas; la decisión final de carrera y centro de estudio corresponde a la persona postulante.</p></details>
+    <details><summary>¿Por qué algunos centros aparecen aunque no estén en mi municipio?</summary><p>Cuando la base no tiene centros registrados específicamente en tu municipio, se muestran opciones disponibles en el departamento y se indica claramente ese cambio de alcance.</p></details>
+  </section>
+</main>
+<script src="data/centros-data.js"></script>
+<script src="data/areas-priorizadas.js"></script>
+<script src="js/test.js"></script>
+</body>
+</html>
