@@ -23,6 +23,7 @@
   h2:first-child{margin-top:0}h3{font-size:17px;color:var(--navy);margin:20px 0 8px}
   p{margin:7px 0 12px}.lead{font-size:17px;color:#36517f}
   .notice{background:#fff8e8;border-left:4px solid var(--orange);padding:14px 17px;margin:18px 0;border-radius:0 8px 8px 0}
+  .info{background:#eef8fb;border-left:4px solid var(--sky);padding:14px 17px;margin:18px 0;border-radius:0 8px 8px 0}
   .formula{background:var(--navy);color:#fff;border-radius:10px;text-align:center;padding:18px;margin:16px 0;font-size:18px;font-weight:700}
   .flow{display:grid;grid-template-columns:1fr 42px 1fr 42px 1fr;align-items:stretch;margin:22px 0;gap:5px}
   .flow-step{border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;background:var(--soft);display:flex;flex-direction:column;justify-content:center;min-height:105px}
@@ -36,8 +37,25 @@
   .footer-credit{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:13px}.footer-credit strong{color:var(--navy)}
   .print-button{position:fixed;right:22px;bottom:22px;border:0;border-radius:999px;background:var(--blue);color:#fff;padding:13px 20px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(13,94,182,.28)}
   @media(max-width:760px){.cover,.content{padding:30px 24px}h1{font-size:32px}.flow,.flow.second{grid-template-columns:1fr}.arrow{transform:rotate(90deg);height:30px}.cards{grid-template-columns:1fr}.bar-row{grid-template-columns:140px 1fr 42px}.footer-credit{display:block}}
-  @page{size:letter;margin:.45in}
-  @media print{body{background:#fff}.document{width:100%;margin:0;box-shadow:none}.cover{min-height:9in;break-after:page}.content{padding:0}.print-button{display:none}h2{break-after:avoid}.flow,.cards,.formula,.notice,table,.bar-row{break-inside:avoid}.footer-credit{break-inside:avoid}}
+  @page{size:letter portrait;margin:.55in}
+  @media print{
+    html,body{width:auto;height:auto;background:#fff;font-size:9pt;line-height:1.32;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .document{width:100%;margin:0;box-shadow:none}
+    .cover{height:9.9in;min-height:0;padding:.35in .4in;break-after:page;page-break-after:always}
+    .cover-copy{margin:auto 0}.cover:after{width:250px;height:250px}
+    .logos img:first-child{width:54px}.logos img:last-child{width:140px}
+    h1{font-size:30pt}.subtitle{font-size:14pt}
+    .content{padding:0}
+    h2{font-size:17pt;margin:16px 0 9px;padding-bottom:4px;break-after:avoid;page-break-after:avoid}
+    h3{font-size:11pt;margin:11px 0 5px}p{margin:4px 0 7px}.lead{font-size:10pt}
+    .notice,.info{padding:8px 10px;margin:9px 0}.formula{padding:11px;margin:9px 0;font-size:12pt}
+    .flow,.flow.second{margin:10px 0;gap:3px}.flow-step{padding:9px;min-height:66px}.arrow{font-size:20px}
+    table{font-size:8pt;margin:7px 0 12px}thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}th,td{padding:5px 6px}
+    .cards{gap:7px;margin:8px 0}.card{padding:9px}.rules{margin:6px 0;padding-left:17px}.rules li{margin:3px 0}
+    .bar-row{margin:5px 0}.footer-credit{margin-top:20px;padding-top:10px}
+    .print-button{display:none}
+    .flow,.cards,.formula,.notice,.info,.bar-row,.footer-credit{break-inside:avoid;page-break-inside:avoid}
+  }
 </style>
 </head>
 <body>
@@ -51,10 +69,8 @@
       <div class="eyebrow">Documento explicativo</div>
       <h1>Lógica actual del Test de Orientación Vocacional</h1>
       <p class="subtitle">Descripción del proceso de puntuación, cálculo de afinidad y generación de recomendaciones académicas.</p>
-      <div class="credit">
-        <!-- <span>Conceptualización, documentación y créditos</span>
-        <strong>Hanier Codero</strong>-->
-      </div>
+      <p><strong>Versión 1.0 · Agosto de 2026</strong><br>Basada en la lógica vigente del archivo <code>js/test.js</code>.</p>
+      <!-- Créditos de portada reservados para incorporarlos en una versión futura. -->
     </div>
   </header>
 
@@ -62,6 +78,14 @@
     <h2>1. Propósito del instrumento</h2>
     <p class="lead">El test ofrece una orientación inicial sobre los intereses de la persona participante. Las respuestas se convierten en porcentajes de afinidad y luego se relacionan con las áreas y carreras priorizadas por el programa Becas por Nuestro Futuro.</p>
     <div class="notice"><strong>Alcance:</strong> el resultado es una guía de apoyo. No sustituye una evaluación vocacional profesional ni determina obligatoriamente qué carrera debe estudiar la persona.</div>
+    <div class="info"><strong>Referencia metodológica:</strong> el instrumento toma ideas generales de orientación vocacional asociadas con CHASIDE y RIASEC, pero utiliza siete áreas propias y una lógica adaptada al programa. No debe presentarse como una aplicación estandarizada o validada de esos instrumentos.</div>
+    <h3>Tres resultados que no deben confundirse</h3>
+    <div class="cards">
+      <div class="card"><b>1. Afinidad personal</b>Expresa cuánto interés manifestó la persona en actividades relacionadas con un área.</div>
+      <div class="card"><b>2. Prioridad institucional</b>Indica la clasificación que el programa asignó a un conjunto de carreras.</div>
+      <div class="card"><b>3. Oferta educativa</b>Muestra centros disponibles según la ubicación registrada.</div>
+    </div>
+    <p>Una afinidad alta no cambia la prioridad institucional de una carrera. De la misma manera, la ausencia de un centro cercano no reduce la afinidad vocacional obtenida.</p>
 
     <h2>2. Recorrido general</h2>
     <div class="flow">
@@ -84,6 +108,13 @@
         <tr><td><span class="answer no">No me gusta</span></td><td>0</td><td>No se agrega puntuación a esa área.</td></tr>
       </tbody>
     </table>
+    <h3>¿Por qué se utiliza esta calificación?</h3>
+    <ul class="rules">
+      <li><strong>2 puntos — “Me gusta”:</strong> representa una preferencia afirmativa y aporta el valor completo previsto para la pregunta.</li>
+      <li><strong>1 punto — “Más o menos”:</strong> reconoce interés parcial, duda o poca experiencia sin interpretarlo como rechazo.</li>
+      <li><strong>0 puntos — “No me gusta”:</strong> indica que esa actividad no aporta evidencia positiva de afinidad. No significa incapacidad ni impide recomendar otras áreas.</li>
+    </ul>
+    <p>La escala mide preferencia declarada, no habilidad, rendimiento académico ni probabilidad de éxito profesional. Se eligió una escala breve para que las respuestas sean sencillas y comparables.</p>
 
     <h2>4. Áreas evaluadas y preguntas asociadas</h2>
     <table>
@@ -98,14 +129,78 @@
         <tr><td>Liderazgo y Seguridad</td><td>16 y 17</td><td>4 puntos</td></tr>
       </tbody>
     </table>
+    <div class="notice"><strong>Punto para revisión:</strong> las áreas no contienen la misma cantidad de preguntas. El porcentaje normaliza el resultado, pero cada respuesta tiene mayor impacto en áreas con pocas preguntas. En Liderazgo y Seguridad, un punto equivale a 25%; en Tecnología y Oficios equivale a 10%.</div>
 
-    <h2>5. Cálculo del porcentaje de afinidad</h2>
+    <h2>5. Matriz explicativa de las 24 preguntas</h2>
+    <p>La columna “Por qué se clasifica aquí” documenta la intención actual de cada pregunta. Estas justificaciones pueden ser revisadas por el equipo antes de validar una versión definitiva.</p>
+    <table>
+      <thead><tr><th>N.º</th><th>Pregunta</th><th>Área actual</th><th>Por qué se clasifica aquí</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>¿Te gusta ayudar a personas cuando tienen un problema?</td><td>Comunicación y Ayuda Social</td><td>Explora disposición para escuchar, acompañar y ayudar directamente.</td></tr>
+        <tr><td>2</td><td>¿Te interesa aprender cómo funcionan las máquinas o aparatos?</td><td>Tecnología y Oficios</td><td>Mide curiosidad por mecanismos, funcionamiento técnico y tecnología aplicada.</td></tr>
+        <tr><td>3</td><td>¿Disfrutas dibujar, decorar o crear cosas nuevas?</td><td>Arte y Creatividad</td><td>Observa interés por expresión visual, diseño y creación original.</td></tr>
+        <tr><td>4</td><td>¿Te gusta organizar actividades o grupos de personas?</td><td>Organización y Negocios</td><td>Relaciona planificación, coordinación y administración de recursos o personas.</td></tr>
+        <tr><td>5</td><td>¿Te gustaría cuidar personas enfermas o ayudar en temas de salud?</td><td>Salud y Servicio</td><td>Evalúa interés explícito por cuidado, bienestar y atención sanitaria.</td></tr>
+        <tr><td>6</td><td>¿Te gusta trabajar al aire libre o en contacto con la naturaleza?</td><td>Ciencia y Naturaleza</td><td>Identifica preferencia por ambientes naturales y actividades de campo.</td></tr>
+        <tr><td>7</td><td>¿Te sientes cómodo hablando con otras personas?</td><td>Comunicación y Ayuda Social</td><td>Explora comodidad en la interacción y comunicación interpersonal.</td></tr>
+        <tr><td>8</td><td>¿Te gusta resolver problemas o encontrar soluciones?</td><td>Tecnología y Oficios</td><td>Representa razonamiento práctico orientado a solucionar problemas.</td></tr>
+        <tr><td>9</td><td>¿Te gustaría enseñar algo a otras personas?</td><td>Comunicación y Ayuda Social</td><td>Combina comunicación, transmisión de conocimiento y servicio a otros.</td></tr>
+        <tr><td>10</td><td>¿Te gustan los trabajos donde se necesita orden y organización?</td><td>Organización y Negocios</td><td>Examina preferencia por estructura, control y procesos organizados.</td></tr>
+        <tr><td>11</td><td>¿Te interesa construir, reparar o armar cosas?</td><td>Tecnología y Oficios</td><td>Evalúa interés por actividades manuales, técnicas y de construcción.</td></tr>
+        <tr><td>12</td><td>¿Te gustan las actividades artísticas como música, pintura, baile o teatro?</td><td>Arte y Creatividad</td><td>Explora afinidad por distintas formas de expresión artística.</td></tr>
+        <tr><td>13</td><td>¿Te gustaría participar en actividades para ayudar a tu comunidad?</td><td>Salud y Servicio</td><td>Se interpreta como vocación de servicio y promoción del bienestar comunitario.</td></tr>
+        <tr><td>14</td><td>¿Te interesa aprender sobre plantas, animales o el medio ambiente?</td><td>Ciencia y Naturaleza</td><td>Mide curiosidad por seres vivos, ecosistemas y ambiente.</td></tr>
+        <tr><td>15</td><td>¿Te gustaría dirigir un negocio o vender productos?</td><td>Organización y Negocios</td><td>Explora interés por emprendimiento, gestión comercial y ventas.</td></tr>
+        <tr><td>16</td><td>¿Te gustan las actividades donde hay acción, movimiento o retos?</td><td>Liderazgo y Seguridad</td><td>Se usa como indicador de respuesta activa ante desafíos y contextos dinámicos.</td></tr>
+        <tr><td>17</td><td>¿Te gusta trabajar en equipo?</td><td>Liderazgo y Seguridad</td><td>Relaciona cooperación y coordinación grupal, capacidades vinculadas con liderazgo.</td></tr>
+        <tr><td>18</td><td>¿Te interesa usar computadoras, herramientas o tecnología?</td><td>Tecnología y Oficios</td><td>Mide interés directo por herramientas digitales, técnicas o tecnológicas.</td></tr>
+        <tr><td>19</td><td>¿Te gustaría trabajar ayudando a niños, jóvenes o familias?</td><td>Comunicación y Ayuda Social</td><td>Evalúa vocación de acompañamiento con poblaciones y familias.</td></tr>
+        <tr><td>20</td><td>¿Te gusta tener tus tareas bien planificadas y ordenadas?</td><td>Organización y Negocios</td><td>Explora planificación personal, seguimiento y organización.</td></tr>
+        <tr><td>21</td><td>¿Te gustaría aprender un oficio práctico, como mecánica, electricidad, carpintería, cocina o soldadura?</td><td>Tecnología y Oficios</td><td>Identifica interés por formación práctica y aplicación inmediata de habilidades.</td></tr>
+        <tr><td>22</td><td>¿Te gusta imaginar ideas nuevas o crear proyectos?</td><td>Arte y Creatividad</td><td>Mide generación de ideas, imaginación e iniciativa creativa.</td></tr>
+        <tr><td>23</td><td>¿Se te facilita áreas académicas relacionadas a la biología, anatomía?</td><td>Salud y Servicio</td><td>Relaciona una percepción de facilidad académica con conocimientos usados en salud.</td></tr>
+        <tr><td>24</td><td>¿Te interesa aprender cosas nuevas sobre ciencia o descubrimientos?</td><td>Ciencia y Naturaleza</td><td>Explora curiosidad científica y motivación por descubrir.</td></tr>
+      </tbody>
+    </table>
+    <div class="info"><strong>Observación metodológica:</strong> la pregunta 23 consulta facilidad percibida y no solamente gusto; las preguntas 13, 16 y 17 podrían relacionarse con más de un área. Conviene que el equipo revise estos casos y documente si conserva o modifica su asignación.</div>
+
+    <h2>6. Cálculo del porcentaje de afinidad</h2>
     <p>Las áreas no tienen la misma cantidad de preguntas. Para poder compararlas, el sistema divide los puntos obtenidos entre el máximo posible de cada área.</p>
     <div class="formula">Afinidad (%) = puntos obtenidos ÷ puntos máximos del área × 100</div>
     <p>El resultado se redondea al número entero más cercano. Una respuesta cambia más el porcentaje de las áreas que contienen pocas preguntas; por ejemplo, cada punto de Liderazgo y Seguridad representa 25%, mientras que en Tecnología y Oficios representa 10%.</p>
+    <h3>¿Qué significa la calificación porcentual?</h3>
+    <p>El código utiliza el porcentaje para ordenar y filtrar áreas; no asigna etiquetas psicológicas. Para explicarlo de forma sencilla puede leerse como evidencia relativa de interés dentro de este cuestionario:</p>
+    <table>
+      <thead><tr><th>Resultado</th><th>Lectura explicativa</th><th>Qué no significa</th></tr></thead>
+      <tbody>
+        <tr><td>0%</td><td>No se registraron respuestas positivas en esa área.</td><td>No demuestra falta de capacidad.</td></tr>
+        <tr><td>1%–24%</td><td>La evidencia de interés es limitada.</td><td>No descarta carreras relacionadas.</td></tr>
+        <tr><td>25%–49%</td><td>Existe alguna señal de interés; el algoritmo ya puede considerarla.</td><td>No equivale a una recomendación definitiva.</td></tr>
+        <tr><td>50%–74%</td><td>Se observa una preferencia moderada dentro de las preguntas respondidas.</td><td>No mide preparación académica.</td></tr>
+        <tr><td>75%–100%</td><td>Las respuestas muestran una preferencia frecuente o consistente por el área.</td><td>No garantiza satisfacción o éxito profesional.</td></tr>
+      </tbody>
+    </table>
+    <div class="notice"><strong>Importante:</strong> estos rangos sirven para comunicar el resultado. La única regla de corte implementada en el código es 25%, utilizada para seleccionar coincidencias institucionales; no es un umbral psicométrico validado.</div>
 
-    <h2>6. Ejemplo de respuestas y resultado</h2>
+    <h2>7. Ejemplo completo de respuestas y resultado</h2>
     <p>El siguiente caso ilustrativo utiliza el mismo formato conceptual del reporte generado al finalizar el test.</p>
+    <table>
+      <thead><tr><th>Preguntas</th><th>Respuestas del ejemplo</th><th>Preguntas</th><th>Respuestas del ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>1. Ayudar ante un problema</td><td>Más o menos · 1</td><td>13. Ayudar a la comunidad</td><td>Más o menos · 1</td></tr>
+        <tr><td>2. Máquinas o aparatos</td><td>Me gusta · 2</td><td>14. Plantas y ambiente</td><td>Me gusta · 2</td></tr>
+        <tr><td>3. Dibujar o crear</td><td>Más o menos · 1</td><td>15. Dirigir un negocio</td><td>Más o menos · 1</td></tr>
+        <tr><td>4. Organizar actividades</td><td>Me gusta · 2</td><td>16. Acción y retos</td><td>Más o menos · 1</td></tr>
+        <tr><td>5. Cuidar personas enfermas</td><td>Me gusta · 2</td><td>17. Trabajo en equipo</td><td>No me gusta · 0</td></tr>
+        <tr><td>6. Contacto con naturaleza</td><td>Me gusta · 2</td><td>18. Computadoras y herramientas</td><td>Me gusta · 2</td></tr>
+        <tr><td>7. Hablar con personas</td><td>Más o menos · 1</td><td>19. Ayudar a familias</td><td>No me gusta · 0</td></tr>
+        <tr><td>8. Resolver problemas</td><td>Me gusta · 2</td><td>20. Tareas planificadas</td><td>Más o menos · 1</td></tr>
+        <tr><td>9. Enseñar</td><td>Más o menos · 1</td><td>21. Aprender un oficio</td><td>Más o menos · 1</td></tr>
+        <tr><td>10. Orden y organización</td><td>Me gusta · 2</td><td>22. Ideas y proyectos</td><td>No me gusta · 0</td></tr>
+        <tr><td>11. Construir o reparar</td><td>Me gusta · 2</td><td>23. Biología o anatomía</td><td>No me gusta · 0</td></tr>
+        <tr><td>12. Actividades artísticas</td><td>No me gusta · 0</td><td>24. Ciencia y descubrimientos</td><td>Más o menos · 1</td></tr>
+      </tbody>
+    </table>
     <table>
       <thead><tr><th>Área</th><th>Ejemplo de respuestas</th><th>Cálculo</th><th>Afinidad</th></tr></thead>
       <tbody>
@@ -123,7 +218,7 @@
     <div class="bar-row"><span>Organización y Negocios</span><div class="bar"><span style="width:75%"></span></div><strong>75%</strong></div>
     <div class="bar-row"><span>Salud y Servicio</span><div class="bar"><span style="width:50%"></span></div><strong>50%</strong></div>
 
-    <h2>7. Cruce con las prioridades institucionales</h2>
+    <h2>8. Cruce con las prioridades institucionales</h2>
     <p>Cada área institucional declara una o más áreas de afinidad como fuentes. Cuando tiene varias, el sistema utiliza el porcentaje más alto de esas fuentes. Después clasifica la recomendación de esta manera:</p>
     <div class="cards">
       <div class="card high"><b>Alta prioridad mostrada</b>Incluye áreas institucionales cuya prioridad en la base es “Muy Alta”.</div>
@@ -137,8 +232,11 @@
       <li>La pantalla distribuye hasta 10 carreras por nivel procurando diversidad entre las áreas.</li>
       <li>El reporte imprimible presenta todas las carreras relevantes, no solamente las primeras 10 visibles.</li>
     </ul>
+    <h3>¿Por qué se usa la afinidad más alta?</h3>
+    <p>Cuando un área institucional tiene varias fuentes, la función actual toma el porcentaje mayor. Esto permite recomendarla cuando existe una afinidad fuerte en al menos una de sus fuentes. Es una decisión de diseño sencilla y favorable a no ocultar opciones; sin embargo, puede dar una recomendación alta aunque la otra fuente sea baja. El equipo puede mantener esta regla o evaluar un promedio o promedio ponderado.</p>
+    <p>El límite de 10 carreras se utiliza para evitar una pantalla excesivamente larga. No significa que las carreras restantes sean incompatibles: el reporte imprimible incluye todas las carreras consideradas relevantes.</p>
 
-    <h2>8. Centros de estudio</h2>
+    <h2>9. Centros de estudio</h2>
     <p>La ubicación no cambia el perfil vocacional. Se usa únicamente después del cálculo para localizar centros de estudio:</p>
     <div class="flow">
       <div class="flow-step"><strong>Búsqueda inicial</strong>Coincidencia exacta de departamento y municipio.</div><div class="arrow">→</div>
@@ -146,7 +244,7 @@
       <div class="flow-step"><strong>Sin registros</strong>Se muestra un aviso sin inventar centros.</div>
     </div>
 
-    <h2>9. Validaciones y generación del reporte</h2>
+    <h2>10. Validaciones y generación del reporte</h2>
     <ul class="rules">
       <li>Se requieren nombre, correo válido, departamento y municipio.</li>
       <li>Deben responderse las 24 preguntas.</li>
@@ -155,8 +253,29 @@
       <li>La versión actual funciona enteramente en el navegador: no guarda ni envía respuestas a una base de datos.</li>
     </ul>
 
+    <h2>11. Decisiones recomendadas antes de una versión oficial</h2>
+    <table>
+      <thead><tr><th>Tema</th><th>Situación actual</th><th>Decisión sugerida</th></tr></thead>
+      <tbody>
+        <tr><td>Número de preguntas</td><td>Entre 2 y 5 preguntas por área.</td><td>Considerar al menos 4 preguntas revisadas por cada área.</td></tr>
+        <tr><td>Umbral de 25%</td><td>Es un parámetro técnico del algoritmo.</td><td>Confirmar, ajustar y documentar quién aprueba el valor.</td></tr>
+        <tr><td>Áreas con varias fuentes</td><td>Se utiliza el porcentaje máximo.</td><td>Comparar el máximo con promedio o ponderación.</td></tr>
+        <tr><td>Retroalimentación</td><td>Las estrellas son obligatorias antes del resultado.</td><td>Solicitarlas después y de forma opcional.</td></tr>
+        <tr><td>Validación</td><td>Instrumento orientativo adaptado.</td><td>Realizar revisión experta y prueba piloto con participantes.</td></tr>
+        <tr><td>Control de cambios</td><td>No se registra dentro del test.</td><td>Conservar versión, fecha, cambio y responsable de aprobación.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>12. Fuentes técnicas de esta documentación</h2>
+    <ul class="rules">
+      <li><code>testvocacional-pc.html</code>: estructura de la experiencia y formulario.</li>
+      <li><code>js/test.js</code>: preguntas, puntuación, validaciones y selección de resultados.</li>
+      <li><code>data/areas-priorizadas.js</code>: áreas institucionales, prioridades, fuentes y carreras.</li>
+      <li><code>data/centros-data.js</code>: departamentos, municipios y centros disponibles.</li>
+    </ul>
+
     <div class="footer-credit">
-      <div><strong>Créditos:</strong> Hanier Codero</div>
+      <div><strong>Créditos:</strong> Hanier Cordero</div>
       <div>Documento sobre la lógica vigente del Test de Orientación Vocacional</div>
     </div>
   </main>
