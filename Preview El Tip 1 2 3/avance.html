@@ -16,18 +16,18 @@
 
   :root{
     --cream:      #FFFFFF;
-    --cream-deep: #F4F8FC;
-    --ink:        #12325C;
+    --cream-deep: #F4F6F9;
+    --ink:        #102F67;
     --ink-soft:   #52657D;
-    --olive:      #FFE142;
-    --olive-dark: #F6A620;
-    --clay:       #FFE88A;
-    --clay-deep:  #F6A620;
-    --coffee:     #12325C;
-    --coffee-deep:#12325C;
-    --cta:        #23B7E0;
-    --cta-deep:   #0C6CB0;
-    --purple:     #8B3FA0;
+    --olive:      #FBBF24;
+    --olive-dark: #F59E0B;
+    --clay:       #EAF7FB;
+    --clay-deep:  #39A8C2;
+    --coffee:     #39A8C2;
+    --coffee-deep:#0056b3;
+    --cta:        #17B5E5;
+    --cta-deep:   #0F5EB4;
+    --purple:     #8E2A91;
     --success:    #25D366;
     --white:      #FFFFFF;
     --line:       rgba(29,43,69,0.10);
@@ -186,7 +186,7 @@
   .mp-bead.current .mp-bead-tag{ color:var(--coffee); font-weight:700; }
 
   .mp-bead.prev{ opacity:.85; }
-  .mp-bead.prev .mp-bead-circle{ width:64px; height:64px; background:var(--olive-dark); color:var(--white); }
+  .mp-bead.prev .mp-bead-circle{ width:64px; height:64px; background:var(--coffee-deep); color:var(--white); }
   .mp-bead.next .mp-bead-circle{ width:64px; height:64px; background:var(--cream-deep); color:var(--clay-deep); border:1.5px dashed var(--clay-deep); }
   .mp-bead.next{ opacity:.85; }
 
@@ -254,7 +254,7 @@
     display:inline-flex;
     align-items:center;
     gap:10px;
-    background:linear-gradient(180deg, var(--cta), var(--cta-deep));
+    background:#0056b3;
     color:var(--white);
     text-decoration:none;
     font-family:'Poppins', sans-serif;
@@ -262,10 +262,10 @@
     font-size:15px;
     padding:14px 26px;
     border-radius:999px;
-    box-shadow:0 10px 24px -10px rgba(32,110,134,0.6);
+    box-shadow:0 10px 24px -10px rgba(0,86,179,0.45);
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  .mp-cta:hover{ transform:translateY(-2px); box-shadow:0 14px 28px -10px rgba(32,110,134,0.7); }
+  .mp-cta:hover{ background:#0D47A1; transform:translateY(-2px); box-shadow:0 14px 28px -10px rgba(32,110,134,0.7); }
   .mp-cta svg{ width:16px; height:16px; }
 
   /* ============================================================
@@ -348,7 +348,7 @@
   .mp-node.avatar .mp-node-label{ font-weight:600; color:var(--coffee-deep); }
 
   .mp-node.done .mp-node-circle{
-    background:var(--olive-dark);
+    background:var(--coffee-deep);
     color:var(--white);
   }
   .mp-node.done .mp-node-label{ color:var(--ink); }
@@ -517,7 +517,7 @@
     gap:8px;
     width:34px;
     padding:16px 0;
-    background:var(--coffee);
+    background:#39A8C2;
     color:var(--white);
     font-family:'Inter', sans-serif;
     font-size:11px;
@@ -776,8 +776,8 @@
     postulant: {
       visibleIn: [1, 2],
       images: {
-        m: "https://eltip.gt/wp-content/uploads/2026/08/m-postulante-1.png",
-        f: "https://eltip.gt/wp-content/uploads/2026/08/f-postulante.png"
+        m: "assets/M-postulante.png",
+        f: "assets/F-Postulante.png"
       },
       phases: {
         1: ["¿Ya cargaste tus documentos?", "¿Ya has completado tu expediente?", "¡Recuerda revisar que todo esté legible!"],
@@ -788,8 +788,8 @@
     staff: {
       visibleIn: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       images: {
-        m: "https://eltip.gt/wp-content/uploads/2026/08/m-becas-1.png",
-        f: "https://eltip.gt/wp-content/uploads/2026/08/f-becas-1.png"
+        m: "assets/M-becas.png",
+        f: "assets/F-Becas.png"
       },
       phases: {
         2: ["Un profesional revisará tu papelería pronto.", "Estamos validando tus documentos."],
@@ -854,8 +854,8 @@
   /* ---------- Semáforo (fase 1: Carga de documentos) ---------- */
   function semaforoColor(pct){
     if(pct < 34) return "#D6553F";   // rojo
-    if(pct < 80) return "#E0A73D";   // amarillo
-    if(pct < 100) return "#4C9F52";  // verde desde 80%
+    if(pct < 80) return "#F59E0B";   // ámbar dorado
+    if(pct < 100) return "#4CAF7D";  // verde medio
     return "#25D366";                 // fase completada
   }
   function semaforoInk(pct){
