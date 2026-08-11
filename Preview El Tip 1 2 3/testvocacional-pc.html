@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="assets/becas.ico" sizes="any">
 <title>Test de Orientación Vocacional — Becas por Nuestro Futuro</title>
 <link rel="stylesheet" href="css/test.css">
 </head>
@@ -71,8 +72,29 @@
   </div>
 
   <section class="results" id="results">
-    <div class="results-head"><h2>Recomendaciones de orientación</h2><p>Las carreras se seleccionan según la afinidad de tus respuestas y la priorización institucional del listado de referencia.</p><p class="results-note"><strong>Nota:</strong> Este instrumento es una guía inicial rápida basada en el test CHASIDE y el modelo de John Holland (RIASEC).</p></div>
-    <div class="result-summary" id="resultSummary"></div>
+    <div class="results-head">
+      <div class="results-head-main">
+        <div class="results-head-copy">
+          <h2>Resumen de resultados del test</h2>
+          <p>Consulta tus principales afinidades, carreras sugeridas y centros de estudio.</p>
+        </div>
+        <div class="results-download">
+          <span class="pdf-kicker">Documento completo</span>
+          <button type="button" class="primary-btn pdf-btn" id="pdfButton">Descargar resultados completos (PDF)</button>
+          <small>Incluye todas las afinidades, carreras relacionadas y centros encontrados.</small>
+        </div>
+        <div class="results-details">
+          <p class="results-note"><strong>Nota:</strong> Las carreras se seleccionan según la afinidad de tus respuestas y la priorización institucional. Este instrumento es una guía inicial rápida basada en el test CHASIDE y el modelo de John Holland (RIASEC).</p>
+          <div class="result-summary" id="resultSummary"></div>
+          <div class="affinity-legend" aria-label="Escala de colores de afinidad">
+            <span><i style="background:#D6553F"></i>0–33% inicial</span>
+            <span><i style="background:#F59E0B"></i>34–79% intermedia</span>
+            <span><i style="background:#4CAF7D"></i>80–99% alta</span>
+            <span><i style="background:#25D366"></i>100% completa</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="priority-grid">
       <article class="priority-card high"><div class="priority-title">Carreras Alta Prioridad</div><div class="priority-body" id="highPriority"></div></article>
       <article class="priority-card medium"><div class="priority-title">Carreras Media Prioridad</div><div class="priority-body" id="mediumPriority"></div></article>
@@ -84,7 +106,6 @@
       <div class="centers-grid" id="centersGrid"></div>
       <button type="button" class="more-centers" id="toggleCenters" hidden>Ver todos los centros</button>
     </section>
-    <div class="pdf-row" style="flex-direction:column;align-items:center;gap:8px"><button type="button" class="primary-btn pdf-btn" id="pdfButton">Generar / imprimir PDF de resultados</button><small style="color:#66758b">En el cuadro de impresión puedes seleccionar “Guardar como PDF” o enviar el reporte a una impresora.</small></div>
   </section>
 
   <section class="faq" id="faq">

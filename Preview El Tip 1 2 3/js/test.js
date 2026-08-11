@@ -64,6 +64,13 @@ function uniqueCaseInsensitive(items){
   return items.filter(item => { const key=normalize(item); if(seen.has(key)) return false; seen.add(key); return true; });
 }
 
+function affinityColor(pct){
+  if(pct < 34) return '#D6553F';
+  if(pct < 80) return '#F59E0B';
+  if(pct < 100) return '#4CAF7D';
+  return '#25D366';
+}
+
 function renderQuestions(){
   const host=document.getElementById('questions');
   host.innerHTML=QUESTIONS.map((q,index)=>`
@@ -168,7 +175,7 @@ function renderPriority(hostId, groups){
   const host=document.getElementById(hostId);
   if(!groups.length){host.innerHTML='<p class="empty-result">No se identificaron coincidencias suficientes para este nivel con las respuestas actuales.</p>';return;}
   host.innerHTML=groups.map(g=>{
-    return `<div class="area-group"><h4>${escapeHtml(g.nombre)} · afinidad ${g.affinity}%</h4><ul class="career-list">${g.carrerasSeleccionadas.map(c=>`<li>${escapeHtml(c)}</li>`).join('')}</ul></div>`;
+    return `<div class="area-group" style="--affinity-color:${affinityColor(g.affinity)}"><h4><span>${escapeHtml(g.nombre)}</span><span class="affinity-badge">${g.affinity}% afinidad</span></h4><ul class="career-list">${g.carrerasSeleccionadas.map(c=>`<li>${escapeHtml(c)}</li>`).join('')}</ul></div>`;
   }).join('');
 }
 
@@ -229,14 +236,14 @@ function buildResults(){
   renderPriority('highPriority',high); renderPriority('mediumPriority',medium); renderPriority('lowPriority',low);
   showAllCenters=false; renderCenters(centers);
   const top=Object.entries(scores.pct).sort((a,b)=>b[1]-a[1]).slice(0,3);
-  document.getElementById('resultSummary').innerHTML=top.map(([area,pct])=>`<span class="summary-chip">${escapeHtml(area)}: ${pct}%</span>`).join('');
+  document.getElementById('resultSummary').innerHTML=top.map(([area,pct])=>`<span class="summary-chip" style="--affinity-color:${affinityColor(pct)}">${escapeHtml(area)}: ${pct}%</span>`).join('');
   const results=document.getElementById('results'); results.classList.add('show');
   setTimeout(()=>results.scrollIntoView({behavior:'smooth',block:'start'}),80);
 }
 
 function reportPriority(title, groups){
   if(!groups.length) return `<section><h2>${title}</h2><p>No se identificaron coincidencias suficientes para este nivel.</p></section>`;
-  return `<section><h2>${title}</h2>${groups.map(g=>`<div class="pdf-area"><h3>${escapeHtml(g.nombre)} <small>(${g.affinity}% de afinidad)</small></h3><ul>${g.carrerasSeleccionadas.map(c=>`<li>${escapeHtml(c)}</li>`).join('')}</ul></div>`).join('')}</section>`;
+  return `<section><h2>${title}</h2>${groups.map(g=>`<div class="pdf-area"><h3>${escapeHtml(g.nombre)} <small style="background:${affinityColor(g.affinity)}">${g.affinity}% de afinidad</small></h3><ul>${g.carrerasSeleccionadas.map(c=>`<li>${escapeHtml(c)}</li>`).join('')}</ul></div>`).join('')}</section>`;
 }
 function printReport(){
   if(!currentResult) return;
@@ -244,17 +251,17 @@ function printReport(){
   const email=document.getElementById('email').value.trim();
   const dep=document.getElementById('department').value;
   const mun=selectedMunicipality();
-  const top=Object.entries(currentResult.scores.pct).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const top=Object.entries(currentResult.scores.pct).sort((a,b)=>b[1]-a[1]);
   const gov=new URL('assets/gobierno-logo.png',location.href).href;
   const becas=new URL('assets/becas-logo.png',location.href).href;
   const centerHtml=currentResult.centers.centers.length?currentResult.centers.centers.map(c=>`<tr><td>${escapeHtml(c.nombre)}</td><td>${escapeHtml(c.tipo||'')}</td><td>${escapeHtml(c.sector||'')}</td><td>${escapeHtml(c.municipio||'')}</td><td>${escapeHtml(c.direccion||'')}</td><td>${escapeHtml(c.telefono||'')}</td><td>${escapeHtml(c.sitio_web||'')}</td></tr>`).join(''):'<tr><td colspan="7">No hay centros registrados para la ubicación indicada.</td></tr>';
   const w=window.open('','_blank');
   if(!w){alert('El navegador bloqueó la ventana del reporte. Habilita ventanas emergentes para generar el PDF.');return;}
-  w.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Resultado de Orientación Vocacional - ${escapeHtml(name)}</title><style>
-    @page{size:letter landscape;margin:.45in}*{box-sizing:border-box}html,body{width:auto;height:auto}body{font-family:Arial,sans-serif;color:#17345f;margin:0;font-size:8.5pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0d5eb6;padding-bottom:7px;margin-bottom:10px;break-inside:avoid}header img:first-child{width:44px}header img:last-child{width:115px}h1{text-align:center;color:#0d5eb6;font-size:17pt;margin:0 0 3px}.sub{text-align:center;color:#61708a;margin-bottom:10px}.data{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 14px;background:#f4f8fd;padding:8px 10px;border-radius:7px;break-inside:avoid}.data div{break-inside:avoid}h2{color:#0f2f70;font-size:12pt;border-bottom:1px solid #c8d8eb;padding-bottom:3px;margin:13px 0 7px;break-after:avoid}h3{font-size:9.5pt;margin:8px 0 4px;color:#1c5596;break-after:avoid}h3 small{font-weight:normal;color:#657692}ul{margin:3px 0 7px;padding-left:17px;columns:3;column-gap:22px}li{break-inside:avoid;margin-bottom:1px}.affinity{display:flex;flex-wrap:wrap;gap:5px;break-inside:avoid}.chip{border:1px solid #cbdcf0;background:#f5f9ff;border-radius:999px;padding:3px 7px}table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:7pt}thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}th,td{border:1px solid #d9e2ee;padding:4px;vertical-align:top;overflow-wrap:anywhere}th{background:#0f2f70;color:#fff}.pdf-area{break-inside:auto}.pdf-area h3{break-after:avoid}.location-msg{background:#fff8e3;border-left:4px solid #e0a51d;padding:6px 8px;margin:6px 0 8px;break-inside:avoid}@media print{button{display:none}a{color:inherit;text-decoration:none}section{break-inside:auto}}
-  </style></head><body><header><img src="${gov}"><div><h1>Resultado de Orientación Vocacional</h1><div class="sub">Becas por Nuestro Futuro</div></div><img src="${becas}"></header>
+  w.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Resultados completos del Test de Orientación Vocacional - ${escapeHtml(name)}</title><style>
+    @page{size:letter landscape;margin:.45in}*{box-sizing:border-box}html,body{width:auto;height:auto}body{font-family:Arial,sans-serif;color:#17345f;margin:0;font-size:8.5pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0d5eb6;padding-bottom:7px;margin-bottom:10px;break-inside:avoid}header img:first-child{width:44px}header img:last-child{width:115px}h1{text-align:center;color:#0d5eb6;font-size:17pt;margin:0 0 3px}.sub{text-align:center;color:#61708a;margin-bottom:10px}.data{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 14px;background:#f4f8fd;padding:8px 10px;border-radius:7px;break-inside:avoid}.data div{break-inside:avoid}h2{color:#0f2f70;font-size:12pt;border-bottom:1px solid #c8d8eb;padding-bottom:3px;margin:13px 0 7px;break-after:avoid}h3{font-size:9.5pt;margin:8px 0 4px;color:#1c5596;break-after:avoid}h3 small{display:inline-block;margin-left:4px;padding:2px 6px;border-radius:999px;color:#fff;font-weight:bold}ul{margin:3px 0 7px;padding-left:17px;columns:3;column-gap:22px}li{break-inside:avoid;margin-bottom:1px}.affinity{display:flex;flex-wrap:wrap;gap:5px;break-inside:avoid}.chip{border-radius:999px;padding:4px 8px;color:#fff;font-weight:bold}table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:7pt}thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}th,td{border:1px solid #d9e2ee;padding:4px;vertical-align:top;overflow-wrap:anywhere}th{background:#0f2f70;color:#fff}.pdf-area{break-inside:auto}.pdf-area h3{break-after:avoid}.location-msg{background:#fff8e3;border-left:4px solid #e0a51d;padding:6px 8px;margin:6px 0 8px;break-inside:avoid}@media print{button{display:none}a{color:inherit;text-decoration:none}section{break-inside:auto}}
+  </style></head><body><header><img src="${gov}"><div><h1>Resultados completos del Test de Orientación Vocacional</h1><div class="sub">Documento completo · Becas por Nuestro Futuro</div></div><img src="${becas}"></header>
   <div class="data"><div><strong>Participante:</strong> ${escapeHtml(name)}</div><div><strong>Correo:</strong> ${escapeHtml(email)}</div><div><strong>Departamento:</strong> ${escapeHtml(dep)}</div><div><strong>Municipio:</strong> ${escapeHtml(mun)}</div><div><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-GT')}</div></div>
-  <section><h2>Perfil de afinidad</h2><div class="affinity">${top.map(([a,p])=>`<span class="chip">${escapeHtml(a)}: ${p}%</span>`).join('')}</div></section>
+  <section><h2>Perfil completo de afinidad</h2><div class="affinity">${top.map(([a,p])=>`<span class="chip" style="background:${affinityColor(p)}">${escapeHtml(a)}: ${p}%</span>`).join('')}</div></section>
   ${reportPriority('Carreras Alta Prioridad',currentResult.all.high)}
   ${reportPriority('Carreras Media Prioridad',currentResult.all.medium)}
   ${reportPriority('Carreras Baja Prioridad',currentResult.all.low)}
