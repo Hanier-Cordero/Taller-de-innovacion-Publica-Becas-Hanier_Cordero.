@@ -3,6 +3,39 @@ const noBtn = document.getElementById('choiceNo');
 const nextBox = document.getElementById('orientationNext');
 const access = document.getElementById('orientationAccess');
 
+const hero = document.querySelector('.hero');
+const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
+const heroDots = Array.from(document.querySelectorAll('.hero-dots button'));
+let activeHeroSlide = 0;
+let heroTimer;
+
+function showHeroSlide(index) {
+  activeHeroSlide = (index + heroSlides.length) % heroSlides.length;
+  heroSlides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === activeHeroSlide));
+  heroDots.forEach((dot, dotIndex) => {
+    const active = dotIndex === activeHeroSlide;
+    dot.classList.toggle('active', active);
+    if (active) dot.setAttribute('aria-current', 'true');
+    else dot.removeAttribute('aria-current');
+  });
+}
+
+function startHeroCarousel() {
+  clearInterval(heroTimer);
+  heroTimer = setInterval(() => showHeroSlide(activeHeroSlide + 1), 5000);
+}
+
+heroDots.forEach((dot, index) => dot.addEventListener('click', () => {
+  showHeroSlide(index);
+  startHeroCarousel();
+}));
+hero.addEventListener('mouseenter', () => clearInterval(heroTimer));
+hero.addEventListener('mouseleave', startHeroCarousel);
+hero.addEventListener('focusin', () => clearInterval(heroTimer));
+hero.addEventListener('focusout', startHeroCarousel);
+document.addEventListener('visibilitychange', () => document.hidden ? clearInterval(heroTimer) : startHeroCarousel());
+startHeroCarousel();
+
 yesBtn.addEventListener('click', () => {
   nextBox.classList.remove('show');
   noBtn.setAttribute('aria-expanded', 'false');
