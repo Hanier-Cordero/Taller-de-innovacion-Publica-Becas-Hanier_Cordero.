@@ -5,7 +5,7 @@ const error = document.getElementById('loginError');
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const ok = user.value.trim() === '2743006130108' && password.value === '123456';
+  const ok = user.value.trim() === '2743006130108' && password.value === 'password';
   if (!ok) {
     error.classList.add('show');
     password.focus();

@@ -88,11 +88,56 @@
   </section>
 
   <section id="requisitos" class="info-section"><h2>Requisitos</h2><p>Consulta los requisitos específicos desde el botón <strong>Ver requisitos</strong> disponible en cada tipo de beca.</p></section>
-  <section id="aplicar" class="info-section"><h2>Aplicar</h2><p>Esta maqueta conserva el acceso de registro e inicio de sesión para simular el recorrido del postulante.</p><a class="primary-link" href="#acceso">Ir a Registrarse / Iniciar sesión</a></section>
+  <section id="aplicar" class="application-section">
+    <div class="application-heading"><h2>Aplicar</h2><p>Inicia tu registro para participar en el proceso de postulación.</p></div>
+    <div class="application-grid">
+      <div class="application-copy">
+        <h3>APLICAR AQUÍ</h3>
+        <p>Para empezar la aplicación, ten a la mano tu número de <strong>DPI o CUI, un número de teléfono y un correo electrónico</strong> que usarás durante todo el proceso y donde recibirás información importante.</p>
+        <p><strong>Estás a un paso de transformar tu vida y abrir las puertas a nuevas oportunidades.</strong> Al crear tu usuario e iniciar tu aplicación a Becas Por Nuestro Futuro, te acercas a alcanzar tus metas educativas y profesionales.</p>
+        <div class="application-login">Si ya estás registrado, inicia sesión.<a class="auth-btn" href="login.html">Iniciar sesión</a></div>
+      </div>
+      <div class="application-form-card">
+        <img src="assets/becas-logo.png" alt="Becas por Nuestro Futuro">
+        <form id="registerForm" novalidate>
+          <label for="regDpi">CUI/DPI</label><input id="regDpi" inputmode="numeric" maxlength="13" placeholder="CUI/DPI (1234567890501)" required>
+          <label for="regName">Nombre</label><input id="regName" autocomplete="given-name" placeholder="Ingrese su primer nombre" required>
+          <label for="regPhone">Teléfono</label><input id="regPhone" inputmode="tel" maxlength="8" placeholder="Teléfono (12345678)" required>
+          <label for="regEmail">Correo electrónico</label><input id="regEmail" type="email" autocomplete="email" placeholder="Correo electrónico (info@correo.com)" required>
+          <label for="regPassword">Contraseña</label><input id="regPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Contraseña (mínimo 8 caracteres)" required>
+          <label for="regPasswordConfirm">Confirmar contraseña</label><input id="regPasswordConfirm" type="password" minlength="8" autocomplete="new-password" placeholder="Confirma tu contraseña" required>
+          <label class="captcha"><input id="regCaptcha" type="checkbox"><span class="captcha-box"></span><span>No soy un robot</span><strong>↻<small>reCAPTCHA</small></strong></label>
+          <div class="register-message" id="registerMessage" role="alert"></div>
+          <button class="application-submit" type="submit">Registrarme</button>
+        </form>
+      </div>
+    </div>
+  </section>
   <section id="alianzas" class="info-section"><h2>Alianzas</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
   <section id="faq" class="info-section"><h2>Preguntas frecuentes</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
   <section id="publica" class="info-section"><h2>Información pública</h2><p>Sección de referencia para conservar la navegación principal del portal.</p></section>
 </main>
+
+<div class="whatsapp-float" aria-label="Atención por WhatsApp" role="img"><img src="assets/whatsapp.svg" alt="WhatsApp"></div>
+
+<aside class="university-access" id="universityAccess" aria-label="Acceso para universidades">
+  <button class="university-trigger" type="button" aria-expanded="false" aria-controls="universityLogin">
+    <span class="university-trigger-icon" aria-hidden="true">U</span>
+    <span><strong>¿Representas a una universidad?</strong><small>Ingresa al portal institucional</small></span>
+  </button>
+  <div class="university-login" id="universityLogin">
+    <h2>Acceso para universidades</h2>
+    <p>Ingresa tus credenciales para gestionar el pénsum y calendario académico.</p>
+    <form id="universityLoginForm" novalidate>
+      <label for="universityUser">Usuario</label>
+      <input id="universityUser" name="usuario" type="text" autocomplete="username" placeholder="Usuario" required>
+      <label for="universityPassword">Contraseña</label>
+      <input id="universityPassword" name="password" type="password" autocomplete="current-password" placeholder="Contraseña" required>
+      <div class="university-error" id="universityLoginError" role="alert">El usuario o la contraseña no son correctos.</div>
+      <button class="university-submit" type="submit">Ingresar</button>
+    </form>
+  </div>
+</aside>
 
 <div class="modal-backdrop" id="requirementsModal" role="dialog" aria-modal="true" aria-labelledby="requirementsTitle">
   <div class="modal">
@@ -101,5 +146,6 @@
   </div>
 </div>
 <script src="js/home.js"></script>
+<script src="js/registro.js"></script>
 </body>
 </html>

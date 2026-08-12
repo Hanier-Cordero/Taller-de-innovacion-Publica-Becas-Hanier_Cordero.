@@ -115,3 +115,31 @@ function closeModal(){modal.classList.remove('open');document.body.style.overflo
 closeBtn.addEventListener('click', closeModal);
 modal.addEventListener('click', e => {if(e.target===modal) closeModal();});
 document.addEventListener('keydown', e => {if(e.key==='Escape') closeModal();});
+
+const universityAccess = document.getElementById('universityAccess');
+const universityTrigger = universityAccess.querySelector('.university-trigger');
+const universityForm = document.getElementById('universityLoginForm');
+const universityUser = document.getElementById('universityUser');
+const universityPassword = document.getElementById('universityPassword');
+const universityError = document.getElementById('universityLoginError');
+
+universityTrigger.addEventListener('click', () => {
+  const isOpen = universityAccess.classList.toggle('open');
+  universityTrigger.setAttribute('aria-expanded', String(isOpen));
+  if (isOpen) universityUser.focus();
+});
+
+universityForm.addEventListener('submit', event => {
+  event.preventDefault();
+  if (universityUser.value.trim().toUpperCase() === 'USAC' && universityPassword.value === 'password') {
+    sessionStorage.setItem('universidadAutenticada', 'USAC');
+    window.location.href = 'universidades.html';
+    return;
+  }
+  universityError.classList.add('show');
+  universityPassword.select();
+});
+
+[universityUser, universityPassword].forEach(input => {
+  input.addEventListener('input', () => universityError.classList.remove('show'));
+});

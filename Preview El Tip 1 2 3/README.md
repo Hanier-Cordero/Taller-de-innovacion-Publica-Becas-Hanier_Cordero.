@@ -21,7 +21,7 @@ No se requiere servidor de base de datos ni instalación de paquetes.
 
 ## Inicio de sesión simulado
 - Usuario/CUI: `2743006130108`
-- Contraseña: `123456`
+- Contraseña: `password`
 
 El login es solamente una simulación local. Al ingresar correctamente se muestra `portal.html` con:
 - bienvenida del postulante;

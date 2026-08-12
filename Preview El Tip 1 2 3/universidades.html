@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Universidades — Becas por Nuestro Futuro</title>
+<link rel="icon" href="assets/becas.ico" sizes="any">
+<script>
+  if (sessionStorage.getItem('universidadAutenticada') !== 'USAC') {
+    window.location.replace('index.html');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+    :root{
+    --navy:#123f8c;
+    --navy-2:#0f5eb4;
+    --navy-soft:#edf5ff;
+    --accent-blue:#17b5e5;
+    --accent-blue-soft:#eef4ff;
+    --accent-green:#27ae60;
+    --accent-green-soft:#e6f7ef;
+    --accent-red:#eb5757;
+    --accent-red-soft:#fbeaea;
+    --accent-yellow:#f7a928;
+    --accent-yellow-soft:#fff7e6;
+    --accent-purple:#9b51e0;
+    --accent-purple-soft:#f5eeff;
+    --accent-cyan:#2d9cdb;
+    --accent-cyan-soft:#eaf8ff;
+    --orange:#f7a928;
+    --lime:#78bd2c;
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --text:#1a202c;
+    --muted:#718096;
+    --border:#e2e8f0;
+    --danger:#e53e3e;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.brand,.stat-value{font-family:'Sora',sans-serif;}
+  button,input,select,textarea{font-family:inherit;}
+  button{cursor:pointer;}
+
+  .app{display:flex;min-height:100vh;}
+    .sidebar{width:250px;background:var(--navy);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;box-shadow:4px 0 20px rgba(0,0,0,.05);}
+  .brand{display:flex;align-items:center;gap:10px;padding:24px 20px 18px 20px;font-weight:800;font-size:17px;}
+  .brand-badge{width:36px;height:36px;border-radius:10px;background:#ffcf3f;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy);}
+  .brand small{display:block;font-size:11px;font-weight:500;color:#cbd5e0;opacity:.95;}
+  .centro-chip{margin:2px 16px 16px 16px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:12px;color:#cbd5e0;font-size:12.5px;line-height:1.35;}
+  .centro-chip b{display:block;font-size:13.5px;margin-bottom:2px;color:#fff;}
+  nav{padding:6px 12px;flex:1;}
+  .nav-label{margin:14px 10px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:#718096;font-weight:700;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;margin:3px 0;border-radius:12px;font-size:14px;font-weight:600;color:#cbd5e0;border:1px solid transparent;transition:all .15s ease;}
+  .nav-item:hover{background:rgba(255,255,255,.08);color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.10);}
+  .nav-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+  .dot-general{background:#C8D7F6;}
+  .dot-lime{background:var(--lime);}
+  .dot-orange{background:var(--orange);}
+  .dot-muted{background:#A9B7DA;}
+  .sidebar-foot{padding:16px 18px 20px;border-top:1px solid rgba(255,255,255,.12);font-size:11px;color:#E9F2FF;opacity:.95;}
+
+  .main{flex:1;min-width:0;}
+  .topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.84);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:18px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .topbar h1{margin:0;font-size:20px;}
+  .topbar p{margin:4px 0 0;color:var(--muted);font-size:13px;}
+  .user-pill{display:flex;align-items:center;gap:10px;background:var(--navy-soft);padding:6px 12px 6px 6px;border-radius:999px;}
+  .user-avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+  .user-pill span{font-size:12.5px;font-weight:600;}
+  .logout-btn{border:1px solid #d9e2ef;background:#fff;color:var(--navy);border-radius:999px;padding:9px 14px;font-size:12px;font-weight:700;}
+  .logout-btn:hover{background:var(--navy-soft);}
+
+  .view{display:none;padding:28px 30px 56px;}
+  .view.active{display:block;}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 10px 24px rgba(16,45,90,.04);}
+  .stat-top{display:flex;align-items:flex-start;justify-content:space-between;}
+  .stat-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .stat-label{font-size:12.5px;color:var(--muted);font-weight:600;margin:12px 0 4px;}
+  .stat-value{font-size:28px;font-weight:800;}
+  .stat-sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+
+  .grid-2{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-bottom:22px;}
+  .panel,.form-card,.table-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 10px 24px rgba(16,45,90,.04);}
+  .panel{padding:20px 22px;}
+  .panel h3{margin:0 0 4px;font-size:15px;}
+  .panel-sub{margin:0 0 16px;color:var(--muted);font-size:12.5px;}
+  .tier-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .tier-label{width:78px;font-size:12.5px;font-weight:600;color:var(--muted);flex-shrink:0;}
+  .tier-track{flex:1;height:10px;background:var(--navy-soft);border-radius:999px;overflow:hidden;}
+  .tier-fill{height:100%;border-radius:999px;}
+  .tier-count{width:26px;text-align:right;font-size:12.5px;font-weight:700;flex-shrink:0;}
+  .mini-list{list-style:none;margin:0;padding:0;}
+  .mini-list li{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;gap:12px;}
+  .mini-list li:last-child{border-bottom:none;}
+  .mini-name{font-weight:700;}
+  .mini-sub{color:var(--muted);font-size:12px;}
+
+  .section-head{margin-bottom:18px;}
+  .section-head h2{font-size:19px;margin:0 0 4px;}
+  .section-head p{margin:0;color:var(--muted);font-size:13.5px;max-width:760px;}
+
+  .form-card{padding:22px 24px;margin-bottom:22px;border-top:5px solid var(--navy);}
+  .form-card.orange-top{border-top-color:var(--orange);}
+  .form-card h3{margin:0 0 4px;font-size:15.5px;}
+  .form-hint{margin:0 0 18px;color:var(--muted);font-size:12.5px;}
+  .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 20px;}
+  .form-section-title{grid-column:1/-1;display:flex;flex-direction:column;gap:4px;padding-top:2px;}
+  .form-section-title strong{font-size:13px;font-weight:800;color:var(--navy-2);}
+  .form-section-title span{font-size:11.5px;color:var(--muted);}
+  .form-field{display:flex;flex-direction:column;gap:6px;}
+  .form-field.full{grid-column:1/-1;}
+  .form-field label{font-size:12.5px;font-weight:600;}
+  .field-help{font-size:11px;color:var(--muted);font-weight:400;}
+  .form-field input,.form-field select,.form-field textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13.5px;background:#fff;color:var(--text);}
+  .form-field textarea{resize:vertical;min-height:70px;}
+  .form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(11,109,208,.12);}
+  .form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+  .btn{border:none;border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:700;}
+  .btn-ghost{background:#fff;border:1.5px solid var(--border);color:var(--text);}
+  .btn-ghost:hover{background:var(--navy-soft);}
+    .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:var(--navy-2);}
+  .btn-primary.lime{background:var(--accent-green);color:#fff;}
+  .btn-primary.lime:hover{background:#1e8449;}
+  .btn-primary.orange{background:var(--accent-red);color:#fff;}
+  .btn-primary.orange:hover{background:#c0392b;}
+  .btn-inline{border:1.5px dashed var(--border);background:#fff;color:var(--navy-2);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;}
+  .btn-inline:hover{background:var(--navy-soft);}
+
+  .page-message{
+    margin:0 0 14px;
+    padding:12px 14px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:600;
+    border:1px solid transparent;
+  }
+  .page-message.info{background:#EEF7FF;border-color:#C9E3FF;color:#205B8F;}
+  .page-message.success{background:#F0F9E8;border-color:#CDE8A9;color:#2F6D1A;}
+  .page-message.error{background:#FFF1F1;border-color:#F5C1C1;color:#A33A3A;}
+
+  .modal-overlay{
+    position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;
+    background:rgba(8,18,36,.48);backdrop-filter:blur(4px);padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-card{
+    width:min(520px,100%);
+    background:#fff;
+    border-radius:18px;
+    border:1px solid var(--border);
+    box-shadow:0 26px 70px rgba(0,0,0,.18);
+    overflow:hidden;
+  }
+  .modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);}
+  .modal-head h3{margin:0;font-size:16px;}
+  .modal-head p{margin:5px 0 0;color:var(--muted);font-size:12.5px;}
+  .modal-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px;}
+  .modal-foot{padding:14px 20px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
+
+  .calendar-builder{display:flex;flex-direction:column;gap:14px;}
+  .calendar-event-list{display:flex;flex-direction:column;gap:12px;}
+  .calendar-event{border:1px solid var(--border);border-radius:14px;background:#fff;padding:14px;}
+  .calendar-event-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+  .calendar-event-title{display:flex;flex-direction:column;gap:2px;}
+  .calendar-event-title strong{font-size:13.5px;color:var(--navy-2);}
+  .calendar-event-title span{font-size:11.5px;color:var(--muted);}
+  .calendar-event-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.2fr;gap:10px;}
+
+  .table-card{overflow:hidden;}
+  .table-card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border);}
+  .table-card-head h3{margin:0;font-size:14.5px;}
+  .count-pill{font-size:11.5px;font-weight:700;color:var(--muted);background:var(--navy-soft);padding:4px 10px;border-radius:999px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{text-align:left;padding:11px 22px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);font-weight:800;background:#FAFBFE;border-bottom:1px solid var(--border);white-space:nowrap;}
+  tbody td{padding:13px 22px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAFCFF;}
+    .id-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:var(--navy-soft);color:var(--navy);padding:3px 8px;border-radius:6px;letter-spacing:.5px;}
+  .id-badge.lime{background:var(--accent-green-soft);color:var(--accent-green);}
+  .id-badge.orange{background:var(--accent-red-soft);color:var(--accent-red);}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;}
+  .tag-25{background:var(--accent-red-soft);color:var(--accent-red);}
+  .tag-50{background:var(--accent-yellow-soft);color:var(--accent-yellow);}
+  .tag-75{background:var(--accent-blue-soft);color:var(--accent-blue);}
+  .tag-100{background:var(--accent-green-soft);color:var(--accent-green);}
+  .cell-muted{color:var(--muted);font-size:12.5px;}
+  .cell-wrap{max-width:360px;white-space:normal;line-height:1.45;}
+  .empty-row td{text-align:center;color:var(--muted);padding:26px;font-size:13px;}
+  footer.foot-note{text-align:center;color:var(--muted);font-size:12px;padding:22px 0 4px;}
+
+  @media (max-width:980px){
+    .stat-grid{grid-template-columns:repeat(2,1fr);} .grid-2{grid-template-columns:1fr;} .form-grid{grid-template-columns:1fr;} .calendar-event-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:720px){
+    .sidebar{position:fixed;left:-260px;transition:left .2s ease;z-index:20;} .view{padding:22px 16px 50px;} .topbar{padding:16px;} .stat-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-badge">B</div>
+      <div>Becas Nuestro Futuro<small>Portal Centro de Estudio</small></div>
+    </div>
+    <div class="centro-chip"><b>Universidad de San Carlos</b>Sede acreditada · Código 00214</div>
+    <nav>
+      <div class="nav-label">General</div>
+      <div class="nav-item active" data-view="dashboard"><span class="nav-dot dot-general"></span> Resumen general</div>
+      <div class="nav-label">Carga de datos</div>
+      <div class="nav-item" data-view="pensum"><span class="nav-dot dot-lime"></span> Pensúm de estudios</div>
+      <div class="nav-item" data-view="calendario"><span class="nav-dot dot-orange"></span> Calendario académico</div>
+      <div class="nav-label">Consulta</div>
+      <div class="nav-item" data-view="becarios"><span class="nav-dot dot-muted"></span> Becarios</div>
+      <div class="nav-item" data-view="preseleccionados"><span class="nav-dot dot-muted"></span> Preseleccionados</div>
+    </nav>
+    <div class="sidebar-foot">SEGEPLAN · Educación Accesible<br>En las Becas está tu oportunidad</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div><h1 id="topbarTitle">Resumen general</h1><p id="topbarSub">Estado actual de la información cargada por tu centro de estudio</p></div>
+      <div style="display:flex;align-items:center;gap:10px"><div class="user-pill"><div class="user-avatar">US</div><span>Universidad de San Carlos</span></div><button class="logout-btn" id="universityLogout" type="button">Cerrar sesión</button></div>
+    </div>
+
+    <section class="view active" id="view-dashboard">
+            <div class="stat-grid">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-blue-soft);color:var(--accent-blue);">🎓</div></div><div class="stat-label">Carreras activas</div><div class="stat-value" id="statCarreras">4</div><div class="stat-sub">Con pensúm registrado</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-green-soft);color:var(--accent-green);">🏅</div></div><div class="stat-label">Becarios activos</div><div class="stat-value" id="statBecarios">8</div><div class="stat-sub">Con beca vigente este ciclo</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-red-soft);color:var(--accent-red);">📝</div></div><div class="stat-label">Preseleccionados</div><div class="stat-value" id="statPreseleccionados">5</div><div class="stat-sub">En proceso de admisión</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-yellow-soft);color:var(--accent-yellow);">📚</div></div><div class="stat-label">Pensúm registrados</div><div class="stat-value" id="statPensum">4</div><div class="stat-sub">Ciclos de estudio cargados</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-purple-soft);color:var(--accent-purple);">📅</div></div><div class="stat-label">Calendarios registrados</div><div class="stat-value" id="statCalendario">2</div><div class="stat-sub">Ciclos académicos cargados</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:var(--accent-cyan-soft);color:var(--accent-cyan);">📈</div></div><div class="stat-label">Cobertura promedio de beca</div><div class="stat-value">63%</div><div class="stat-sub">Sobre el total de becarios activos</div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Becarios por porcentaje de cobertura</h3>
+          <p class="panel-sub">Distribución de los 8 becarios activos según el porcentaje de beca asignado</p>
+          <div class="tier-row"><div class="tier-label">100%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-green);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">75%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-blue);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">50%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-yellow);"></div></div><div class="tier-count">2</div></div>
+          <div class="tier-row"><div class="tier-label">25%</div><div class="tier-track"><div class="tier-fill" style="width:25%;background:var(--accent-red);"></div></div><div class="tier-count">2</div></div>
+        </div>
+        <div class="panel">
+          <h3>Últimos preseleccionados</h3>
+          <p class="panel-sub">Carrera de interés indicada en su solicitud</p>
+          <ul class="mini-list" id="miniPreseleccionados"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-pensum">
+      <div class="section-head"><h2>Pensum de estudios</h2><p>Registra la estructura académica de cada carrera: duración del ciclo, cursos que lo integran y el contenido que se imparte. Esta información se usa como base para vincular el calendario académico.</p></div>
+      <div class="form-card">
+        <h3>Registrar nuevo pensum</h3>
+        <p class="form-hint">Usa nombres simples para que el testeo sea más rápido y claro.</p>
+        <div class="form-grid">
+          <div class="form-section-title"><strong>1. Datos generales</strong><span>Información base de la carrera.</span></div>
+          <div class="form-field"><label>Carrera o programa</label><select id="p-carrera"><option>Trabajo Social</option><option>Ingeniería en Sistemas</option><option>Medicina</option><option>Administración de Empresas</option><option>Ingeniería Civil</option><option>Psicología</option><option>Contaduría Pública</option><option>Derecho</option><option>Arquitectura</option><option>Ingeniería Industrial</option></select></div>
+          <div class="form-field"><label>Jornada o plan de estudio</label><div style="display:flex;gap:8px;align-items:center;"><select id="p-plan"><option>diurno</option><option>nocturno</option><option>fin de semana</option></select><button class="btn-ghost" type="button" id="p-addPlan">Añadir</button></div></div>
+          <div class="form-field"><label>Modalidad de clases</label><select id="p-modalidad"><option>Presencial</option><option>Virtual</option><option>Híbrida</option><option>Nocturno</option><option>Fin de semana</option></select></div>
+          <div class="form-field">
+            <label>Temporalidad de la carrera</label>
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;">
+              <input type="number" id="p-duracion-cantidad" min="1" step="1" placeholder="Ej. 4">
+              <select id="p-duracion-unidad">
+                <option value="años">años</option>
+                <option value="semestres">semestres</option>
+                <option value="cuatrimestres">cuatrimestres</option>
+                <option value="trimestres">trimestres</option>
+                <option value="bimestres">bimestres</option>
+                <option value="meses">meses</option>
+              </select>
+            </div>
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin-top:8px;">
+              <input type="number" id="p-duracion-extra-cantidad" min="0" step="1" placeholder="Ej. 6">
+              <select id="p-duracion-extra-unidad">
+                <option value="">complemento opcional</option>
+                <option value="años">años</option>
+                <option value="semestres">semestres</option>
+                <option value="cuatrimestres">cuatrimestres</option>
+                <option value="trimestres">trimestres</option>
+                <option value="bimestres">bimestres</option>
+                <option value="meses">meses</option>
+              </select>
+            </div>
+            <span class="field-help">Ejemplo: 4 años y 6 meses. Si no necesitas un complemento, deja la segunda fila vacía.</span>
+          </div>
+          <div class="form-field"><label>Tipo de ciclo académico</label><select id="p-ciclo"><option>Semestre</option><option>Bimestre</option><option>Trimestre</option><option>Cuatrimestre</option><option>Anual</option></select></div>
+          <div class="form-field"><label>Ciclo dentro de la carrera</label><div style="display:flex;gap:8px;align-items:center;"><select id="p-noCiclo"><option>primero</option><option>segundo</option><option>tercero</option><option>cuarto</option><option>quinto</option></select><button class="btn-ghost" type="button" id="p-addNoCiclo">Añadir</button></div></div>
+          <div class="form-section-title"><strong>2. Cursos y contenido</strong><span>Agrega los cursos que forman el ciclo y una descripción corta del contenido.</span></div>
+          <div class="form-field full"><label>Cursos del ciclo <span class="field-help">(agrega uno por uno)</span></label><div id="p-coursesList"></div><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-ghost" type="button" id="p-addCourse">Agregar curso</button><button class="btn-ghost" type="button" id="p-loadExample">Cargar ejemplo</button></div></div>
+          <div class="form-field full"><label>Contenido del ciclo <span class="field-help">(temas generales incluidos)</span></label><textarea id="p-contenido" placeholder="Describe brevemente los temas que se desarrollan en este ciclo"></textarea></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-ghost" onclick="clearForm('pensum')">Cancelar</button><button class="btn btn-primary lime" onclick="addPensum()">Guardar pensúm</button></div>
+      </div>
+      <div class="table-card"><div class="table-card-head"><h3>Pensum registrados</h3><span class="count-pill" id="pensumCount">4 registros</span></div><table><thead><tr><th>Código</th><th>Carrera</th><th>Plan</th><th>Modalidad</th><th>Tipo de ciclo</th><th>No. Ciclo</th><th>Temporalidad</th><th>Cursos</th><th>Contenido</th></tr></thead><tbody id="pensumBody"></tbody></table></div>
+    </section>
+
+    <section class="view" id="view-calendario">
+      <div class="section-head"><h2>Calendario académico</h2><p>Registra solo lo necesario: matrícula, inscripción ordinaria, inscripción extraordinaria, pago de mensualidad, inicio de clases o evaluaciones. Cada fecha se agrega como un bloque independiente.</p></div>
+      <div class="form-card orange-top">
+        <h3>Agregar nuevo calendario</h3>
+        <p class="form-hint">Llena la información base y luego agrega todas las fechas que necesites con el botón inferior.</p>
+        <div id="calendarNotice" class="page-message info" hidden></div>
+        <div class="form-grid calendar-builder">
+          <div class="form-section-title"><strong>1. Datos base</strong><span>Identifica el calendario antes de agregar sus fechas.</span></div>
+          <div class="form-field"><label>Año</label><input type="number" id="c-anio" placeholder="Ej. 2026"></div>
+          <div class="form-field"><label>Jornada o plan de estudio</label><div style="display:flex;gap:8px;align-items:center;"><select id="c-plan"></select><button class="btn-ghost" type="button" id="c-addPlan">Añadir</button></div></div>
+          <div class="form-field"><label>Centro de estudio / sede</label><div style="display:flex;gap:8px;align-items:center;"><select id="c-campus"><option>Sede</option><option>Campus Central</option><option>Sede Regional</option></select><button class="btn-ghost" type="button" id="c-addCampus">Añadir</button></div></div>
+          <div class="form-field full"><label>Pensum que aplica <span class="field-help">(selecciona el pensum ya creado)</span></label><select id="c-pensum"></select></div>
+          <div class="form-section-title"><strong>2. Fechas del calendario</strong><span>Agrega cada bloque con su tipo de fecha y, si aplica, un rango de inicio y fin.</span></div>
+          <div id="calendarEventsList" class="calendar-event-list"></div>
+          <div class="form-field full"><button class="btn-inline" type="button" id="c-addEvent">Agregar otra fecha o ciclo</button></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-ghost" onclick="clearForm('calendario')">Cancelar</button><button class="btn btn-primary orange" onclick="addCalendario()">Guardar calendario</button></div>
+      </div>
+      <div class="table-card"><div class="table-card-head"><h3>Calendarios registrados</h3><span class="count-pill" id="calendarioCount">2 registros</span></div><table><thead><tr><th>Código</th><th>Año</th><th>Carrera</th><th>Plan</th><th>Sede</th><th>Pensúm relacionado</th><th>Fechas cargadas</th></tr></thead><tbody id="calendarioBody"></tbody></table></div>
+    </section>
+
+    <section class="view" id="view-becarios">
+      <div class="section-head"><h2>Becarios</h2><p>Listado de referencia de los estudiantes con beca activa en tu centro de estudio, con el porcentaje de cobertura asignado.</p></div>
+      <div class="table-card"><div class="table-card-head"><h3>Becarios activos</h3><span class="count-pill">8 registros</span></div><table><thead><tr><th>Código</th><th>Nombre</th><th>Carrera</th><th>Cobertura de beca</th></tr></thead><tbody id="becariosBody"></tbody></table></div>
+    </section>
+
+    <section class="view" id="view-preseleccionados">
+      <div class="section-head"><h2>Preseleccionados</h2><p>Personas que indicaron interés en estudiar en tu centro de estudio y se encuentran en proceso de admisión. Aún no cuentan con beca asignada.</p></div>
+      <div class="table-card"><div class="table-card-head"><h3>En proceso de admisión</h3><span class="count-pill">5 registros</span></div><table><thead><tr><th>Código</th><th>Nombre</th><th>Carrera de interés</th><th>Centro de estudio</th></tr></thead><tbody id="preseleccionadosBody"></tbody></table></div>
+    </section>
+
+    <footer class="foot-note">Portal Centro de Estudio · Becas Nuestro Futuro · SEGEPLAN</footer>
+  </div>
+</div>
+
+<div class="modal-overlay" id="planModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
+    <div class="modal-head">
+      <h3 id="planModalTitle">Agregar jornada o plan</h3>
+      <p>Escribe el nombre de la jornada para usarlo en el calendario.</p>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Nuevo plan de estudio</label>
+        <input type="text" id="planModalInput" placeholder="Ej. fin de semana intensivo">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" type="button" id="planModalCancel">Cancelar</button>
+      <button class="btn btn-primary" type="button" id="planModalSave">Guardar jornada</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('universityLogout').addEventListener('click', ()=>{
+    sessionStorage.removeItem('universidadAutenticada');
+    window.location.replace('index.html');
+  });
+
+  const navItems = document.querySelectorAll('.nav-item');
+  const titles = {
+    dashboard: ['Resumen general','Estado actual de la información cargada por tu centro de estudio'],
+    pensum: ['Pensúm de estudios','Estructura académica de tus carreras'],
+    calendario: ['Calendario académico','Fechas clave de cada ciclo académico'],
+    becarios: ['Becarios','Estudiantes con beca activa en tu centro de estudio'],
+    preseleccionados: ['Preseleccionados','Personas en proceso de admisión']
+  };
+
+  navItems.forEach(item=>{
+    item.addEventListener('click', ()=>{
+      navItems.forEach(i=>i.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+      const key = item.dataset.view;
+      document.getElementById('view-'+key).classList.add('active');
+      document.getElementById('topbarTitle').textContent = titles[key][0];
+      document.getElementById('topbarSub').textContent = titles[key][1];
+    });
+  });
+
+  const pensumData = [
+    {id:'10012', carrera:'Trabajo Social', plan:'fin de semana', modalidad:'Presencial', ciclo:'Semestre', noCiclo:'primero', duracion:'6 meses', cursos:'Trabajo Social I, Metodología de Investigación, Ética Profesional', contenido:'Fundamentos del trabajo social, proyectos comunitarios y técnicas de intervención.'},
+    {id:'10023', carrera:'Ingeniería en Sistemas', plan:'diurno', modalidad:'Híbrida', ciclo:'Cuatrimestre', noCiclo:'primero', duracion:'4 meses', cursos:'Programación, Bases de Datos, Matemáticas Discretas', contenido:'Algoritmos, modelado de datos y desarrollo de soluciones de software.'},
+    {id:'10034', carrera:'Administración de Empresas', plan:'nocturno', modalidad:'Presencial', ciclo:'Semestre', noCiclo:'primero', duracion:'6 meses', cursos:'Contabilidad, Marketing, Finanzas I', contenido:'Gestión administrativa, finanzas básicas y comunicación empresarial.'},
+    {id:'10045', carrera:'Psicología', plan:'diurno', modalidad:'Presencial', ciclo:'Anual', noCiclo:'primero', duracion:'12 meses', cursos:'Psicología General, Desarrollo Humano, Técnicas de Entrevista', contenido:'Bases de la psicología clínica, social y evaluación de casos.'}
+  ];
+
+  const calendarioData = [
+    {id:'20011', anio:'2026', carrera:'Trabajo Social', plan:'fin de semana', campus:'Sede', pensumRef:'10012 · Trabajo Social', eventos:[
+      {tipo:'Matrícula', desde:'2026-01-01', hasta:'2026-01-12', nota:'Semestre 1'},
+      {tipo:'Inscripción ordinaria', desde:'2025-12-20', hasta:'2025-12-30', nota:'Semestre 1'},
+      {tipo:'Pago de mensualidad', desde:'2026-02-01', hasta:'2026-04-30', nota:'Semestre 1'},
+      {tipo:'Evaluaciones', desde:'2026-05-24', hasta:'2026-05-28', nota:'Semestre 1'},
+      {tipo:'Inicio de clases', desde:'2026-07-05', hasta:'2026-07-05', nota:'Semestre 2'}
+    ]},
+    {id:'20022', anio:'2026', carrera:'Ingeniería en Sistemas', plan:'diurno', campus:'Campus Central', pensumRef:'10023 · Ingeniería en Sistemas', eventos:[
+      {tipo:'Matrícula', desde:'2026-01-15', hasta:'2026-01-30', nota:'Semestre 1'},
+      {tipo:'Inscripción extraordinaria', desde:'2026-01-26', hasta:'2026-01-28', nota:'Semestre 1'},
+      {tipo:'Pago de mensualidad', desde:'2026-02-01', hasta:'2026-04-30', nota:'Semestre 1'},
+      {tipo:'Evaluaciones', desde:'2026-05-15', hasta:'2026-05-22', nota:'Semestre 1'},
+      {tipo:'Inicio de clases', desde:'2026-08-03', hasta:'2026-08-03', nota:'Semestre 2'}
+    ]}
+  ];
+
+  const becariosData = [
+    {id:'30123', nombre:'Ana Pérez', carrera:'Ingeniería en Sistemas', pct:100},
+    {id:'30234', nombre:'Luis Gómez', carrera:'Trabajo Social', pct:100},
+    {id:'30345', nombre:'María López', carrera:'Administración de Empresas', pct:75},
+    {id:'30456', nombre:'Carlos Ramírez', carrera:'Ingeniería Civil', pct:75},
+    {id:'30567', nombre:'Fernanda Castillo', carrera:'Psicología', pct:50},
+    {id:'30678', nombre:'Jorge Rodríguez', carrera:'Contaduría Pública', pct:50},
+    {id:'30789', nombre:'Paola Cruz', carrera:'Derecho', pct:25},
+    {id:'30890', nombre:'David Morales', carrera:'Arquitectura', pct:25}
+  ];
+
+  const preseleccionadosData = [
+    {id:'40123', nombre:'Sandra Méndez', carrera:'Ingeniería en Sistemas', centro:'Universidad de San Carlos'},
+    {id:'40234', nombre:'José Torres', carrera:'Psicología', centro:'Universidad Mariano Gálvez'},
+    {id:'40345', nombre:'Mariana Ruiz', carrera:'Administración de Empresas', centro:'Universidad Rafael Landívar'},
+    {id:'40456', nombre:'Sergio Flores', carrera:'Arquitectura', centro:'Universidad Panamericana'},
+    {id:'40567', nombre:'Lucía Hernández', carrera:'Medicina', centro:'Universidad de San Carlos'}
+  ];
+
+  function randomId(){ return String(Math.floor(10000 + Math.random()*89999)); }
+  function formatDate(d){ if(!d) return '—'; const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; }
+  function showCalendarMessage(text, type = 'info'){
+    const message = document.getElementById('calendarNotice');
+    if(!message) return;
+    message.textContent = text;
+    message.className = `page-message ${type}`;
+    message.hidden = false;
+  }
+
+  function hideCalendarMessage(){
+    const message = document.getElementById('calendarNotice');
+    if(message) message.hidden = true;
+  }
+
+  function openPlanModal(){
+    const modal = document.getElementById('planModal');
+    const input = document.getElementById('planModalInput');
+    if(modal){
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    if(input){
+      input.value = '';
+      setTimeout(()=> input.focus(), 0);
+    }
+  }
+
+  function closePlanModal(){
+    const modal = document.getElementById('planModal');
+    if(modal){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function durationToMonths(cantidad, unidad, extraCantidad = '', extraUnidad = ''){
+    const factors = {
+      años: 12,
+      semestres: 6,
+      cuatrimestres: 4,
+      trimestres: 3,
+      bimestres: 2,
+      meses: 1
+    };
+    const primary = Number(cantidad);
+    if(!Number.isFinite(primary) || primary <= 0) return '';
+    const primaryMonths = Math.round(primary * (factors[unidad] || 1));
+    const extraValue = Number(extraCantidad);
+    const extraMonths = Number.isFinite(extraValue) && extraValue > 0 && extraUnidad ? Math.round(extraValue * (factors[extraUnidad] || 1)) : 0;
+    return `${primaryMonths + extraMonths} meses aprox.`;
+  }
+
+  function formatDurationText(cantidad, unidad, extraCantidad = '', extraUnidad = ''){
+    const mainText = `${cantidad} ${unidad}`;
+    const hasExtra = Number(extraCantidad) > 0 && extraUnidad;
+    if(!hasExtra) return mainText;
+    return `${mainText} y ${extraCantidad} ${extraUnidad}`;
+  }
+
+  function renderPensum(){
+    const body = document.getElementById('pensumBody');
+    body.innerHTML = pensumData.length ? '' : '<tr class="empty-row"><td colspan="9">Todavía no hay pensúm registrados.</td></tr>';
+    pensumData.forEach(p=>{
+      const temporalidad = p.duracionMeses ? `${p.duracion} · ${p.duracionMeses}` : p.duracion;
+      body.innerHTML += `<tr><td><span class="id-badge lime">${p.id}</span></td><td>${p.carrera}</td><td>${p.plan}</td><td>${p.modalidad}</td><td>${p.ciclo}</td><td>${p.noCiclo}</td><td>${temporalidad}</td><td class="cell-wrap">${p.cursos}</td><td class="cell-wrap cell-muted">${p.contenido}</td></tr>`;
+    });
+    document.getElementById('pensumCount').textContent = pensumData.length + ' registros';
+    document.getElementById('statPensum').textContent = pensumData.length;
+    renderPensumOptions();
+    updatePlanOptions();
+  }
+
+  function renderPensumOptions(){ const sel = document.getElementById('c-pensum'); if(sel) sel.innerHTML = pensumData.map(p=>`<option value="${p.id} · ${p.carrera}">${p.id} · ${p.carrera} (${p.ciclo})</option>`).join(''); }
+  function updatePlanOptions(){ const plans = Array.from(new Set(pensumData.map(p=>p.plan).filter(Boolean))); const cplan = document.getElementById('c-plan'); const pplan = document.getElementById('p-plan'); if(cplan) cplan.innerHTML = plans.map(x=>`<option>${x}</option>`).join('') || '<option>fin de semana</option>'; if(pplan) pplan.innerHTML = plans.map(x=>`<option>${x}</option>`).join('') || '<option>fin de semana</option>'; }
+
+  function renderCalendario(){
+    const body = document.getElementById('calendarioBody');
+    body.innerHTML = calendarioData.length ? '' : '<tr class="empty-row"><td colspan="7">Todavía no hay calendarios registrados.</td></tr>';
+    calendarioData.forEach(c=>{ const events = (c.eventos || []).map(ev => `${ev.tipo}: ${formatDate(ev.desde)}${ev.hasta ? ' - ' + formatDate(ev.hasta) : ''}${ev.nota ? ' · ' + ev.nota : ''}`).join('<br>'); body.innerHTML += `<tr><td><span class="id-badge orange">${c.id}</span></td><td>${c.anio}</td><td>${c.carrera}</td><td>${c.plan}</td><td>${c.campus}</td><td class="cell-muted">${c.pensumRef}</td><td class="cell-wrap">${events}</td></tr>`; });
+    document.getElementById('calendarioCount').textContent = calendarioData.length + ' registros';
+    document.getElementById('statCalendario').textContent = calendarioData.length;
+  }
+
+  function renderBecarios(){ document.getElementById('becariosBody').innerHTML = becariosData.map(b=>`<tr><td><span class="id-badge">${b.id}</span></td><td>${b.nombre}</td><td>${b.carrera}</td><td><span class="tag tag-${b.pct}">${b.pct}% de cobertura</span></td></tr>`).join(''); }
+  function renderPreseleccionados(){ document.getElementById('preseleccionadosBody').innerHTML = preseleccionadosData.map(p=>`<tr><td><span class="id-badge">${p.id}</span></td><td>${p.nombre}</td><td>${p.carrera}</td><td class="cell-muted">${p.centro}</td></tr>`).join(''); const mini = document.getElementById('miniPreseleccionados'); if(mini) mini.innerHTML = preseleccionadosData.slice(0,5).map(p=>`<li><div><div class="mini-name">${p.nombre}</div><div class="mini-sub">${p.carrera}</div></div><span class="id-badge">${p.id}</span></li>`).join(''); }
+
+  function createPensumCourseRow(value=''){ const row = document.createElement('div'); row.className = 'tier-row'; row.style.display = 'flex'; row.style.gap = '8px'; const input = document.createElement('input'); input.type = 'text'; input.placeholder = 'Nombre del curso'; input.value = value; input.style.flex = '1'; const rem = document.createElement('button'); rem.type = 'button'; rem.className = 'btn-ghost'; rem.textContent = 'Eliminar'; rem.addEventListener('click', ()=> row.remove()); row.appendChild(input); row.appendChild(rem); return row; }
+  function createCalendarEventRow(tipo='Matrícula', desde='', hasta='', nota=''){ const row = document.createElement('div'); row.className = 'calendar-event'; row.innerHTML = `<div class="calendar-event-head"><div class="calendar-event-title"><strong>Fecha o ciclo</strong><span>Agrega un bloque de fechas para matrícula, inscripción, pago o evaluaciones.</span></div><button type="button" class="btn-ghost remove-event">Eliminar</button></div><div class="calendar-event-grid"><div class="form-field"><label>Tipo de fecha</label><select class="event-tipo"><option>Matrícula</option><option>Inscripción ordinaria</option><option>Inscripción extraordinaria</option><option>Pago de mensualidad</option><option>Inicio de clases</option><option>Evaluaciones</option></select></div><div class="form-field"><label>Fecha inicio</label><input type="date" class="event-desde"></div><div class="form-field"><label>Fecha final</label><input type="date" class="event-hasta"></div><div class="form-field"><label>Observación</label><input type="text" class="event-nota" placeholder="Ej. Semestre 1 / bloque 1"></div></div>`; row.querySelector('.event-tipo').value = tipo; row.querySelector('.event-desde').value = desde; row.querySelector('.event-hasta').value = hasta; row.querySelector('.event-nota').value = nota; row.querySelector('.remove-event').addEventListener('click', ()=>{ const list = document.getElementById('calendarEventsList'); if(list.children.length > 1) row.remove(); }); return row; }
+
+  function initPensumCourses(){ const list = document.getElementById('p-coursesList'); const addBtn = document.getElementById('p-addCourse'); const loadBtn = document.getElementById('p-loadExample'); if(list && list.children.length === 0) list.appendChild(createPensumCourseRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createPensumCourseRow())); addBtn._wired = true; } if(loadBtn && !loadBtn._wired){ loadBtn.addEventListener('click', ()=>{ document.getElementById('p-carrera').value = 'Trabajo Social'; document.getElementById('p-plan').value = 'fin de semana'; document.getElementById('p-modalidad').value = 'Presencial'; document.getElementById('p-duracion').value = '5 años'; document.getElementById('p-ciclo').value = 'Semestre'; document.getElementById('p-noCiclo').value = 'primero'; document.getElementById('p-contenido').value = 'Contenido base del ciclo para prueba.'; list.innerHTML = ''; list.appendChild(createPensumCourseRow('Estrategias de Comunicación Lingüística')); list.appendChild(createPensumCourseRow('Fundamentos del trabajo social')); }); loadBtn._wired = true; } }
+  function initCalendarEvents(){ const list = document.getElementById('calendarEventsList'); const addBtn = document.getElementById('c-addEvent'); if(list && list.children.length === 0) list.appendChild(createCalendarEventRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createCalendarEventRow())); addBtn._wired = true; } }
+  function wireLookupButtons(){ const wire = (id, promptText, targetId) => { const btn = document.getElementById(id); if(btn && !btn._wired){ btn.addEventListener('click', ()=>{ const sel = document.getElementById(targetId); const v = prompt(promptText); if(v && v.trim()){ const opt = document.createElement('option'); opt.textContent = v.trim(); sel.appendChild(opt); sel.value = v.trim(); } }); btn._wired = true; } }; wire('p-addPlan','Nombre del nuevo plan:','p-plan'); wire('p-addNoCiclo','Nombre del nuevo ciclo (ej. sexto):','p-noCiclo'); const cAddPlan = document.getElementById('c-addPlan'); if(cAddPlan && !cAddPlan._wired){ cAddPlan.addEventListener('click', openPlanModal); cAddPlan._wired = true; } wire('c-addCampus','Nombre del nuevo campus/sede:','c-campus'); }
+
+  function addPensum(){ const pCoursesList = document.getElementById('p-coursesList'); const carrera = document.getElementById('p-carrera').value; const plan = document.getElementById('p-plan').value.trim(); const modalidad = document.getElementById('p-modalidad').value; const ciclo = document.getElementById('p-ciclo').value; const noCiclo = document.getElementById('p-noCiclo').value.trim(); const cantidad = document.getElementById('p-duracion-cantidad').value.trim(); const unidad = document.getElementById('p-duracion-unidad').value; const extraCantidad = document.getElementById('p-duracion-extra-cantidad').value.trim(); const extraUnidad = document.getElementById('p-duracion-extra-unidad').value; const contenido = document.getElementById('p-contenido').value.trim(); const courses = Array.from(document.querySelectorAll('#p-coursesList input[type=text]')).map(i=>i.value.trim()).filter(Boolean); const temporalidad = formatDurationText(cantidad, unidad, extraCantidad, extraUnidad); if(!temporalidad || courses.length === 0){ alert('Completa la temporalidad y agrega al menos un curso antes de guardar.'); return; } pensumData.push({id:randomId(), carrera, plan, modalidad, ciclo, noCiclo, duracion:temporalidad, duracionMeses:durationToMonths(cantidad, unidad, extraCantidad, extraUnidad), cursos:courses.join(', '), contenido:contenido || 'Sin descripción registrada.'}); renderPensum(); clearForm('pensum'); if(pCoursesList){ pCoursesList.innerHTML = ''; pCoursesList.appendChild(createPensumCourseRow()); } }
+  function clearForm(type){ if(type === 'pensum'){ document.getElementById('p-duracion-cantidad').value = ''; document.getElementById('p-duracion-unidad').selectedIndex = 0; document.getElementById('p-duracion-extra-cantidad').value = ''; document.getElementById('p-duracion-extra-unidad').selectedIndex = 0; document.getElementById('p-contenido').value = ''; document.getElementById('p-plan').selectedIndex = 0; document.getElementById('p-noCiclo').selectedIndex = 0; document.getElementById('p-modalidad').selectedIndex = 0; const list = document.getElementById('p-coursesList'); if(list){ list.innerHTML = ''; list.appendChild(createPensumCourseRow()); } return; } document.getElementById('c-anio').value = ''; document.getElementById('c-plan').selectedIndex = 0; document.getElementById('c-campus').selectedIndex = 0; document.getElementById('c-pensum').selectedIndex = 0; const list = document.getElementById('calendarEventsList'); if(list){ list.innerHTML = ''; list.appendChild(createCalendarEventRow()); } hideCalendarMessage(); }
+
+  const planModal = document.getElementById('planModal');
+  const planModalInput = document.getElementById('planModalInput');
+  const planModalCancel = document.getElementById('planModalCancel');
+  const planModalSave = document.getElementById('planModalSave');
+  if(planModal){
+    planModal.addEventListener('click', (event)=>{ if(event.target === planModal) closePlanModal(); });
+  }
+  if(planModalCancel) planModalCancel.addEventListener('click', closePlanModal);
+  if(planModalSave) planModalSave.addEventListener('click', ()=>{
+    const value = planModalInput.value.trim();
+    if(!value){ showCalendarMessage('Escribe un nombre para la jornada antes de guardar.', 'error'); return; }
+    const select = document.getElementById('c-plan');
+    const option = document.createElement('option');
+    option.textContent = value;
+    select.appendChild(option);
+    select.value = value;
+    closePlanModal();
+    showCalendarMessage(`Jornada agregada: ${value}`, 'info');
+  });
+
+  initPensumCourses();
+  initCalendarEvents();
+  wireLookupButtons();
+  renderPensum();
+  renderCalendario();
+  renderBecarios();
+  renderPreseleccionados();
+</script>
+</body>
+</html>
