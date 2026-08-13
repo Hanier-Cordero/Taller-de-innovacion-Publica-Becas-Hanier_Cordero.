@@ -52,6 +52,9 @@ const VALUE_POINTS = {'Me gusta':2,'Más o menos':1,'No me gusta':0};
 let starRating = 0;
 let currentResult = null;
 let showAllCenters = false;
+const TEST_DRAFT_KEY = 'becasTestBorradorV1';
+let draftTimer;
+let resultSaved = false;
 
 function escapeHtml(value){
   return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -223,7 +226,48 @@ function validateForm(){
   if(personalMissing) messages.push('Completa nombre, correo, departamento y municipio.');
   if(missingQuestions.length) messages.push(`Preguntas pendientes: ${missingQuestions.join(', ')}.`);
   if(starRating===0) messages.push('Selecciona una calificación de 1 a 5 estrellas.');
+  if(!document.getElementById('dataConsent').checked) messages.push('Debes aceptar el almacenamiento de tus datos y respuestas.');
   return {ok:messages.length===0,messages};
+}
+
+function collectAnswers(){
+  return QUESTIONS.map(([id,pregunta,area],index)=>({numero:index+1,id,pregunta,area,respuesta:document.querySelector(`input[name="${id}"]:checked`)?.value||''}));
+}
+
+function saveDraft(){
+  const answers={};
+  QUESTIONS.forEach(([id])=>answers[id]=document.querySelector(`input[name="${id}"]:checked`)?.value||'');
+  localStorage.setItem(TEST_DRAFT_KEY,JSON.stringify({
+    fullName:document.getElementById('fullName').value,email:document.getElementById('email').value,
+    department:document.getElementById('department').value,municipality:document.getElementById('municipality').value,
+    customMunicipality:document.getElementById('customMunicipality').value,
+    feedbackComment:document.getElementById('feedbackComment').value,consent:document.getElementById('dataConsent').checked,
+    starRating,answers,savedAt:Date.now()
+  }));
+}
+function scheduleDraftSave(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,250);}
+function restoreDraft(){
+  let draft; try{draft=JSON.parse(localStorage.getItem(TEST_DRAFT_KEY)||'null');}catch{return;} if(!draft)return;
+  document.getElementById('fullName').value=draft.fullName||''; document.getElementById('email').value=draft.email||'';
+  document.getElementById('department').value=draft.department||''; populateMunicipalities(draft.department||'');
+  document.getElementById('municipality').value=draft.municipality||'';
+  document.getElementById('customMunicipalityWrap').classList.toggle('show',draft.municipality==='__other__');
+  document.getElementById('customMunicipality').value=draft.customMunicipality||'';
+  document.getElementById('feedbackComment').value=draft.feedbackComment||''; document.getElementById('dataConsent').checked=Boolean(draft.consent);
+  starRating=Number(draft.starRating)||0; document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',Number(s.dataset.value)<=starRating));
+  Object.entries(draft.answers||{}).forEach(([id,value])=>{const radio=Array.from(document.querySelectorAll(`input[name="${id}"]`)).find(x=>x.value===value);if(radio)radio.checked=true;});
+  renderLive();
+}
+async function saveTestResult(){
+  const response=await fetch('api/guardar-test.php',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
+    nombre:document.getElementById('fullName').value.trim(),correo:document.getElementById('email').value.trim(),
+    departamento:document.getElementById('department').value,municipio:selectedMunicipality(),respuestas:collectAnswers(),
+    afinidades:currentResult.scores.pct,carreras:{alta:currentResult.high,media:currentResult.medium,baja:currentResult.low},
+    centros:currentResult.centers.centers,calificacion:starRating,comentario:document.getElementById('feedbackComment').value.trim()
+  })});
+  const data=await response.json().catch(()=>({ok:false,error:'Respuesta inválida del servidor.'}));
+  if(!response.ok||!data.ok)throw new Error(data.error||'No fue posible guardar el resultado.');
+  localStorage.removeItem(TEST_DRAFT_KEY); return data;
 }
 
 function buildResults(){
@@ -272,8 +316,9 @@ function printReport(){
   setTimeout(()=>w.print(),650);
 }
 
-renderQuestions(); renderLive(); populateDepartments();
-document.getElementById('vocationalForm').addEventListener('change',renderLive);
+renderQuestions(); renderLive(); populateDepartments(); restoreDraft();
+document.getElementById('vocationalForm').addEventListener('change',()=>{resultSaved=false;renderLive();scheduleDraftSave();});
+document.getElementById('vocationalForm').addEventListener('input',()=>{resultSaved=false;scheduleDraftSave();});
 document.getElementById('department').addEventListener('change',e=>populateMunicipalities(e.target.value));
 document.getElementById('municipality').addEventListener('change',e=>{
   const wrap=document.getElementById('customMunicipalityWrap');
@@ -283,10 +328,14 @@ document.getElementById('municipality').addEventListener('change',e=>{
 document.querySelectorAll('.star').forEach(btn=>btn.addEventListener('click',()=>{
   starRating=Number(btn.dataset.value); document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',Number(s.dataset.value)<=starRating));
 }));
-document.getElementById('showResults').addEventListener('click',()=>{
+document.getElementById('showResults').addEventListener('click',async()=>{
   const check=validateForm(); const alertBox=document.getElementById('formAlert');
   if(!check.ok){alertBox.textContent=check.messages.join(' ');alertBox.classList.add('show');const first=document.querySelector('.card.missing,.question-card.missing');if(first) first.scrollIntoView({behavior:'smooth',block:'center'});return;}
-  alertBox.classList.remove('show'); buildResults();
+  if(resultSaved){buildResults();alertBox.textContent='Este resultado ya fue guardado. Si modificas alguna respuesta podrás registrar una nueva versión.';alertBox.classList.add('show');return;}
+  const button=document.getElementById('showResults'); alertBox.textContent='Guardando resultado…'; alertBox.classList.add('show'); button.disabled=true; buildResults();
+  try{const saved=await saveTestResult();resultSaved=true;alertBox.textContent=`Resultado guardado correctamente. Registro No. ${saved.id}.`;alertBox.style.cssText='display:block;background:#eaf8ee;border-color:#b8dfc3;color:#26703c';}
+  catch(error){alertBox.textContent=`Las recomendaciones se generaron, pero el historial no se guardó: ${error.message}`;alertBox.style.cssText='';alertBox.classList.add('show');}
+  finally{button.disabled=false;}
 });
 document.getElementById('toggleCenters').addEventListener('click',()=>{if(!currentResult)return;showAllCenters=!showAllCenters;renderCenters(currentResult.centers);});
 document.getElementById('pdfButton').addEventListener('click',printReport);

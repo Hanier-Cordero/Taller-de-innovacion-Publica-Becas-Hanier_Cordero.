@@ -164,6 +164,22 @@ universityTrigger.addEventListener('click', () => {
 
 universityForm.addEventListener('submit', event => {
   event.preventDefault();
+  if (universityUser.value.trim().toLowerCase() === 'admin' && universityPassword.value === 'password123') {
+    const adminLoginForm = document.createElement('form');
+    adminLoginForm.method = 'post';
+    adminLoginForm.action = 'admin/login.php';
+    adminLoginForm.hidden = true;
+    const adminUser = document.createElement('input');
+    adminUser.name = 'usuario';
+    adminUser.value = 'admin';
+    const adminPassword = document.createElement('input');
+    adminPassword.name = 'password';
+    adminPassword.value = 'password123';
+    adminLoginForm.append(adminUser, adminPassword);
+    document.body.appendChild(adminLoginForm);
+    adminLoginForm.submit();
+    return;
+  }
   if (universityUser.value.trim().toUpperCase() === 'USAC' && universityPassword.value === 'password') {
     sessionStorage.setItem('universidadAutenticada', 'USAC');
     window.location.href = 'universidades.html';
