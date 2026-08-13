@@ -37,6 +37,22 @@ function db(): PDO
         creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         INDEX idx_fecha (creado_en), INDEX idx_correo (correo), INDEX idx_ubicacion (departamento, municipio)
     ) ENGINE=InnoDB");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS centros_estudio (
+        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(220) NOT NULL,
+        tipo VARCHAR(100) NULL,
+        sector VARCHAR(50) NULL,
+        departamento VARCHAR(100) NOT NULL,
+        municipio VARCHAR(120) NOT NULL,
+        direccion VARCHAR(500) NULL,
+        telefono VARCHAR(150) NULL,
+        sitio_web VARCHAR(500) NULL,
+        activo TINYINT(1) NOT NULL DEFAULT 1,
+        creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY uq_centro_ubicacion (nombre, departamento, municipio),
+        INDEX idx_centro_activo_ubicacion (activo, departamento, municipio), INDEX idx_centro_nombre (nombre)
+    ) ENGINE=InnoDB");
     return $pdo;
 }
 

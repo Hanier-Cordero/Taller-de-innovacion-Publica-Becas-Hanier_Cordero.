@@ -1,0 +1,33 @@
+<?php
+declare(strict_types=1);
+require __DIR__.'/../api/config.php'; requireAdmin();
+$id=(int)($_GET['id']??0);$stmt=db()->prepare('SELECT * FROM test_historial WHERE id=?');$stmt->execute([$id]);$row=$stmt->fetch();
+if(!$row){http_response_code(404);exit('Registro no encontrado.');}
+function h($v){return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}function j($v){return json_decode((string)$v,true)?:[];}
+$answers=j($row['respuestas']);$affinities=j($row['afinidades']);$careers=j($row['carreras_recomendadas']);$centers=j($row['centros_mostrados']);arsort($affinities);
+function completeCareers(array $affinities):array{
+ $source=file_get_contents(__DIR__.'/../data/areas-priorizadas.js');$areas=[];
+ preg_match_all("/\{\s*id:'[^']+',\s*nombre:'([^']+)',\s*prioridad:'([^']+)',\s*fuentes:\[([^\]]*)\],\s*carreras:\[([\s\S]*?)\]\s*\}/u",$source,$matches,PREG_SET_ORDER);
+ foreach($matches as $match){preg_match_all("/'([^']*)'/u",$match[3],$fm);preg_match_all("/'([^']*)'/u",$match[4],$cm);$pct=0;foreach($fm[1] as $origin)$pct=max($pct,(int)($affinities[$origin]??0));if($pct>0)$areas[]=['nombre'=>$match[1],'prioridad'=>$match[2],'affinity'=>$pct,'carrerasSeleccionadas'=>array_values(array_unique($cm[1]))];}
+ $levels=['alta'=>['Muy Alta'],'media'=>['Alta'],'baja'=>['Baja','No priorizada']];$result=[];
+ foreach($levels as $key=>$priorities){$pool=array_values(array_filter($areas,fn($a)=>in_array($a['prioridad'],$priorities,true)));usort($pool,fn($a,$b)=>$b['affinity']<=>$a['affinity']?:strcmp($a['nombre'],$b['nombre']));$strong=array_values(array_filter($pool,fn($a)=>$a['affinity']>=25));$result[$key]=$strong?:array_slice($pool,0,1);}
+ return $result;
+}
+$careers=completeCareers($affinities);
+function prioritySection(string $title,array $groups):string{
+ if(!$groups)return '<section><h2>'.h($title).'</h2><p>No se identificaron coincidencias suficientes para este nivel.</p></section>';
+ $html='<section><h2>'.h($title).'</h2>';
+ foreach($groups as $group){$pct=(int)($group['affinity']??0);$color=$pct<34?'#D6553F':($pct<80?'#F59E0B':($pct<100?'#4CAF7D':'#25D366'));$html.='<div class="pdf-area"><h3>'.h($group['nombre']??'').' <small style="background:'.$color.'">'.$pct.'% de afinidad</small></h3><ul>';foreach(($group['carrerasSeleccionadas']??[]) as $career)$html.='<li>'.h($career).'</li>';$html.='</ul></div>';}
+ return $html.'</section>';
+}
+?>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resultados completos del Test de Orientación Vocacional - <?=h($row['nombre'])?></title><style>
+@page{size:letter landscape;margin:.45in}*{box-sizing:border-box}html,body{width:auto;height:auto}body{font-family:Arial,sans-serif;color:#17345f;margin:0;font-size:8.5pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0d5eb6;padding-bottom:7px;margin-bottom:10px;break-inside:avoid}header img:first-child{width:44px}header img:last-child{width:115px}h1{text-align:center;color:#0d5eb6;font-size:17pt;margin:0 0 3px}.sub{text-align:center;color:#61708a;margin-bottom:10px}.data{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 14px;background:#f4f8fd;padding:8px 10px;border-radius:7px;break-inside:avoid}.data div{break-inside:avoid}h2{color:#0f2f70;font-size:12pt;border-bottom:1px solid #c8d8eb;padding-bottom:3px;margin:13px 0 7px;break-after:avoid}h3{font-size:9.5pt;margin:8px 0 4px;color:#1c5596;break-after:avoid}h3 small{display:inline-block;margin-left:4px;padding:2px 6px;border-radius:999px;color:#fff;font-weight:bold}ul{margin:3px 0 7px;padding-left:17px;columns:3;column-gap:22px}li{break-inside:avoid;margin-bottom:1px}.affinity{display:flex;flex-wrap:wrap;gap:5px;break-inside:avoid}.chip{border-radius:999px;padding:4px 8px;color:#fff;font-weight:bold}table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:7pt}thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}th,td{border:1px solid #d9e2ee;padding:4px;vertical-align:top;overflow-wrap:anywhere}th{background:#0f2f70;color:#fff}.pdf-area{break-inside:auto}.pdf-area h3{break-after:avoid}.location-msg{background:#fff8e3;border-left:4px solid #e0a51d;padding:6px 8px;margin:6px 0 8px;break-inside:avoid}.screen-actions{position:fixed;z-index:10;right:16px;top:16px;display:flex;gap:8px}.screen-actions button,.screen-actions a{border:0;border-radius:7px;background:#0d5eb6;color:#fff;padding:10px 14px;text-decoration:none;font-weight:bold;cursor:pointer;box-shadow:0 5px 14px rgba(13,94,182,.2)}@media print{.screen-actions{display:none}a{color:inherit;text-decoration:none}section{break-inside:auto}}
+</style></head><body><div class="screen-actions"><button onclick="window.print()">Guardar como PDF</button><a href="index.php">Cerrar</a></div><header><img src="../assets/gobierno-logo.png" alt="Gobierno de Guatemala"><div><h1>Resultados completos del Test de Orientación Vocacional</h1><div class="sub">Documento completo · Becas por Nuestro Futuro</div></div><img src="../assets/becas-logo.png" alt="Becas por Nuestro Futuro"></header>
+<div class="data"><div><strong>Participante:</strong> <?=h($row['nombre'])?></div><div><strong>Correo:</strong> <?=h($row['correo'])?></div><div><strong>Departamento:</strong> <?=h($row['departamento'])?></div><div><strong>Municipio:</strong> <?=h($row['municipio'])?></div><div><strong>Fecha:</strong> <?=h(date('d/m/Y',strtotime($row['creado_en'])))?></div></div>
+<section><h2>Perfil completo de afinidad</h2><div class="affinity"><?php foreach($affinities as $area=>$pct):$color=$pct<34?'#D6553F':($pct<80?'#F59E0B':($pct<100?'#4CAF7D':'#25D366'));?><span class="chip" style="background:<?=$color?>"><?=h($area)?>: <?=h($pct)?>%</span><?php endforeach;?></div></section>
+<?=prioritySection('Carreras Alta Prioridad',$careers['alta']??[])?>
+<?=prioritySection('Carreras Media Prioridad',$careers['media']??[])?>
+<?=prioritySection('Carreras Baja Prioridad',$careers['baja']??[])?>
+<section><h2>Centros de estudio disponibles</h2><table><thead><tr><th>Centro</th><th>Tipo</th><th>Sector</th><th>Municipio</th><th>Dirección</th><th>Teléfono</th><th>Sitio web</th></tr></thead><tbody><?php if(!$centers):?><tr><td colspan="7">No hay centros registrados para la ubicación indicada.</td></tr><?php endif;?><?php foreach($centers as $c):?><tr><td><?=h($c['nombre']??'')?></td><td><?=h($c['tipo']??'')?></td><td><?=h($c['sector']??'')?></td><td><?=h($c['municipio']??'')?></td><td><?=h($c['direccion']??'')?></td><td><?=h($c['telefono']??'')?></td><td><?=h($c['sitio_web']??'')?></td></tr><?php endforeach;?></tbody></table></section>
+</body></html>

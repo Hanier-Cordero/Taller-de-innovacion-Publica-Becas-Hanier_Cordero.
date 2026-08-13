@@ -1,4 +1,4 @@
-const CENTER_DATA = window.BECAS_CENTROS_DATA || {departamentos:[],municipios:{},centros:[]};
+let CENTER_DATA = window.BECAS_CENTROS_DATA || {departamentos:[],municipios:{},centros:[]};
 const OFFICIAL_AREAS = window.BECAS_AREAS_PRIORIZADAS || [];
 
 const AREA_META = {
@@ -123,6 +123,14 @@ function populateDepartments(){
   CENTER_DATA.departamentos.forEach(name=>{
     const opt=document.createElement('option'); opt.value=name; opt.textContent=name; dep.appendChild(opt);
   });
+}
+async function loadCenterData(){
+  try{
+    const response=await fetch('api/centros.php',{headers:{Accept:'application/json'},cache:'no-store'});
+    const data=await response.json();
+    if(!response.ok||!data.ok||!Array.isArray(data.centros))throw new Error('Datos no disponibles');
+    CENTER_DATA={departamentos:data.departamentos,municipios:data.municipios,centros:data.centros};
+  }catch(error){console.warn('Se utilizará la copia local de centros de estudio.',error);}
 }
 function populateMunicipalities(department){
   const sel=document.getElementById('municipality');
@@ -262,7 +270,7 @@ async function saveTestResult(){
   const response=await fetch('api/guardar-test.php',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
     nombre:document.getElementById('fullName').value.trim(),correo:document.getElementById('email').value.trim(),
     departamento:document.getElementById('department').value,municipio:selectedMunicipality(),respuestas:collectAnswers(),
-    afinidades:currentResult.scores.pct,carreras:{alta:currentResult.high,media:currentResult.medium,baja:currentResult.low},
+    afinidades:currentResult.scores.pct,carreras:{alta:currentResult.all.high,media:currentResult.all.medium,baja:currentResult.all.low},
     centros:currentResult.centers.centers,calificacion:starRating,comentario:document.getElementById('feedbackComment').value.trim()
   })});
   const data=await response.json().catch(()=>({ok:false,error:'Respuesta inválida del servidor.'}));
@@ -316,7 +324,10 @@ function printReport(){
   setTimeout(()=>w.print(),650);
 }
 
-renderQuestions(); renderLive(); populateDepartments(); restoreDraft();
+async function initializeTest(){
+  renderQuestions(); renderLive(); await loadCenterData(); populateDepartments(); restoreDraft();
+}
+initializeTest();
 document.getElementById('vocationalForm').addEventListener('change',()=>{resultSaved=false;renderLive();scheduleDraftSave();});
 document.getElementById('vocationalForm').addEventListener('input',()=>{resultSaved=false;scheduleDraftSave();});
 document.getElementById('department').addEventListener('change',e=>populateMunicipalities(e.target.value));
