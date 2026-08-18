@@ -6,7 +6,7 @@
 <title>Portal de Universidades — Becas por Nuestro Futuro</title>
 <link rel="icon" href="assets/becas.ico" sizes="any">
 <script>
-  if (sessionStorage.getItem('universidadAutenticada') !== 'USAC') {
+  if (sessionStorage.getItem('universidadAutenticada') !== 'UVG') {
     window.location.replace('index.html');
   }
 </script>
@@ -45,6 +45,7 @@
   h1,h2,h3,.brand,.stat-value{font-family:'Sora',sans-serif;}
   button,input,select,textarea{font-family:inherit;}
   button{cursor:pointer;}
+  .csv-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 18px;padding:14px 16px;border:1px dashed #b9cbe2;border-radius:12px;background:#f7fbff}.csv-toolbar div{display:flex;gap:9px;flex-wrap:wrap}.csv-toolbar p{margin:0;color:var(--muted);font-size:12.5px}.csv-toolbar a{text-decoration:none}.csv-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 
   .app{display:flex;min-height:100vh;}
     .sidebar{width:250px;background:var(--navy);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;box-shadow:4px 0 20px rgba(0,0,0,.05);}
@@ -236,7 +237,7 @@
       <div class="brand-badge">B</div>
       <div>Becas Nuestro Futuro<small>Portal de Centro de Estudio</small></div>
     </div>
-    <div class="centro-chip"><b>Universidad de San Carlos</b>Centro de estudio asignado · Código 00214</div>
+    <div class="centro-chip"><b>Universidad del Valle de Guatemala</b>Centro de estudio asignado · Código UVG</div>
     <nav>
       <div class="nav-label">General</div>
       <div class="nav-item active" data-view="dashboard"><span class="nav-dot dot-general"></span> Resumen general</div>
@@ -253,7 +254,7 @@
   <div class="main">
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú">☰</button><div><h1 id="topbarTitle">Resumen general</h1><p id="topbarSub">Estado de la información requerida según tus becarios asignados</p></div></div>
-      <div style="display:flex;align-items:center;gap:10px"><div class="user-pill"><div class="user-avatar">US</div><span>Universidad de San Carlos</span></div><button class="logout-btn" id="universityLogout" type="button">Cerrar sesión</button></div>
+      <div style="display:flex;align-items:center;gap:10px"><div class="user-pill"><div class="user-avatar">UVG</div><span>Universidad del Valle de Guatemala</span></div><button class="logout-btn" id="universityLogout" type="button">Cerrar sesión</button></div>
     </div>
 
     <section class="view active" id="view-dashboard">
@@ -298,6 +299,7 @@
 
     <section class="view" id="view-pensum">
       <div class="section-head"><h2>Pensum de estudios</h2><p>Registra la estructura académica que aplica a las carreras donde tienes becarios asignados. El pensum servirá como referencia para asociar posteriormente el calendario académico.</p></div>
+      <div class="csv-toolbar"><p>Carga varios ciclos y carreras desde una plantilla CSV compatible con Excel.</p><div><a class="btn btn-ghost" href="plantillas/descargar.php?tipo=pensum">Descargar plantilla CSV</a><button class="btn btn-primary" type="button" id="p-importCsvButton">Cargar archivo CSV</button><input class="csv-file" id="p-importCsv" type="file" accept=".csv,text/csv"></div></div>
       <div class="form-card">
         <h3>Registrar información del pensum</h3>
         <p class="form-hint">Para el prototipo, registra un ciclo a la vez. Los campos se limitan a la información necesaria para identificar la estructura académica.</p>
@@ -349,6 +351,7 @@
 
     <section class="view" id="view-calendario">
       <div class="section-head"><h2>Calendario académico</h2><p>Registra las fechas que afectan el seguimiento del becario y relaciónalas con un pensum previamente cargado.</p></div>
+      <div class="csv-toolbar"><p>Carga eventos de varias carreras; primero debe existir el pénsum relacionado.</p><div><a class="btn btn-ghost" href="plantillas/descargar.php?tipo=calendario">Descargar plantilla CSV</a><button class="btn btn-primary orange" type="button" id="c-importCsvButton">Cargar archivo CSV</button><input class="csv-file" id="c-importCsv" type="file" accept=".csv,text/csv"></div></div>
       <div class="form-card orange-top">
         <h3>Registrar calendario académico</h3>
         <p class="form-hint">Selecciona primero el pensum al que aplica el calendario y luego agrega las fechas relevantes.</p>
@@ -447,14 +450,29 @@
   ];
 
   const preseleccionadosData = [
-    {id:'40123', nombre:'Sandra Méndez', carrera:'Ingeniería en Sistemas', centro:'Universidad de San Carlos'},
+    {id:'40123', nombre:'Sandra Méndez', carrera:'Ingeniería en Sistemas', centro:'Universidad del Valle de Guatemala'},
     {id:'40234', nombre:'José Torres', carrera:'Psicología', centro:'Universidad Mariano Gálvez'},
     {id:'40345', nombre:'Mariana Ruiz', carrera:'Administración de Empresas', centro:'Universidad Rafael Landívar'},
     {id:'40456', nombre:'Sergio Flores', carrera:'Arquitectura', centro:'Universidad Panamericana'},
-    {id:'40567', nombre:'Lucía Hernández', carrera:'Medicina', centro:'Universidad de San Carlos'}
+    {id:'40567', nombre:'Lucía Hernández', carrera:'Medicina', centro:'Universidad del Valle de Guatemala'}
   ];
 
-  const currentUniversity = 'Universidad de San Carlos';
+  const currentUniversity = 'Universidad del Valle de Guatemala';
+  const PORTAL_API = 'api/portal-universidad.php';
+
+  function selectValues(id){const select=document.getElementById(id);return select?Array.from(select.options).map(option=>option.value).filter(Boolean):[];}
+  function portalCatalogs(){return {planes:selectValues('p-plan'),ciclos:selectValues('p-noCiclo'),campus:selectValues('c-campus')};}
+  function addSelectOptions(id,values){const select=document.getElementById(id);if(!select)return;(values||[]).forEach(value=>{if(!Array.from(select.options).some(option=>option.value===value)){const option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option);}});}
+  async function savePortalData(){
+    try{const response=await fetch(PORTAL_API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({pensum:pensumData,calendarios:calendarioData,catalogos:portalCatalogs()})});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'No fue posible guardar.');return true;}
+    catch(error){console.error(error);showPensumMessage('Los cambios se mantienen en pantalla, pero no pudieron guardarse en MySQL.','error');return false;}
+  }
+  async function loadPortalData(){
+    try{const response=await fetch(PORTAL_API,{headers:{Accept:'application/json'},cache:'no-store'});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'No fue posible cargar.');
+      if(result.exists){pensumData.splice(0,pensumData.length,...(result.pensum||[]));calendarioData.splice(0,calendarioData.length,...(result.calendarios||[]));addSelectOptions('p-plan',result.catalogos?.planes);addSelectOptions('p-noCiclo',result.catalogos?.ciclos);addSelectOptions('c-campus',result.catalogos?.campus);}
+      else await savePortalData();
+    }catch(error){console.error('Se utilizarán temporalmente los datos incluidos en la página.',error);}
+  }
   function randomId(){ return String(Math.floor(10000 + Math.random()*89999)); }
   function assignedCareers(){ return Array.from(new Set(becariosData.map(b=>b.carrera))).sort((a,b)=>a.localeCompare(b,'es')); }
   function pensumCareers(){ return new Set(pensumData.map(p=>p.carrera)); }
@@ -584,7 +602,51 @@
 
   function initPensumCourses(){ const list = document.getElementById('p-coursesList'); const addBtn = document.getElementById('p-addCourse'); const loadBtn = document.getElementById('p-loadExample'); if(list && list.children.length === 0) list.appendChild(createPensumCourseRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createPensumCourseRow())); addBtn._wired = true; } if(loadBtn && !loadBtn._wired){ loadBtn.addEventListener('click', ()=>{ document.getElementById('p-carrera').value = 'Trabajo Social'; document.getElementById('p-plan').value = 'fin de semana'; document.getElementById('p-modalidad').value = 'Presencial'; document.getElementById('p-vigencia').value = '2026'; document.getElementById('p-duracion-cantidad').value = '5'; document.getElementById('p-duracion-unidad').value = 'años'; document.getElementById('p-ciclo').value = 'Semestre'; document.getElementById('p-noCiclo').value = 'primero'; document.getElementById('p-contenido').value = 'Contenido base del ciclo para prueba.'; list.innerHTML = ''; list.appendChild(createPensumCourseRow('Estrategias de Comunicación Lingüística')); list.appendChild(createPensumCourseRow('Fundamentos del trabajo social')); }); loadBtn._wired = true; } }
   function initCalendarEvents(){ const list = document.getElementById('calendarEventsList'); const addBtn = document.getElementById('c-addEvent'); if(list && list.children.length === 0) list.appendChild(createCalendarEventRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createCalendarEventRow())); addBtn._wired = true; } }
-  function wireLookupButtons(){ const wire = (id, promptText, targetId) => { const btn = document.getElementById(id); if(btn && !btn._wired){ btn.addEventListener('click', ()=>{ const sel = document.getElementById(targetId); const v = prompt(promptText); if(v && v.trim()){ const opt = document.createElement('option'); opt.textContent = v.trim(); sel.appendChild(opt); sel.value = v.trim(); } }); btn._wired = true; } }; wire('p-addPlan','Nombre del nuevo plan:','p-plan'); wire('p-addNoCiclo','Nombre del nuevo ciclo (ej. sexto):','p-noCiclo'); wire('c-addCampus','Nombre del nuevo campus/sede:','c-campus'); }
+  function wireLookupButtons(){ const wire = (id, promptText, targetId) => { const btn = document.getElementById(id); if(btn && !btn._wired){ btn.addEventListener('click', ()=>{ const sel = document.getElementById(targetId); const v = prompt(promptText); if(v && v.trim()){ const opt = document.createElement('option'); opt.textContent = v.trim(); sel.appendChild(opt); sel.value = v.trim(); savePortalData(); } }); btn._wired = true; } }; wire('p-addPlan','Nombre del nuevo plan:','p-plan'); wire('p-addNoCiclo','Nombre del nuevo ciclo (ej. sexto):','p-noCiclo'); wire('c-addCampus','Nombre del nuevo campus/sede:','c-campus'); }
+
+  function parseCsv(text){
+    const rows=[];let row=[],field='',quoted=false;
+    text=String(text||'').replace(/^\uFEFF/,'');
+    for(let i=0;i<text.length;i++){const char=text[i];
+      if(quoted){if(char==='"'&&text[i+1]==='"'){field+='"';i++;}else if(char==='"')quoted=false;else field+=char;}
+      else if(char==='"')quoted=true;else if(char===','){row.push(field.trim());field='';}else if(char==='\n'){row.push(field.trim());if(row.some(Boolean))rows.push(row);row=[];field='';}else if(char!=='\r')field+=char;
+    }
+    row.push(field.trim());if(row.some(Boolean))rows.push(row);if(!rows.length)return [];
+    const headers=rows.shift().map(header=>header.trim().toLowerCase());
+    return rows.map((values,index)=>({line:index+2,data:Object.fromEntries(headers.map((header,column)=>[header,values[column]??'']))}));
+  }
+  function requireCsvHeaders(rows,required){if(!rows.length)throw new Error('El archivo no contiene filas de datos.');const headers=Object.keys(rows[0].data);const missing=required.filter(header=>!headers.includes(header));if(missing.length)throw new Error(`Faltan columnas: ${missing.join(', ')}.`);}
+  function validIsoDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const date=new Date(`${value}T00:00:00`);return !Number.isNaN(date.getTime())&&date.toISOString().slice(0,10)===value;}
+  function csvErrorsMessage(imported,errors){const summary=`${imported} registro(s) importado(s).`;return errors.length?`${summary} Filas con error: ${errors.slice(0,8).join(' | ')}${errors.length>8?' | …':''}`:summary;}
+
+  async function importPensumCsv(file){
+    const required=['carrera','version','plan','modalidad','tipo_ciclo','numero_ciclo','duracion','duracion_meses','cursos','contenido'];
+    try{const rows=parseCsv(await file.text());requireCsvHeaders(rows,required);let imported=0;const errors=[];
+      rows.forEach(({line,data})=>{const courses=data.cursos.split('|').map(value=>value.trim()).filter(Boolean);const months=data.duracion_meses?Number(data.duracion_meses):null;
+        if(!data.carrera||!/^\d{4}$/.test(data.version)||!data.plan||!data.modalidad||!data.tipo_ciclo||!data.numero_ciclo||!data.duracion||!courses.length){errors.push(`${line}: campos obligatorios incompletos`);return;}
+        if(months!==null&&(!Number.isFinite(months)||months<=0)){errors.push(`${line}: duración_meses inválida`);return;}
+        const duplicate=pensumData.some(p=>p.carrera.toLowerCase()===data.carrera.toLowerCase()&&p.plan.toLowerCase()===data.plan.toLowerCase()&&String(p.vigencia)===data.version&&p.ciclo.toLowerCase()===data.tipo_ciclo.toLowerCase()&&p.noCiclo.toLowerCase()===data.numero_ciclo.toLowerCase());
+        if(duplicate){errors.push(`${line}: registro duplicado`);return;}
+        pensumData.push({id:randomId(),carrera:data.carrera,vigencia:data.version,plan:data.plan,modalidad:data.modalidad,ciclo:data.tipo_ciclo,noCiclo:data.numero_ciclo,duracion:data.duracion,duracionMeses:months?`${months} meses aprox.`:'',cursos:courses.join(', '),contenido:data.contenido||'Sin descripción registrada.'});addSelectOptions('p-plan',[data.plan]);addSelectOptions('p-noCiclo',[data.numero_ciclo]);imported++;
+      });
+      if(imported){renderPensum();await savePortalData();}showPensumMessage(csvErrorsMessage(imported,errors),errors.length?'error':'success');
+    }catch(error){showPensumMessage(`No se pudo importar el CSV: ${error.message}`,'error');}
+  }
+  async function importCalendarCsv(file){
+    const required=['año','carrera','version_pensum','plan','sede','tipo_evento','fecha_inicio','fecha_fin','observacion'];
+    try{const rows=parseCsv(await file.text());requireCsvHeaders(rows,required);const groups=new Map(),errors=[];
+      rows.forEach(({line,data})=>{if(!/^\d{4}$/.test(data['año'])||!data.carrera||!data.version_pensum||!data.plan||!data.sede||!data.tipo_evento||!validIsoDate(data.fecha_inicio)){errors.push(`${line}: datos o fecha de inicio inválidos`);return;}if(data.fecha_fin&&(!validIsoDate(data.fecha_fin)||data.fecha_fin<data.fecha_inicio)){errors.push(`${line}: fecha final inválida`);return;}
+        const pensum=pensumData.find(p=>p.carrera.toLowerCase()===data.carrera.toLowerCase()&&p.plan.toLowerCase()===data.plan.toLowerCase()&&String(p.vigencia)===data.version_pensum);if(!pensum){errors.push(`${line}: no existe el pénsum indicado`);return;}
+        const key=[data['año'],pensum.id,data.sede.toLowerCase()].join('|');if(!groups.has(key))groups.set(key,{line,data,pensum,eventos:[]});groups.get(key).eventos.push({tipo:data.tipo_evento,desde:data.fecha_inicio,hasta:data.fecha_fin,nota:data.observacion});
+      });
+      let imported=0;groups.forEach(group=>{const {data,pensum,eventos,line}=group;const year=data['año'];const duplicate=calendarioData.some(c=>c.anio===year&&c.pensumId===pensum.id&&c.campus.toLowerCase()===data.sede.toLowerCase());if(duplicate){errors.push(`${line}: calendario duplicado`);return;}calendarioData.push({id:randomId(),anio:year,carrera:pensum.carrera,plan:pensum.plan,campus:data.sede,pensumId:pensum.id,pensumRef:`${pensum.id} · ${pensum.carrera}`,eventos});addSelectOptions('c-campus',[data.sede]);imported++;});
+      if(imported){renderCalendario();await savePortalData();}showCalendarMessage(csvErrorsMessage(imported,errors),errors.length?'error':'success');
+    }catch(error){showCalendarMessage(`No se pudo importar el CSV: ${error.message}`,'error');}
+  }
+  function initCsvImports(){
+    const wire=(buttonId,inputId,handler)=>{const button=document.getElementById(buttonId),input=document.getElementById(inputId);button.addEventListener('click',()=>input.click());input.addEventListener('change',async()=>{if(input.files[0])await handler(input.files[0]);input.value='';});};
+    wire('p-importCsvButton','p-importCsv',importPensumCsv);wire('c-importCsvButton','c-importCsv',importCalendarCsv);
+  }
 
   function addPensum(){
     const carrera = document.getElementById('p-carrera').value;
@@ -605,6 +667,7 @@
     if(duplicate){ showPensumMessage('Ya existe un registro para esa carrera, versión, plan y ciclo. Cambia el ciclo o revisa la información existente.', 'error'); return; }
     pensumData.push({id:randomId(), carrera, vigencia, plan, modalidad, ciclo, noCiclo, duracion:temporalidad, duracionMeses:durationToMonths(cantidad, unidad, extraCantidad, extraUnidad), cursos:courses.join(', '), contenido:contenido || 'Sin descripción registrada.'});
     renderPensum();
+    savePortalData();
     clearForm('pensum');
     showPensumMessage(`Ciclo guardado correctamente para ${carrera}.`, 'success');
   }
@@ -628,6 +691,7 @@
     if(duplicate){ showCalendarMessage('Ya existe un calendario para ese pensum, año y sede.', 'error'); return; }
     calendarioData.push({id:randomId(), anio, carrera:pensum.carrera, plan:pensum.plan, campus, pensumId, pensumRef:`${pensum.id} · ${pensum.carrera}`, eventos});
     renderCalendario();
+    savePortalData();
     clearForm('calendario');
     showCalendarMessage(`Calendario guardado para ${pensum.carrera}.`, 'success');
   }
@@ -644,13 +708,18 @@
     navItems.forEach(item=>item.addEventListener('click', ()=>sidebar.classList.remove('mobile-open')));
   }
 
-  initPensumCourses();
-  initCalendarEvents();
-  wireLookupButtons();
-  renderPensum();
-  renderCalendario();
-  renderBecarios();
-  renderPreseleccionados();
+  async function initializeUniversityPortal(){
+    await loadPortalData();
+    initPensumCourses();
+    initCalendarEvents();
+    wireLookupButtons();
+    initCsvImports();
+    renderPensum();
+    renderCalendario();
+    renderBecarios();
+    renderPreseleccionados();
+  }
+  initializeUniversityPortal();
 </script>
 </body>
 </html>

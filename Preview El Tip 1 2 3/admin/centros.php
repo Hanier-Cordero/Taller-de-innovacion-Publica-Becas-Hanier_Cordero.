@@ -14,10 +14,36 @@ $edit=null;if(isset($_GET['editar'])){$s=$pdo->prepare('SELECT * FROM centros_es
 $q=trim((string)($_GET['q']??''));$dep=trim((string)($_GET['departamento']??''));$status=(string)($_GET['estado']??'');$where=[];$params=[];
 if($q!==''){$where[]='(nombre LIKE ? OR municipio LIKE ? OR tipo LIKE ?)';$t="%$q%";array_push($params,$t,$t,$t);}if($dep!==''){$where[]='departamento=?';$params[]=$dep;}if($status!==''){$where[]='activo=?';$params[]=(int)$status;}$sql=$where?' WHERE '.implode(' AND ',$where):'';
 $s=$pdo->prepare('SELECT * FROM centros_estudio'.$sql.' ORDER BY activo DESC,departamento,municipio,nombre');$s->execute($params);$rows=$s->fetchAll();$deps=$pdo->query('SELECT DISTINCT departamento FROM centros_estudio ORDER BY departamento')->fetchAll(PDO::FETCH_COLUMN);
+$locationRows=$pdo->query('SELECT DISTINCT departamento,municipio FROM centros_estudio ORDER BY departamento,municipio')->fetchAll();$municipalitiesByDepartment=[];foreach($locationRows as $location)$municipalitiesByDepartment[$location['departamento']][]=$location['municipio'];
 function hc($v){return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}
 ?>
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Centros de estudio</title><link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="centros.css"></head><body><header class="admin-header"><div><h1>Centros de estudio</h1><p>Base utilizada por el test vocacional</p></div><nav><a href="index.php">Historial del test</a><a href="logout.php">Cerrar sesión</a></nav></header><main class="admin-main">
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Centros de estudio</title><link rel="icon" href="../assets/becas.ico" sizes="any"><link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="centros.css"></head><body><header class="admin-header"><div><h1>Centros de estudio</h1><p>Base utilizada por el test vocacional</p></div><nav><a href="index.php">Historial del test</a><a href="logout.php">Cerrar sesión</a></nav></header><main class="admin-main">
 <?php if(isset($_GET['guardado'])):?><div class="message success">Centro guardado correctamente.</div><?php endif;?><?php if(isset($_GET['actualizado'])):?><div class="message success">Estado actualizado.</div><?php endif;?><?php if(isset($error)):?><div class="message error"><?=hc($error)?></div><?php endif;?>
 <section class="center-editor"><h2><?=$edit?'Editar centro':'Agregar centro'?></h2><form method="post" class="center-form"><input type="hidden" name="accion" value="guardar"><input type="hidden" name="id" value="<?=hc($edit['id']??'')?>"><label>Nombre*<input name="nombre" required value="<?=hc($edit['nombre']??'')?>"></label><label>Tipo<input name="tipo" value="<?=hc($edit['tipo']??'')?>"></label><label>Sector<select name="sector"><option value="">Seleccionar</option><?php foreach(['Público','Privado','Mixto'] as $x):?><option <?=($edit['sector']??'')===$x?'selected':''?>><?=$x?></option><?php endforeach;?></select></label><label>Departamento*<input name="departamento" required value="<?=hc($edit['departamento']??'')?>"></label><label>Municipio*<input name="municipio" required value="<?=hc($edit['municipio']??'')?>"></label><label>Dirección<input name="direccion" value="<?=hc($edit['direccion']??'')?>"></label><label>Teléfono<input name="telefono" value="<?=hc($edit['telefono']??'')?>"></label><label>Sitio web<input type="url" name="sitio_web" value="<?=hc($edit['sitio_web']??'')?>"></label><div class="center-actions"><button>Guardar centro</button><?php if($edit):?><a href="centros.php">Cancelar edición</a><?php endif;?></div></form></section>
 <form class="filters"><input name="q" value="<?=hc($q)?>" placeholder="Nombre, municipio o tipo"><select name="departamento"><option value="">Todos los departamentos</option><?php foreach($deps as $d):?><option <?=($dep===$d?'selected':'')?>><?=hc($d)?></option><?php endforeach;?></select><select name="estado"><option value="">Todos los estados</option><option value="1" <?=$status==='1'?'selected':''?>>Activos</option><option value="0" <?=$status==='0'?'selected':''?>>Inactivos</option></select><button>Filtrar</button><a href="centros.php">Limpiar</a></form><p><strong><?=count($rows)?></strong> centros encontrados</p>
 <div class="table-wrap"><table><thead><tr><th>Centro</th><th>Tipo/sector</th><th>Ubicación</th><th>Contacto</th><th>Estado</th><th>Acciones</th></tr></thead><tbody><?php foreach($rows as $r):?><tr><td><strong><?=hc($r['nombre'])?></strong><small><?=hc($r['direccion'])?></small></td><td><?=hc($r['tipo'])?><small><?=hc($r['sector'])?></small></td><td><?=hc($r['municipio'])?><small><?=hc($r['departamento'])?></small></td><td><?=hc($r['telefono'])?><small><?=hc($r['sitio_web'])?></small></td><td><span class="state <?=$r['activo']?'on':'off'?>"><?=$r['activo']?'Activo':'Inactivo'?></span></td><td class="row-actions"><a href="?editar=<?=hc($r['id'])?>">Editar</a><form method="post"><input type="hidden" name="accion" value="estado"><button name="id" value="<?=hc($r['id'])?>"><?=$r['activo']?'Desactivar':'Activar'?></button></form></td></tr><?php endforeach;?></tbody></table></div></main></body></html>
+<script>
+const centerLocations=<?=json_encode($municipalitiesByDepartment,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)?>;
+const departmentInput=document.querySelector('.center-form [name="departamento"]');
+const municipalityInput=document.querySelector('.center-form [name="municipio"]');
+const selectedDepartment=departmentInput.value;
+const selectedMunicipality=municipalityInput.value;
+
+function replaceWithSelect(input,options,placeholder){
+  const select=document.createElement('select');
+  select.name=input.name;select.required=input.required;
+  select.innerHTML=`<option value="">${placeholder}</option>`+options.map(value=>`<option value="${value.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${value}</option>`).join('');
+  input.replaceWith(select);return select;
+}
+const departmentSelect=replaceWithSelect(departmentInput,Object.keys(centerLocations),'Seleccionar departamento');
+const municipalitySelect=replaceWithSelect(municipalityInput,[],'Selecciona primero un departamento');
+function updateMunicipalities(value=''){
+  const municipalities=centerLocations[departmentSelect.value]||[];
+  municipalitySelect.disabled=!departmentSelect.value;
+  municipalitySelect.innerHTML='<option value="">Seleccionar municipio</option>'+municipalities.map(name=>`<option value="${name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${name}</option>`).join('');
+  if(municipalities.includes(value))municipalitySelect.value=value;
+}
+departmentSelect.value=selectedDepartment;
+updateMunicipalities(selectedMunicipality);
+departmentSelect.addEventListener('change',()=>updateMunicipalities());
+</script>

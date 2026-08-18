@@ -1,0 +1,7 @@
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# Compatibilidad con la ruta que quedó almacenada por el sitio anterior.
+RewriteRule ^login/?$ /index.html [R=302,L]
+

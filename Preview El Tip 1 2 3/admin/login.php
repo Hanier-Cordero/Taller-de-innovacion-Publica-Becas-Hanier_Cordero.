@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = 'El usuario o la contraseña no son correctos.';
 }
 ?>
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administración del test</title><link rel="stylesheet" href="admin.css"></head>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administración del test</title><link rel="icon" href="../assets/becas.ico" sizes="any"><link rel="stylesheet" href="admin.css"></head>
 <body class="login-body"><main class="admin-login"><img src="../assets/becas-logo.png" alt="Becas por Nuestro Futuro"><h1>Historial del test</h1><p>Acceso administrativo</p>
 <?php if($error): ?><div class="message error"><?=htmlspecialchars($error)?></div><?php endif; ?>
 <form method="post"><label>Usuario<input name="usuario" autocomplete="username" required></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label><button>Ingresar</button></form><a href="../index.html">← Volver al portal</a></main></body></html>

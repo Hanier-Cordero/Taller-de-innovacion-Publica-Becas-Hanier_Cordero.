@@ -180,8 +180,8 @@ universityForm.addEventListener('submit', event => {
     adminLoginForm.submit();
     return;
   }
-  if (universityUser.value.trim().toUpperCase() === 'USAC' && universityPassword.value === 'password') {
-    sessionStorage.setItem('universidadAutenticada', 'USAC');
+  if (universityUser.value.trim().toUpperCase() === 'UVG' && universityPassword.value === 'password') {
+    sessionStorage.setItem('universidadAutenticada', 'UVG');
     window.location.href = 'universidades.html';
     return;
   }

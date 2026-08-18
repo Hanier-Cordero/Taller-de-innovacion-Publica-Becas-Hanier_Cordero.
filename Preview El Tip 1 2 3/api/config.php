@@ -53,6 +53,17 @@ function db(): PDO
         UNIQUE KEY uq_centro_ubicacion (nombre, departamento, municipio),
         INDEX idx_centro_activo_ubicacion (activo, departamento, municipio), INDEX idx_centro_nombre (nombre)
     ) ENGINE=InnoDB");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS portal_centro_datos (
+        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        codigo_universidad VARCHAR(30) NOT NULL,
+        nombre_universidad VARCHAR(180) NOT NULL,
+        pensum JSON NOT NULL,
+        calendarios JSON NOT NULL,
+        catalogos JSON NOT NULL,
+        creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY uq_portal_universidad (codigo_universidad)
+    ) ENGINE=InnoDB");
     return $pdo;
 }
 

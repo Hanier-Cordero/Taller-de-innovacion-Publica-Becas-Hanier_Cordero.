@@ -17,7 +17,7 @@ $departments=$pdo->query('SELECT DISTINCT departamento FROM test_historial ORDER
 $stats=$pdo->query('SELECT COUNT(*) total,COUNT(DISTINCT correo) participantes,ROUND(AVG(calificacion),1) promedio FROM test_historial')->fetch();
 function decoded($json){return json_decode((string)$json,true)?:[];} function h($v){return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}
 ?>
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Historial del test</title><link rel="stylesheet" href="admin.css"></head><body>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Historial del test</title><link rel="icon" href="../assets/becas.ico" sizes="any"><link rel="stylesheet" href="admin.css"></head><body>
 <header class="admin-header"><div><h1>Historial del test vocacional</h1><p>Becas por Nuestro Futuro</p></div><nav><a href="centros.php">Centros de estudio</a><a href="../testvocacional.html">Abrir test</a><a href="logout.php">Cerrar sesión</a></nav></header>
 <style>.pdf-action{display:inline-block;white-space:nowrap;border-radius:7px;background:#0f5eb4;color:#fff;padding:9px 12px;text-decoration:none;font-weight:800}.pdf-action:hover{background:#123f8c}</style>
 <main class="admin-main"><section class="stats"><article><span>Registros</span><strong><?=h($stats['total'])?></strong></article><article><span>Correos únicos</span><strong><?=h($stats['participantes'])?></strong></article><article><span>Calificación promedio</span><strong><?=h($stats['promedio']??0)?> / 5</strong></article></section>
