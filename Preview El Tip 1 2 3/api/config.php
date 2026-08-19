@@ -64,6 +64,9 @@ function db(): PDO
         actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         UNIQUE KEY uq_portal_universidad (codigo_universidad)
     ) ENGINE=InnoDB");
+    $column = $pdo->prepare("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=? AND TABLE_NAME='portal_centro_datos' AND COLUMN_NAME='cartas_costos'");
+    $column->execute([DB_NAME]);
+    if (!(int)$column->fetchColumn()) $pdo->exec("ALTER TABLE portal_centro_datos ADD COLUMN cartas_costos JSON NULL AFTER calendarios");
     return $pdo;
 }
 

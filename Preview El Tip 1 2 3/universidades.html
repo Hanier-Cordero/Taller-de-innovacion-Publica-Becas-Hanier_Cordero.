@@ -220,6 +220,8 @@
   .status-missing{background:var(--accent-red-soft);color:#a23a3a;}
   .helper-banner{display:flex;gap:10px;align-items:flex-start;background:#f6faff;border:1px solid #d8e8fb;border-radius:12px;padding:12px 14px;margin:0 0 16px;font-size:12.5px;color:#315b85;line-height:1.45;}
   .helper-banner strong{color:var(--navy);}
+  .logo-upload{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center}.logo-preview{height:105px;border:1.5px dashed #b9cbe2;border-radius:12px;background:#f8fbff;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:12px;text-align:center;padding:10px}.logo-preview img{max-width:100%;max-height:85px;object-fit:contain}.cost-preview{margin-top:18px;padding:22px;border:1px solid #d7e1ed;border-radius:12px;background:#fff}.cost-preview h4{text-align:center;color:var(--navy);margin:0 0 8px}.cost-preview p{font-size:12.5px;line-height:1.55;color:#3f5068}.cost-preview table th,.cost-preview table td{padding:8px 10px}.table-actions{display:flex;gap:7px;flex-wrap:wrap}.btn-small{border:1px solid #bfd0e5;background:#fff;color:var(--navy);border-radius:7px;padding:6px 9px;font-weight:700;cursor:pointer}.btn-small.danger{color:#a23a3a;border-color:#efc3c3}
+  .month-picker{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.month-option{position:relative}.month-option input{position:absolute;opacity:0;pointer-events:none}.month-option span{display:flex;align-items:center;justify-content:center;min-height:39px;border:1.5px solid #cfdaea;border-radius:9px;background:#fff;color:#52647e;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}.month-option span:hover{border-color:#86a9d3;background:#f4f8fd}.month-option input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 4px 10px rgba(18,63,140,.18)}.month-summary{margin-top:7px;color:var(--muted);font-size:11.5px}.cost-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:14px 16px;border:1px dashed #b9cbe2;border-radius:12px;background:#f7fbff}.cost-toolbar p{margin:0;color:var(--muted);font-size:12.5px}@media(max-width:700px){.month-picker{grid-template-columns:repeat(3,1fr)}.logo-upload{grid-template-columns:1fr}.logo-preview{max-width:180px}}
   .mobile-menu-btn{display:none;border:1px solid var(--border);background:#fff;border-radius:10px;width:40px;height:40px;font-size:20px;align-items:center;justify-content:center;color:var(--navy);}
 
   @media (max-width:980px){
@@ -244,6 +246,7 @@
       <div class="nav-label">Carga de datos</div>
       <div class="nav-item" data-view="pensum"><span class="nav-dot dot-lime"></span> Pensúm de estudios</div>
       <div class="nav-item" data-view="calendario"><span class="nav-dot dot-orange"></span> Calendario académico</div>
+      <div class="nav-item" data-view="costos"><span class="nav-dot dot-general"></span> Carta de costos</div>
       <div class="nav-label">Consulta</div>
       <div class="nav-item" data-view="becarios"><span class="nav-dot dot-muted"></span> Becarios</div>
       <div class="nav-item" data-view="preseleccionados"><span class="nav-dot dot-muted"></span> Preseleccionados</div>
@@ -297,6 +300,35 @@
       </div>
     </section>
 
+    <section class="view" id="view-costos">
+      <div class="section-head"><h2>Carta de costos</h2><p>Completa y guarda la constancia de costos que será presentada ante la Dirección de Administración de Becas y Crédito Educativo de SEGEPLAN.</p></div>
+      <div class="cost-toolbar"><p>También puedes descargar una plantilla editable y completarla en Microsoft Word.</p><a class="btn btn-ghost" href="plantillas/descargar-carta-costos.php">Descargar plantilla DOCX</a></div>
+      <div class="form-card">
+        <h3>Plantilla de carta de costos</h3>
+        <p class="form-hint">La plantilla conserva la estructura del modelo institucional y genera una versión formal lista para imprimir o guardar como PDF.</p>
+        <div class="helper-banner"><span>📄</span><div><strong>Antes de guardar:</strong> agrega el logotipo oficial de la universidad y verifica todos los montos, meses y fechas de pago.</div></div>
+        <div id="costNotice" class="page-message info" hidden></div>
+        <div class="form-grid">
+          <div class="form-section-title"><strong>1. Identificación institucional</strong><span>El logotipo se mostrará en el encabezado de la constancia.</span></div>
+          <div class="form-field full logo-upload"><div class="logo-preview" id="costLogoPreview">Sin logotipo</div><div><label for="cost-logo">Logotipo de la universidad</label><input id="cost-logo" type="file" accept="image/png,image/jpeg,image/webp"><span class="field-help">PNG, JPG o WebP. Máximo 1 MB. Se recomienda una imagen horizontal con fondo transparente.</span></div></div>
+          <div class="form-field"><label>Carrera o programa</label><select id="cost-carrera"></select></div>
+          <div class="form-field"><label>Año al que aplican los costos</label><input id="cost-anio" type="number" min="2000" max="2100" placeholder="Ej. 2026"></div>
+          <div class="form-section-title"><strong>2. Matrícula</strong><span>Indica el costo y la programación anual.</span></div>
+          <div class="form-field"><label>Costo de la matrícula (Q)</label><input id="cost-matricula" type="number" min="0" step="0.01" placeholder="Ej. 700.00"></div>
+          <div class="form-field"><label>Cantidad de matrículas al año</label><input id="cost-matriculas-cantidad" type="number" min="0" step="1" placeholder="Se calcula con los meses" readonly></div>
+          <div class="form-field full"><label>Meses de pago de matrícula</label><div class="month-picker" id="cost-matriculas-meses"></div><div class="month-summary" id="cost-matriculas-summary">Selecciona los meses correspondientes.</div></div>
+          <div class="form-section-title"><strong>3. Mensualidades y fechas</strong><span>Detalla los pagos periódicos aplicables.</span></div>
+          <div class="form-field"><label>Costo de la mensualidad (Q)</label><input id="cost-mensualidad" type="number" min="0" step="0.01" placeholder="Ej. 500.00"></div>
+          <div class="form-field"><label>Cantidad de mensualidades al año</label><input id="cost-mensualidades-cantidad" type="number" min="0" step="1" placeholder="Se calcula con los meses" readonly></div>
+          <div class="form-field full"><label>Meses de pago de mensualidad</label><div class="month-picker" id="cost-mensualidades-meses"></div><div class="month-summary" id="cost-mensualidades-summary">Selecciona los meses correspondientes.</div></div>
+          <div class="form-field full"><label>Fechas específicas de pago</label><textarea id="cost-fechas-pago" placeholder="Ej. Del 1 al 10 de cada mes"></textarea></div>
+          <div class="form-field"><label>Fecha de emisión</label><input id="cost-fecha" type="date"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-ghost" type="button" onclick="clearCostForm()">Limpiar</button><button class="btn btn-primary" type="button" onclick="saveCostLetter()">Guardar carta de costos</button></div>
+      </div>
+      <div class="table-card"><div class="table-card-head"><h3>Cartas de costos registradas</h3><span class="count-pill" id="costCount">0 registros</span></div><table><thead><tr><th>Código</th><th>Carrera</th><th>Año</th><th>Matrícula</th><th>Mensualidad</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody id="costBody"></tbody></table></div>
+    </section>
+
     <section class="view" id="view-pensum">
       <div class="section-head"><h2>Pensum de estudios</h2><p>Registra la estructura académica que aplica a las carreras donde tienes becarios asignados. El pensum servirá como referencia para asociar posteriormente el calendario académico.</p></div>
       <div class="csv-toolbar"><p>Carga varios ciclos y carreras desde una plantilla CSV compatible con Excel.</p><div><a class="btn btn-ghost" href="plantillas/descargar.php?tipo=pensum">Descargar plantilla CSV</a><button class="btn btn-primary" type="button" id="p-importCsvButton">Cargar archivo CSV</button><input class="csv-file" id="p-importCsv" type="file" accept=".csv,text/csv"></div></div>
@@ -342,11 +374,10 @@
           <div class="form-field"><label>Ciclo dentro de la carrera</label><div style="display:flex;gap:8px;align-items:center;"><select id="p-noCiclo"><option>primero</option><option>segundo</option><option>tercero</option><option>cuarto</option><option>quinto</option></select><button class="btn-ghost" type="button" id="p-addNoCiclo">Añadir</button></div></div>
           <div class="form-section-title"><strong>2. Ciclo y cursos</strong><span>Indica qué ciclo estás registrando y agrega los cursos que lo integran.</span></div>
           <div class="form-field full"><label>Cursos del ciclo <span class="field-help">(agrega uno por uno)</span></label><div id="p-coursesList"></div><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-ghost" type="button" id="p-addCourse">Agregar curso</button><button class="btn-ghost" type="button" id="p-loadExample">Cargar ejemplo</button></div></div>
-          <div class="form-field full"><label>Contenido del ciclo <span class="field-help">(temas generales incluidos)</span></label><textarea id="p-contenido" placeholder="Describe brevemente los temas que se desarrollan en este ciclo"></textarea></div>
         </div>
         <div class="form-actions"><button class="btn btn-ghost" onclick="clearForm('pensum')">Limpiar</button><button class="btn btn-primary lime" onclick="addPensum()">Guardar ciclo del pensum</button></div>
       </div>
-      <div class="table-card"><div class="table-card-head"><h3>Ciclos de pensum registrados</h3><span class="count-pill" id="pensumCount">0 registros</span></div><table><thead><tr><th>Código</th><th>Carrera</th><th>Versión</th><th>Plan</th><th>Modalidad</th><th>Tipo de ciclo</th><th>No. Ciclo</th><th>Duración carrera</th><th>Cursos</th><th>Contenido</th></tr></thead><tbody id="pensumBody"></tbody></table></div>
+      <div class="table-card"><div class="table-card-head"><h3>Ciclos de pensum registrados</h3><span class="count-pill" id="pensumCount">0 registros</span></div><table><thead><tr><th>Código</th><th>Carrera</th><th>Versión</th><th>Plan</th><th>Modalidad</th><th>Tipo de ciclo</th><th>No. Ciclo</th><th>Duración carrera</th><th>Cursos</th></tr></thead><tbody id="pensumBody"></tbody></table></div>
     </section>
 
     <section class="view" id="view-calendario">
@@ -398,6 +429,7 @@
     dashboard: ['Resumen general','Estado actual de la información cargada por tu centro de estudio'],
     pensum: ['Pensúm de estudios','Estructura académica de tus carreras'],
     calendario: ['Calendario académico','Fechas clave de cada ciclo académico'],
+    costos: ['Carta de costos','Constancias institucionales de costos por carrera'],
     becarios: ['Becarios','Estudiantes con beca activa en tu centro de estudio'],
     preseleccionados: ['Preseleccionados','Personas en proceso de admisión']
   };
@@ -459,17 +491,18 @@
 
   const currentUniversity = 'Universidad del Valle de Guatemala';
   const PORTAL_API = 'api/portal-universidad.php';
+  const cartasCostoData = [];
 
   function selectValues(id){const select=document.getElementById(id);return select?Array.from(select.options).map(option=>option.value).filter(Boolean):[];}
   function portalCatalogs(){return {planes:selectValues('p-plan'),ciclos:selectValues('p-noCiclo'),campus:selectValues('c-campus')};}
   function addSelectOptions(id,values){const select=document.getElementById(id);if(!select)return;(values||[]).forEach(value=>{if(!Array.from(select.options).some(option=>option.value===value)){const option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option);}});}
   async function savePortalData(){
-    try{const response=await fetch(PORTAL_API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({pensum:pensumData,calendarios:calendarioData,catalogos:portalCatalogs()})});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'No fue posible guardar.');return true;}
+    try{const response=await fetch(PORTAL_API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({pensum:pensumData,calendarios:calendarioData,cartas_costos:cartasCostoData,catalogos:portalCatalogs()})});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'No fue posible guardar.');return true;}
     catch(error){console.error(error);showPensumMessage('Los cambios se mantienen en pantalla, pero no pudieron guardarse en MySQL.','error');return false;}
   }
   async function loadPortalData(){
     try{const response=await fetch(PORTAL_API,{headers:{Accept:'application/json'},cache:'no-store'});const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error||'No fue posible cargar.');
-      if(result.exists){pensumData.splice(0,pensumData.length,...(result.pensum||[]));calendarioData.splice(0,calendarioData.length,...(result.calendarios||[]));addSelectOptions('p-plan',result.catalogos?.planes);addSelectOptions('p-noCiclo',result.catalogos?.ciclos);addSelectOptions('c-campus',result.catalogos?.campus);}
+      if(result.exists){pensumData.splice(0,pensumData.length,...(result.pensum||[]));calendarioData.splice(0,calendarioData.length,...(result.calendarios||[]));cartasCostoData.splice(0,cartasCostoData.length,...(result.cartas_costos||[]));addSelectOptions('p-plan',result.catalogos?.planes);addSelectOptions('p-noCiclo',result.catalogos?.ciclos);addSelectOptions('c-campus',result.catalogos?.campus);}
       else await savePortalData();
     }catch(error){console.error('Se utilizarán temporalmente los datos incluidos en la página.',error);}
   }
@@ -480,7 +513,7 @@
   function statusChip(ok, okText, pendingText){ return `<span class="status-chip ${ok ? 'status-ok' : 'status-missing'}">${ok ? okText : pendingText}</span>`; }
   function showPensumMessage(text, type='info'){ const el=document.getElementById('pensumNotice'); if(!el) return; el.textContent=text; el.className=`page-message ${type}`; el.hidden=false; }
   function hidePensumMessage(){ const el=document.getElementById('pensumNotice'); if(el) el.hidden=true; }
-  function renderCareerOptions(){ const sel=document.getElementById('p-carrera'); if(!sel) return; const current=sel.value; sel.innerHTML=assignedCareers().map(c=>`<option>${c}</option>`).join(''); if(assignedCareers().includes(current)) sel.value=current; }
+  function renderCareerOptions(){ const careers=assignedCareers(); ['p-carrera','cost-carrera'].forEach(id=>{const sel=document.getElementById(id);if(!sel)return;const current=sel.value;sel.innerHTML=careers.map(c=>`<option>${c}</option>`).join('');if(careers.includes(current))sel.value=current;}); }
   function renderDashboardStatus(){
     const careers=assignedCareers();
     const pSet=pensumCareers();
@@ -540,10 +573,10 @@
 
   function renderPensum(){
     const body = document.getElementById('pensumBody');
-    body.innerHTML = pensumData.length ? '' : '<tr class="empty-row"><td colspan="10">Todavía no hay ciclos de pensum registrados.</td></tr>';
+    body.innerHTML = pensumData.length ? '' : '<tr class="empty-row"><td colspan="9">Todavía no hay ciclos de pensum registrados.</td></tr>';
     pensumData.forEach(p=>{
       const temporalidad = p.duracionMeses ? `${p.duracion} · ${p.duracionMeses}` : p.duracion;
-      body.innerHTML += `<tr><td><span class="id-badge lime">${p.id}</span></td><td>${p.carrera}</td><td>${p.vigencia || '—'}</td><td>${p.plan}</td><td>${p.modalidad}</td><td>${p.ciclo}</td><td>${p.noCiclo}</td><td>${temporalidad}</td><td class="cell-wrap">${p.cursos}</td><td class="cell-wrap cell-muted">${p.contenido}</td></tr>`;
+      body.innerHTML += `<tr><td><span class="id-badge lime">${p.id}</span></td><td>${p.carrera}</td><td>${p.vigencia || '—'}</td><td>${p.plan}</td><td>${p.modalidad}</td><td>${p.ciclo}</td><td>${p.noCiclo}</td><td>${temporalidad}</td><td class="cell-wrap">${p.cursos}</td></tr>`;
     });
     document.getElementById('pensumCount').textContent = pensumData.length + ' registros';
     renderPensumOptions();
@@ -600,7 +633,7 @@
   function createPensumCourseRow(value=''){ const row = document.createElement('div'); row.className = 'tier-row'; row.style.display = 'flex'; row.style.gap = '8px'; const input = document.createElement('input'); input.type = 'text'; input.placeholder = 'Nombre del curso'; input.value = value; input.style.flex = '1'; const rem = document.createElement('button'); rem.type = 'button'; rem.className = 'btn-ghost'; rem.textContent = 'Eliminar'; rem.addEventListener('click', ()=> row.remove()); row.appendChild(input); row.appendChild(rem); return row; }
   function createCalendarEventRow(tipo='Matrícula', desde='', hasta='', nota=''){ const row = document.createElement('div'); row.className = 'calendar-event'; row.innerHTML = `<div class="calendar-event-head"><div class="calendar-event-title"><strong>Fecha o ciclo</strong><span>Agrega un bloque de fechas para matrícula, inscripción, pago o evaluaciones.</span></div><button type="button" class="btn-ghost remove-event">Eliminar</button></div><div class="calendar-event-grid"><div class="form-field"><label>Tipo de fecha</label><select class="event-tipo"><option>Matrícula</option><option>Inscripción ordinaria</option><option>Inscripción extraordinaria</option><option>Pago de mensualidad</option><option>Inicio de clases</option><option>Evaluaciones</option></select></div><div class="form-field"><label>Fecha inicio</label><input type="date" class="event-desde"></div><div class="form-field"><label>Fecha final</label><input type="date" class="event-hasta"></div><div class="form-field"><label>Observación</label><input type="text" class="event-nota" placeholder="Ej. Semestre 1 / bloque 1"></div></div>`; row.querySelector('.event-tipo').value = tipo; row.querySelector('.event-desde').value = desde; row.querySelector('.event-hasta').value = hasta; row.querySelector('.event-nota').value = nota; row.querySelector('.remove-event').addEventListener('click', ()=>{ const list = document.getElementById('calendarEventsList'); if(list.children.length > 1) row.remove(); }); return row; }
 
-  function initPensumCourses(){ const list = document.getElementById('p-coursesList'); const addBtn = document.getElementById('p-addCourse'); const loadBtn = document.getElementById('p-loadExample'); if(list && list.children.length === 0) list.appendChild(createPensumCourseRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createPensumCourseRow())); addBtn._wired = true; } if(loadBtn && !loadBtn._wired){ loadBtn.addEventListener('click', ()=>{ document.getElementById('p-carrera').value = 'Trabajo Social'; document.getElementById('p-plan').value = 'fin de semana'; document.getElementById('p-modalidad').value = 'Presencial'; document.getElementById('p-vigencia').value = '2026'; document.getElementById('p-duracion-cantidad').value = '5'; document.getElementById('p-duracion-unidad').value = 'años'; document.getElementById('p-ciclo').value = 'Semestre'; document.getElementById('p-noCiclo').value = 'primero'; document.getElementById('p-contenido').value = 'Contenido base del ciclo para prueba.'; list.innerHTML = ''; list.appendChild(createPensumCourseRow('Estrategias de Comunicación Lingüística')); list.appendChild(createPensumCourseRow('Fundamentos del trabajo social')); }); loadBtn._wired = true; } }
+  function initPensumCourses(){ const list = document.getElementById('p-coursesList'); const addBtn = document.getElementById('p-addCourse'); const loadBtn = document.getElementById('p-loadExample'); if(list && list.children.length === 0) list.appendChild(createPensumCourseRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createPensumCourseRow())); addBtn._wired = true; } if(loadBtn && !loadBtn._wired){ loadBtn.addEventListener('click', ()=>{ document.getElementById('p-carrera').value = 'Trabajo Social'; document.getElementById('p-plan').value = 'fin de semana'; document.getElementById('p-modalidad').value = 'Presencial'; document.getElementById('p-vigencia').value = '2026'; document.getElementById('p-duracion-cantidad').value = '5'; document.getElementById('p-duracion-unidad').value = 'años'; document.getElementById('p-ciclo').value = 'Semestre'; document.getElementById('p-noCiclo').value = 'primero'; list.innerHTML = ''; list.appendChild(createPensumCourseRow('Estrategias de Comunicación Lingüística')); list.appendChild(createPensumCourseRow('Fundamentos del trabajo social')); }); loadBtn._wired = true; } }
   function initCalendarEvents(){ const list = document.getElementById('calendarEventsList'); const addBtn = document.getElementById('c-addEvent'); if(list && list.children.length === 0) list.appendChild(createCalendarEventRow()); if(addBtn && !addBtn._wired){ addBtn.addEventListener('click', ()=> list.appendChild(createCalendarEventRow())); addBtn._wired = true; } }
   function wireLookupButtons(){ const wire = (id, promptText, targetId) => { const btn = document.getElementById(id); if(btn && !btn._wired){ btn.addEventListener('click', ()=>{ const sel = document.getElementById(targetId); const v = prompt(promptText); if(v && v.trim()){ const opt = document.createElement('option'); opt.textContent = v.trim(); sel.appendChild(opt); sel.value = v.trim(); savePortalData(); } }); btn._wired = true; } }; wire('p-addPlan','Nombre del nuevo plan:','p-plan'); wire('p-addNoCiclo','Nombre del nuevo ciclo (ej. sexto):','p-noCiclo'); wire('c-addCampus','Nombre del nuevo campus/sede:','c-campus'); }
 
@@ -620,14 +653,14 @@
   function csvErrorsMessage(imported,errors){const summary=`${imported} registro(s) importado(s).`;return errors.length?`${summary} Filas con error: ${errors.slice(0,8).join(' | ')}${errors.length>8?' | …':''}`:summary;}
 
   async function importPensumCsv(file){
-    const required=['carrera','version','plan','modalidad','tipo_ciclo','numero_ciclo','duracion','duracion_meses','cursos','contenido'];
+    const required=['carrera','version','plan','modalidad','tipo_ciclo','numero_ciclo','duracion','duracion_meses','cursos'];
     try{const rows=parseCsv(await file.text());requireCsvHeaders(rows,required);let imported=0;const errors=[];
       rows.forEach(({line,data})=>{const courses=data.cursos.split('|').map(value=>value.trim()).filter(Boolean);const months=data.duracion_meses?Number(data.duracion_meses):null;
         if(!data.carrera||!/^\d{4}$/.test(data.version)||!data.plan||!data.modalidad||!data.tipo_ciclo||!data.numero_ciclo||!data.duracion||!courses.length){errors.push(`${line}: campos obligatorios incompletos`);return;}
         if(months!==null&&(!Number.isFinite(months)||months<=0)){errors.push(`${line}: duración_meses inválida`);return;}
         const duplicate=pensumData.some(p=>p.carrera.toLowerCase()===data.carrera.toLowerCase()&&p.plan.toLowerCase()===data.plan.toLowerCase()&&String(p.vigencia)===data.version&&p.ciclo.toLowerCase()===data.tipo_ciclo.toLowerCase()&&p.noCiclo.toLowerCase()===data.numero_ciclo.toLowerCase());
         if(duplicate){errors.push(`${line}: registro duplicado`);return;}
-        pensumData.push({id:randomId(),carrera:data.carrera,vigencia:data.version,plan:data.plan,modalidad:data.modalidad,ciclo:data.tipo_ciclo,noCiclo:data.numero_ciclo,duracion:data.duracion,duracionMeses:months?`${months} meses aprox.`:'',cursos:courses.join(', '),contenido:data.contenido||'Sin descripción registrada.'});addSelectOptions('p-plan',[data.plan]);addSelectOptions('p-noCiclo',[data.numero_ciclo]);imported++;
+        pensumData.push({id:randomId(),carrera:data.carrera,vigencia:data.version,plan:data.plan,modalidad:data.modalidad,ciclo:data.tipo_ciclo,noCiclo:data.numero_ciclo,duracion:data.duracion,duracionMeses:months?`${months} meses aprox.`:'',cursos:courses.join(', ')});addSelectOptions('p-plan',[data.plan]);addSelectOptions('p-noCiclo',[data.numero_ciclo]);imported++;
       });
       if(imported){renderPensum();await savePortalData();}showPensumMessage(csvErrorsMessage(imported,errors),errors.length?'error':'success');
     }catch(error){showPensumMessage(`No se pudo importar el CSV: ${error.message}`,'error');}
@@ -659,13 +692,12 @@
     const unidad = document.getElementById('p-duracion-unidad').value;
     const extraCantidad = document.getElementById('p-duracion-extra-cantidad').value.trim();
     const extraUnidad = document.getElementById('p-duracion-extra-unidad').value;
-    const contenido = document.getElementById('p-contenido').value.trim();
     const courses = Array.from(document.querySelectorAll('#p-coursesList input[type=text]')).map(i=>i.value.trim()).filter(Boolean);
     const temporalidad = formatDurationText(cantidad, unidad, extraCantidad, extraUnidad);
     if(!carrera || !vigencia || !plan || !temporalidad || courses.length === 0){ showPensumMessage('Completa carrera, versión, plan, duración y al menos un curso antes de guardar.', 'error'); return; }
     const duplicate=pensumData.some(p=>p.carrera===carrera && p.plan===plan && p.vigencia===vigencia && p.ciclo===ciclo && p.noCiclo===noCiclo);
     if(duplicate){ showPensumMessage('Ya existe un registro para esa carrera, versión, plan y ciclo. Cambia el ciclo o revisa la información existente.', 'error'); return; }
-    pensumData.push({id:randomId(), carrera, vigencia, plan, modalidad, ciclo, noCiclo, duracion:temporalidad, duracionMeses:durationToMonths(cantidad, unidad, extraCantidad, extraUnidad), cursos:courses.join(', '), contenido:contenido || 'Sin descripción registrada.'});
+    pensumData.push({id:randomId(), carrera, vigencia, plan, modalidad, ciclo, noCiclo, duracion:temporalidad, duracionMeses:durationToMonths(cantidad, unidad, extraCantidad, extraUnidad), cursos:courses.join(', ')});
     renderPensum();
     savePortalData();
     clearForm('pensum');
@@ -696,7 +728,41 @@
     showCalendarMessage(`Calendario guardado para ${pensum.carrera}.`, 'success');
   }
 
-  function clearForm(type){ if(type === 'pensum'){ document.getElementById('p-vigencia').value = ''; document.getElementById('p-duracion-cantidad').value = ''; document.getElementById('p-duracion-unidad').selectedIndex = 0; document.getElementById('p-duracion-extra-cantidad').value = ''; document.getElementById('p-duracion-extra-unidad').selectedIndex = 0; document.getElementById('p-contenido').value = ''; document.getElementById('p-plan').selectedIndex = 0; document.getElementById('p-noCiclo').selectedIndex = 0; document.getElementById('p-modalidad').selectedIndex = 0; const list = document.getElementById('p-coursesList'); if(list){ list.innerHTML = ''; list.appendChild(createPensumCourseRow()); } hidePensumMessage(); return; } document.getElementById('c-anio').value = ''; document.getElementById('c-plan').selectedIndex = 0; document.getElementById('c-campus').selectedIndex = 0; document.getElementById('c-pensum').selectedIndex = 0; const list = document.getElementById('calendarEventsList'); if(list){ list.innerHTML = ''; list.appendChild(createCalendarEventRow()); } hideCalendarMessage(); }
+  function clearForm(type){ if(type === 'pensum'){ document.getElementById('p-vigencia').value = ''; document.getElementById('p-duracion-cantidad').value = ''; document.getElementById('p-duracion-unidad').selectedIndex = 0; document.getElementById('p-duracion-extra-cantidad').value = ''; document.getElementById('p-duracion-extra-unidad').selectedIndex = 0; document.getElementById('p-plan').selectedIndex = 0; document.getElementById('p-noCiclo').selectedIndex = 0; document.getElementById('p-modalidad').selectedIndex = 0; const list = document.getElementById('p-coursesList'); if(list){ list.innerHTML = ''; list.appendChild(createPensumCourseRow()); } hidePensumMessage(); return; } document.getElementById('c-anio').value = ''; document.getElementById('c-plan').selectedIndex = 0; document.getElementById('c-campus').selectedIndex = 0; document.getElementById('c-pensum').selectedIndex = 0; const list = document.getElementById('calendarEventsList'); if(list){ list.innerHTML = ''; list.appendChild(createCalendarEventRow()); } hideCalendarMessage(); }
+
+  let currentCostLogo='';
+  const COST_MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  function costEscape(value){const div=document.createElement('div');div.textContent=String(value??'');return div.innerHTML;}
+  function costMoney(value){return `Q ${Number(value||0).toLocaleString('es-GT',{minimumFractionDigits:2,maximumFractionDigits:2})}`;}
+  function showCostMessage(text,type='info'){const el=document.getElementById('costNotice');el.textContent=text;el.className=`page-message ${type}`;el.hidden=false;}
+  function renderCostLogo(){document.getElementById('costLogoPreview').innerHTML=currentCostLogo?`<img src="${currentCostLogo}" alt="Logotipo de la universidad">`:'Sin logotipo';}
+  function renderCostLetters(){
+    const body=document.getElementById('costBody');
+    body.innerHTML=cartasCostoData.length?cartasCostoData.map(c=>`<tr><td><span class="id-badge">${costEscape(c.id)}</span></td><td>${costEscape(c.carrera)}</td><td>${costEscape(c.anio)}</td><td>${costMoney(c.matricula)}</td><td>${costMoney(c.mensualidad)}</td><td>${costEscape(formatDate(c.fecha))}</td><td><div class="table-actions"><button class="btn-small" type="button" onclick="printCostLetter('${c.id}')">Visualizar</button><button class="btn-small" type="button" onclick="downloadCostPdf('${c.id}')">Descargar PDF</button><button class="btn-small danger" type="button" onclick="deleteCostLetter('${c.id}')">Eliminar</button></div></td></tr>`).join(''):'<tr class="empty-row"><td colspan="7">Todavía no hay cartas de costos registradas.</td></tr>';
+    document.getElementById('costCount').textContent=`${cartasCostoData.length} registros`;
+  }
+  function selectedCostMonths(id){return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(input=>input.value);}
+  function readCostForm(){return {id:randomId(),carrera:document.getElementById('cost-carrera').value,anio:document.getElementById('cost-anio').value.trim(),matricula:document.getElementById('cost-matricula').value,matriculasCantidad:document.getElementById('cost-matriculas-cantidad').value,matriculasMeses:selectedCostMonths('cost-matriculas-meses').join(', '),mensualidad:document.getElementById('cost-mensualidad').value,mensualidadesCantidad:document.getElementById('cost-mensualidades-cantidad').value,mensualidadesMeses:selectedCostMonths('cost-mensualidades-meses').join(', '),fechasPago:document.getElementById('cost-fechas-pago').value.trim(),fecha:document.getElementById('cost-fecha').value,logo:currentCostLogo};}
+  async function saveCostLetter(){
+    const data=readCostForm();
+    if(!data.logo){showCostMessage('Agrega el logotipo oficial de la universidad antes de guardar.','error');return;}
+    if(!data.carrera||!/^\d{4}$/.test(data.anio)||data.matricula===''||!data.matriculasCantidad||!data.matriculasMeses||data.mensualidad===''||!data.mensualidadesCantidad||!data.mensualidadesMeses||!data.fechasPago||!data.fecha){showCostMessage('Completa todos los datos de la carta de costos.','error');return;}
+    cartasCostoData.push(data);renderCostLetters();const saved=await savePortalData();
+    if(saved){showCostMessage(`Carta de costos guardada para ${data.carrera}.`,'success');clearCostForm(false);}
+  }
+  function clearCostForm(hideMessage=true){['cost-anio','cost-matricula','cost-matriculas-cantidad','cost-mensualidad','cost-mensualidades-cantidad','cost-fechas-pago'].forEach(id=>document.getElementById(id).value='');document.querySelectorAll('.month-picker input').forEach(input=>input.checked=false);updateMonthSummary('cost-matriculas-meses','cost-matriculas-summary','cost-matriculas-cantidad');updateMonthSummary('cost-mensualidades-meses','cost-mensualidades-summary','cost-mensualidades-cantidad');document.getElementById('cost-fecha').value=new Date().toISOString().slice(0,10);document.getElementById('cost-logo').value='';currentCostLogo='';renderCostLogo();if(hideMessage)document.getElementById('costNotice').hidden=true;}
+  async function deleteCostLetter(id){if(!confirm('¿Eliminar esta carta de costos?'))return;const index=cartasCostoData.findIndex(c=>c.id===id);if(index<0)return;cartasCostoData.splice(index,1);renderCostLetters();await savePortalData();showCostMessage('Carta de costos eliminada.','success');}
+  function printCostLetter(id,autoPrint=false){
+    const c=cartasCostoData.find(item=>item.id===id);if(!c)return;
+    const w=window.open('','_blank');if(!w){showCostMessage('Habilita las ventanas emergentes para visualizar la carta.','error');return;}
+    const dateText=c.fecha?new Date(`${c.fecha}T12:00:00`).toLocaleDateString('es-GT',{day:'2-digit',month:'long',year:'numeric'}):'';
+    w.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Carta de costos - ${costEscape(c.carrera)}</title><style>@page{size:letter portrait;margin:.55in}*{box-sizing:border-box}html,body{width:auto;height:auto}body{margin:0;background:#fff;font-family:Arial,"Segoe UI",sans-serif;color:#102f67;font-size:9.5pt;line-height:1.35;-webkit-print-color-adjust:exact;print-color-adjust:exact}.sheet{width:100%;max-width:8.5in;min-height:9.9in;margin:auto;display:flex;flex-direction:column}.head{display:flex;align-items:center;justify-content:space-between;gap:28px;min-height:84px;padding:0 0 12px;border-bottom:3px solid #0d5eb6;margin-bottom:14px;break-inside:avoid}.head-copy{min-width:0}.eyebrow{display:block;color:#39a8c2;font-size:8.5pt;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}.head h1{margin:0;color:#0d5eb6;font-size:22pt;line-height:1.05}.head p{margin:5px 0 0;color:#5f7089;font-size:9pt}.head img{display:block;width:150px;max-width:30%;max-height:72px;object-fit:contain;object-position:right center}.intro{text-align:justify;margin:0 0 12px}.identity{display:grid;grid-template-columns:1fr 180px;gap:10px;background:#f4f8fd;border-left:5px solid #39a8c2;padding:8px 11px;margin-bottom:12px;break-inside:avoid}.identity div+div{margin:0}table{width:100%;border-collapse:collapse;margin:0 0 11px;font-size:9pt;break-inside:avoid;page-break-inside:avoid}th,td{border:1px solid #c8d6e6;padding:6px 8px;vertical-align:top}th{background:#0d5eb6;color:#fff;text-align:left;font-size:8.5pt}td:first-child{width:47%;font-weight:bold;background:#f7faff}.closing{margin:14px 0 5px}.signature-row{display:flex;align-items:flex-end;justify-content:flex-start;margin-top:32px;break-inside:avoid}.signature{width:280px;border-top:1px solid #102f67;padding-top:5px;text-align:center}.document-foot{margin-top:auto;padding-top:8px;border-top:1px solid #d9e2ee;color:#5f7089;font-size:8pt;display:flex;justify-content:space-between;gap:20px}.document-foot strong{color:#102f67}.actions{position:fixed;z-index:5;right:18px;top:18px}.actions button{border:0;border-radius:999px;background:#0d5eb6;color:#fff;padding:10px 15px;font-weight:bold;cursor:pointer;box-shadow:0 8px 22px rgba(13,94,182,.25)}@media print{.actions{display:none}.sheet{max-width:none;min-height:9.9in}.head,table,.identity,.signature-row,.document-foot{break-inside:avoid;page-break-inside:avoid}}</style></head><body><div class="actions"><button onclick="window.print()">Imprimir / guardar PDF</button></div><main class="sheet"><header class="head"><div class="head-copy"><span class="eyebrow">Constancia institucional</span><h1>Carta de costos</h1><p>Becas por Nuestro Futuro</p></div><img src="${c.logo}" alt="Logotipo de la universidad"></header><p class="intro">La presente constancia se emite para ser presentada ante la Dirección de Administración de Becas y Crédito Educativo de la Secretaría de Planificación y Programación de la Presidencia (SEGEPLAN), como parte de los requisitos del proceso de solicitud y evaluación de beca.</p><div class="identity"><div><strong>Nombre de la carrera:</strong> ${costEscape(c.carrera)}</div><div><strong>Año aplicable:</strong> ${costEscape(c.anio)}</div></div><table><thead><tr><th>Concepto de matrícula</th><th>Información registrada</th></tr></thead><tbody><tr><td>Costo de la matrícula</td><td>${costMoney(c.matricula)}</td></tr><tr><td>Cantidad de matrículas a pagar al año</td><td>${costEscape(c.matriculasCantidad)} matrícula(s)</td></tr><tr><td>Meses en los que se debe pagar la matrícula</td><td>${costEscape(c.matriculasMeses)}</td></tr></tbody></table><table><thead><tr><th>Concepto de mensualidad</th><th>Información registrada</th></tr></thead><tbody><tr><td>Costo de la mensualidad</td><td>${costMoney(c.mensualidad)}</td></tr><tr><td>Cantidad de mensualidades al año</td><td>${costEscape(c.mensualidadesCantidad)} mensualidad(es)</td></tr><tr><td>Meses en los que se debe pagar la mensualidad</td><td>${costEscape(c.mensualidadesMeses)}</td></tr><tr><td>Fechas específicas de pago (matrícula y/o mensualidades)</td><td>${costEscape(c.fechasPago)}</td></tr></tbody></table><p class="closing">Sin otro particular, se extiende la presente.</p><p>Atentamente,</p><div class="signature-row"><div class="signature">Firma y sello del centro de estudio</div></div><footer class="document-foot"><span><strong>Fecha:</strong> ${costEscape(dateText)}</span><span>Carta de costos · ${costEscape(c.carrera)} · ${costEscape(c.anio)}</span></footer></main></body></html>`);w.document.close();w.focus();if(autoPrint)setTimeout(()=>w.print(),500);
+  }
+  function downloadCostPdf(id){printCostLetter(id,true);}
+  function updateMonthSummary(pickerId,summaryId,countId){const months=selectedCostMonths(pickerId);document.getElementById(summaryId).textContent=months.length?months.join(', '):'Selecciona los meses correspondientes.';document.getElementById(countId).value=months.length||'';}
+  function buildMonthPicker(pickerId,summaryId,countId){const picker=document.getElementById(pickerId);picker.innerHTML=COST_MONTHS.map(month=>`<label class="month-option"><input type="checkbox" value="${month}"><span>${month.slice(0,3)}</span></label>`).join('');picker.addEventListener('change',()=>updateMonthSummary(pickerId,summaryId,countId));}
+  async function assetAsDataUrl(url){const response=await fetch(url);if(!response.ok)throw new Error('No se pudo cargar el logotipo de ejemplo.');const blob=await response.blob();return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});}
+  async function initCostLetters(){buildMonthPicker('cost-matriculas-meses','cost-matriculas-summary','cost-matriculas-cantidad');buildMonthPicker('cost-mensualidades-meses','cost-mensualidades-summary','cost-mensualidades-cantidad');document.getElementById('cost-fecha').value=new Date().toISOString().slice(0,10);document.getElementById('cost-logo').addEventListener('change',event=>{const file=event.target.files[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>1024*1024){showCostMessage('El logotipo debe ser PNG, JPG o WebP y no superar 1 MB.','error');event.target.value='';return;}const reader=new FileReader();reader.onload=()=>{currentCostLogo=reader.result;renderCostLogo();};reader.readAsDataURL(file);});if(!cartasCostoData.length){try{const logo=await assetAsDataUrl('assets/uvg-logo.png');cartasCostoData.push({id:'UVG-EJEMPLO',carrera:'Ingeniería en Sistemas',anio:'2026',matricula:'700',matriculasCantidad:'2',matriculasMeses:'Enero, Junio',mensualidad:'500',mensualidadesCantidad:'10',mensualidadesMeses:'Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre',fechasPago:'Del 1 al 10 de cada mes.',fecha:'2026-02-05',logo});await savePortalData();}catch(error){console.error(error);}}renderCostLogo();renderCostLetters();}
 
   const calendarPensumSelect=document.getElementById('c-pensum');
   if(calendarPensumSelect) calendarPensumSelect.addEventListener('change', syncCalendarFromPensum);
@@ -714,6 +780,7 @@
     initCalendarEvents();
     wireLookupButtons();
     initCsvImports();
+    await initCostLetters();
     renderPensum();
     renderCalendario();
     renderBecarios();
